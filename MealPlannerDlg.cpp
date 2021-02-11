@@ -7,6 +7,7 @@
 #include "MealPlanner.h"
 #include "MealPlannerDlg.h"
 #include "afxdialogex.h"
+#include "Calendar.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,7 +51,7 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	SetScrollRange(IDC_SCROLLBAR, 0, 0, TRUE);
+	SetScrollRange(1, 0, 0, TRUE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -85,8 +86,19 @@ void CMealPlannerDlg::OnPaint()
 	}
 	else
 	{
+		CPaintDC dc(this);
+		dc.MoveTo(0, 0);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width());
+		int y = (rect.Height());
+		dc.LineTo(x, y);
+
+		calendar->paint(*this);
+
 		CDialogEx::OnPaint();
 	}
+
 }
 
 // The system calls this function to obtain the cursor to display while the user drags

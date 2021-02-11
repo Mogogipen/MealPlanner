@@ -34,6 +34,14 @@ public:
 	CDateTimeCtrl m_DPicker;
 	CString m_strDate;
 	afx_msg void OnDtnDatetimechangeDatepicker(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnBnClickedButton1();
-	afx_msg void OnNMThemeChangedScrollbar1(NMHDR* pNMHDR, LRESULT* pResult);
+
+//
+// My additions
+//
+public:
+#ifndef CALENDAR_H
+#define CALENDAR_H
+	class Calendar;
+	Calendar *calendar;
+#endif
 };
