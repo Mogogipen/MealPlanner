@@ -2,6 +2,7 @@
 // MealPlannerDlg.cpp : implementation file
 //
 
+#include <vector>
 #include "pch.h"
 #include "framework.h"
 #include "MealPlanner.h"
@@ -29,13 +30,13 @@ void CMealPlannerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DATEPICKER, m_DPicker);
-	DDX_Text(pDX, IDC_STATIC_TEXT, m_strDate);
 }
 
 BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEPICKER, &CMealPlannerDlg::OnDtnDatetimechangeDatepicker)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEPICKER, &CMealPlannerDlg::OnDtnDatetimechangeDatepickerEnd)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEPICKERSTART, &CMealPlannerDlg::OnDtnDatetimechangeDatepickerstart)
 END_MESSAGE_MAP()
 
 
@@ -87,14 +88,12 @@ void CMealPlannerDlg::OnPaint()
 	else
 	{
 		CPaintDC dc(this);
-		dc.MoveTo(0, 0);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width());
-		int y = (rect.Height());
-		dc.LineTo(x, y);
 
-		calendar->paint(*this);
+		calendar->paint(dc, *this);
+
+		//Clear old stuff
+		Invalidate(TRUE);
+		UpdateWindow();
 
 		CDialogEx::OnPaint();
 	}
@@ -110,7 +109,7 @@ HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 
 
 
-void CMealPlannerDlg::OnDtnDatetimechangeDatepicker(NMHDR* pNMHDR, LRESULT* pResult)
+void CMealPlannerDlg::OnDtnDatetimechangeDatepickerEnd(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
 	CString tmp;
@@ -119,5 +118,13 @@ void CMealPlannerDlg::OnDtnDatetimechangeDatepicker(NMHDR* pNMHDR, LRESULT* pRes
 	UpdateData(FALSE);
 	*pResult = 0;
 }
+
+void CMealPlannerDlg::OnDtnDatetimechangeDatepickerstart(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
 
 

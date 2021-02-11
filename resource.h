@@ -5,7 +5,8 @@
 #define IDD_MEALPLANNER_DIALOG          102
 #define IDR_MAINFRAME                   128
 #define IDC_DATEPICKER                  1005
-#define IDC_STATIC_TEXT                 1007
+#define IDC_DATEPICKEREND               1005
+#define IDC_DATEPICKERSTART             1006
 #define ID_BUTTON2                      32771
 
 // Next default values for new objects
@@ -14,7 +15,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
