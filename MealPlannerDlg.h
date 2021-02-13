@@ -4,11 +4,16 @@
 
 #pragma once
 
-#include <vector>
+// Know about CMealPlannerDlg
+#ifndef DLG
+#define DLG
+class CMealPlannerDlg;
+#endif
 
+// Know everything about Calendar
 #ifndef CALENDAR	
 #define CALENDAR
-class Calendar;
+#include "Calendar.h"
 #endif
 
 // CMealPlannerDlg dialog
@@ -31,7 +36,7 @@ public:
 // My additions
 //
 public:
-	Calendar *calendar;
+	Calendar calendar;
 
 // Implementation
 protected:
@@ -43,9 +48,6 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	CDateTimeCtrl m_DPicker;
-	CString m_strDate;
-	afx_msg void OnDtnDatetimechangeDatepickerEnd(NMHDR* pNMHDR, LRESULT* pResult);
-
-	afx_msg void OnDtnDatetimechangeDatepickerstart(NMHDR* pNMHDR, LRESULT* pResult);
+	CString m_staticText;
+	CButton m_buttonLeft;
 };

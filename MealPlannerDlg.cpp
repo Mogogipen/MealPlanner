@@ -21,22 +21,23 @@
 
 CMealPlannerDlg::CMealPlannerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MEALPLANNER_DIALOG, pParent)
-	, m_strDate(_T(""))
+	, m_staticText(_T("test"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	
+	calendar = Calendar();
 }
 
 void CMealPlannerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_DATEPICKER, m_DPicker);
+	DDX_Text(pDX, IDC_STATIC_TEXT, m_staticText);
+	DDX_Control(pDX, IDC_BUTTON_LEFT, m_buttonLeft);
 }
 
 BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEPICKER, &CMealPlannerDlg::OnDtnDatetimechangeDatepickerEnd)
-	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEPICKERSTART, &CMealPlannerDlg::OnDtnDatetimechangeDatepickerstart)
 END_MESSAGE_MAP()
 
 
@@ -52,7 +53,8 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	SetScrollRange(1, 0, 0, TRUE);
+	HICON MYICON = (HICON)LoadImageW(NULL, L"icon1.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+	m_buttonLeft.SetIcon(MYICON);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -87,15 +89,14 @@ void CMealPlannerDlg::OnPaint()
 	}
 	else
 	{
-		CPaintDC dc(this);
 
-		calendar->paint(dc, *this);
-
+		CDialogEx::OnPaint();
 		//Clear old stuff
 		Invalidate(TRUE);
 		UpdateWindow();
 
-		CDialogEx::OnPaint();
+		CPaintDC dc(this);
+		calendar.paint(dc, *this);
 	}
 
 }
@@ -105,25 +106,6 @@ void CMealPlannerDlg::OnPaint()
 HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
-}
-
-
-
-void CMealPlannerDlg::OnDtnDatetimechangeDatepickerEnd(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
-	CString tmp;
-	GetDlgItemText(IDC_DATEPICKER, tmp);
-	m_strDate = _T("Date chosen:\n") + tmp;
-	UpdateData(FALSE);
-	*pResult = 0;
-}
-
-void CMealPlannerDlg::OnDtnDatetimechangeDatepickerstart(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
-	// TODO: Add your control notification handler code here
-	*pResult = 0;
 }
 
 
