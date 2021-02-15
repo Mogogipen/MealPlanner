@@ -123,7 +123,7 @@ void CMealPlannerDlg::OnBnClickedButtonL()
 	calendar.decrementMonth();
 	m_staticText = calendar.getMonthAsString();
 
-	UpdateData();
+	UpdateData(FALSE);
 	Invalidate(TRUE);
 	UpdateWindow();
 }
@@ -135,7 +135,7 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 	calendar.incrementMonth();
 	m_staticText = calendar.getMonthAsString();
 
-	UpdateData();
+	UpdateData(FALSE);
 	Invalidate(TRUE);
 	UpdateWindow();
 }
