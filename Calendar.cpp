@@ -4,17 +4,7 @@
 Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
 
 Calendar::Calendar(COleDateTime& date) {
-	int month = date.GetMonth();
-	date.SetDate(date.GetYear(), date.GetMonth(), 1);
-	startDay = date.GetDayOfWeek();
-
-	if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
-		monthLength = 31;
-	else if (month == 2)
-		monthLength = 28;
-	else
-		monthLength = 30;
-
+	setDateTime(date);
 }
 
 void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
@@ -57,6 +47,79 @@ CRect Calendar::getDayRect(CRect& calRect) {
 	return result;
 }
 
-void Calendar::setMonthLength(int len) {
-	monthLength = len;
+void Calendar::setDateTime(COleDateTime date) {
+
+	dateTime = date;
+
+	int month = date.GetMonth();
+	date.SetDate(date.GetYear(), date.GetMonth(), 1);
+	startDay = date.GetDayOfWeek();
+
+	if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+		monthLength = 31;
+	else if (month == 2)
+		monthLength = 28;
+	else
+		monthLength = 30;
+
+}
+
+void Calendar::incrementMonth() {
+	int year = dateTime.GetYear();
+	int month = dateTime.GetMonth();
+	if (month + 1 > 12) {
+		year++;
+		month = 1;
+	}
+	else {
+		month++;
+	}
+	dateTime.SetDate(year, month, 1);
+	setDateTime(dateTime);
+}
+
+void Calendar::decrementMonth() {
+	int year = dateTime.GetYear();
+	int month = dateTime.GetMonth();
+	if (month - 1 < 1) {
+		year--;
+		month = 12;
+	}
+	else {
+		month--;
+	}
+	dateTime.SetDate(year, month, 1);
+	setDateTime(dateTime);
+}
+
+CString Calendar::getMonthAsString() {
+	int month = dateTime.GetMonth();
+	CString result;
+	if (month == 1)
+		result = L"January";
+	else if (month == 2)
+		result = L"February";
+	else if (month == 3)
+		result = L"March";
+	else if (month == 4)
+		result = L"April";
+	else if (month == 5)
+		result = L"May";
+	else if (month == 6)
+		result = L"June";
+	else if (month == 7)
+		result = L"July";
+	else if (month == 8)
+		result = L"August";
+	else if (month == 9)
+		result = L"September";
+	else if (month == 10)
+		result = L"October";
+	else if (month == 11)
+		result = L"November";
+	else if (month == 12)
+		result = L"December";
+	else
+		result = L"Unknown";
+	return result;
 }
