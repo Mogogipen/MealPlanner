@@ -32,12 +32,13 @@ void CMealPlannerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_TEXT, m_staticText);
-	DDX_Control(pDX, IDC_BUTTON_LEFT, m_buttonLeft);
 }
 
 BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_L, &CMealPlannerDlg::OnBnClickedButtonL)
+	ON_BN_CLICKED(IDC_BUTTON_R, &CMealPlannerDlg::OnBnClickedButtonR)
 END_MESSAGE_MAP()
 
 
@@ -53,8 +54,12 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	HICON MYICON = (HICON)LoadImageW(NULL, L"icon1.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
-	m_buttonLeft.SetIcon(MYICON);
+
+	// Init Month label
+	m_staticText = calendar.getMonthAsString();
+
+	UpdateData(FALSE);
+	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -83,7 +88,7 @@ void CMealPlannerDlg::OnPaint()
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
 		// Draw the icon
-		//dc.DrawIcon(x, y, m_hIcon);
+		dc.DrawIcon(x, y, m_hIcon);
 
 
 	}
@@ -110,3 +115,27 @@ HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 
 
 
+
+
+void CMealPlannerDlg::OnBnClickedButtonL()
+{
+	// TODO: Add your control notification handler code here
+	calendar.decrementMonth();
+	m_staticText = calendar.getMonthAsString();
+
+	UpdateData(FALSE);
+	Invalidate(TRUE);
+	UpdateWindow();
+}
+
+
+void CMealPlannerDlg::OnBnClickedButtonR()
+{
+	// TODO: Add your control notification handler code here
+	calendar.incrementMonth();
+	m_staticText = calendar.getMonthAsString();
+
+	UpdateData(FALSE);
+	Invalidate(TRUE);
+	UpdateWindow();
+}
