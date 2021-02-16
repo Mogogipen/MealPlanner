@@ -9,13 +9,18 @@ class Calendar
 private:
 	int monthLength;
 	int startDay;
+	COleDateTime dateTime;
 	CRect getDayRect(CRect&);
+
+	void setDateTime(COleDateTime);
+
 public:
 	Calendar();
 	Calendar(COleDateTime&);
 	void paint(CPaintDC&, CMealPlannerDlg&);
-
-	void setMonthLength(int);
+	void incrementMonth();
+	void decrementMonth();
+	CString getMonthAsString();
 
 };
 

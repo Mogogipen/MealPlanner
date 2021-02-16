@@ -49,5 +49,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_staticText;
-	CButton m_buttonLeft;
+	afx_msg void OnBnClickedButtonL();
+	afx_msg void OnBnClickedButtonR();
 };
