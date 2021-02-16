@@ -24,7 +24,7 @@ CMealPlannerDlg::CMealPlannerDlg(CWnd* pParent /*=nullptr*/)
 	, m_staticText(_T("test"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	
+
 	calendar = Calendar();
 }
 
@@ -57,7 +57,6 @@ BOOL CMealPlannerDlg::OnInitDialog()
 
 	// Init Month label
 	m_staticText = calendar.getMonthAsString();
-
 	UpdateData(FALSE);
 	
 
@@ -96,10 +95,11 @@ void CMealPlannerDlg::OnPaint()
 	{
 
 		CDialogEx::OnPaint();
-		//Clear old stuff
+		// Clear old stuff
 		Invalidate(TRUE);
 		UpdateWindow();
 
+		// Paint the calendar
 		CPaintDC dc(this);
 		calendar.paint(dc, *this);
 	}
@@ -114,12 +114,9 @@ HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 }
 
 
-
-
-
+// When the left button is clicked, decrement month and display name
 void CMealPlannerDlg::OnBnClickedButtonL()
 {
-	// TODO: Add your control notification handler code here
 	calendar.decrementMonth();
 	m_staticText = calendar.getMonthAsString();
 
@@ -128,10 +125,9 @@ void CMealPlannerDlg::OnBnClickedButtonL()
 	UpdateWindow();
 }
 
-
+// When the right button is clicked, increment month and display name
 void CMealPlannerDlg::OnBnClickedButtonR()
 {
-	// TODO: Add your control notification handler code here
 	calendar.incrementMonth();
 	m_staticText = calendar.getMonthAsString();
 

@@ -12,7 +12,6 @@ private:
 	COleDateTime dateTime;
 	CRect getDayRect(CRect&);
 
-	void setDateTime(COleDateTime);
 
 public:
 	Calendar();
@@ -21,6 +20,7 @@ public:
 	void incrementMonth();
 	void decrementMonth();
 	CString getMonthAsString();
+	void setDateTime(COleDateTime);
 
 };
 

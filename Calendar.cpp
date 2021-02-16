@@ -7,23 +7,35 @@ Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
 }
 
+// Calendar paints itself
 void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	
 	// Build calendar rect
 	CRect c_rect;
 	m_dlg.GetClientRect(&c_rect);
-	CRect calRect(c_rect.left+10, c_rect.top+50, c_rect.right-10, c_rect.bottom-10);
+	CRect calRect(c_rect.left+20, c_rect.top+70, c_rect.right-20, c_rect.bottom-20);
 
+	//
 	// Build day rects
-	CRect dayRect = getDayRect(calRect);
+
+	// Initialize drawing
 	dc.SetBkMode(0xFF000000);
+
+	// Get base dayRect
+	CRect dayRect = getDayRect(calRect);
+
+	// Prepare for calculations
 	CRect dayRects[7*6];
 	int dayCount = 1;
 	int count = 0;
 	int dayWidth = (calRect.right - calRect.left) / 7;
 	int dayHeight = (calRect.bottom - calRect.top) / 6;
+
+	// i and j hold values for offset dayRect
 	for (int j = calRect.top; j < calRect.bottom-dayHeight+1; j += dayHeight) {
 		for (int i = calRect.left; i < calRect.right-dayWidth+1; i += dayWidth) {
+			
+			// Create and offset currect dayRect
 			dayRects[count] = CRect(dayRect);
 			dayRects[count].OffsetRect(i, j);
 			dc.Rectangle(dayRects[count]);
@@ -40,6 +52,7 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	}
 }
 
+// Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
 CRect Calendar::getDayRect(CRect& calRect) {
 	int days = 7;
 	int weeks = 6;
@@ -47,6 +60,8 @@ CRect Calendar::getDayRect(CRect& calRect) {
 	return result;
 }
 
+// Sets the current dateTime object 
+//	as well as the month length and starting day of the week
 void Calendar::setDateTime(COleDateTime date) {
 
 	dateTime = date;
@@ -64,9 +79,12 @@ void Calendar::setDateTime(COleDateTime date) {
 
 }
 
+// Resets the dateTime object with the next month
 void Calendar::incrementMonth() {
 	int year = dateTime.GetYear();
 	int month = dateTime.GetMonth();
+
+	// If the month is greater than 12, set it to 1 and increment year
 	if (month + 1 > 12) {
 		year++;
 		month = 1;
@@ -75,12 +93,16 @@ void Calendar::incrementMonth() {
 		month++;
 	}
 	dateTime.SetDate(year, month, 1);
+
 	setDateTime(dateTime);
 }
 
+// Resets the dateTime object with the previous month
 void Calendar::decrementMonth() {
 	int year = dateTime.GetYear();
 	int month = dateTime.GetMonth();
+
+	// If the month is less than 1, set it to 12 and decrement year
 	if (month - 1 < 1) {
 		year--;
 		month = 12;
@@ -89,9 +111,11 @@ void Calendar::decrementMonth() {
 		month--;
 	}
 	dateTime.SetDate(year, month, 1);
+
 	setDateTime(dateTime);
 }
 
+// Returns a string value for the selected month
 CString Calendar::getMonthAsString() {
 	int month = dateTime.GetMonth();
 	CString result;
