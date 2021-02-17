@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddMealDlg.h" />
     <ClInclude Include="Calendar.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MealPlanner.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddMealDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="MealPlanner.cpp" />
     <ClCompile Include="MealPlannerDlg.cpp" />

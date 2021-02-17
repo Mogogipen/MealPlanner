@@ -2,13 +2,13 @@
 // MealPlannerDlg.cpp : implementation file
 //
 
-#include <vector>
 #include "pch.h"
 #include "framework.h"
 #include "MealPlanner.h"
 #include "MealPlannerDlg.h"
 #include "afxdialogex.h"
 #include "Calendar.h"
+#include "AddMealDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -141,8 +141,11 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 //	Gets and displays the day clicked on via message box
 // TODO: Create a dialog to get the users requested meal/dish
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-	CString s;
 	int day = calendar.getClickedDay(point);
-	s.Format(L"You clicked on %d", day);
-	MessageBox(s);
+	
+	// If it's a valid day selected, display a dialog
+	if (day > 0) {
+		AddMealDlg tmpDlg(day);
+		tmpDlg.DoModal();
+	}
 }
