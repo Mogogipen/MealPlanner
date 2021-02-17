@@ -18,36 +18,26 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	//
 	// Build day rects
 
+
+	buildDayRects(calRect);
+
+	CString a;
+	int dayCount = 1;
+	int days = 7 * 6;
+
 	// Initialize drawing
 	dc.SetBkMode(0xFF000000);
+	
+	// Draw each rect and day number
+	// TODO: In the future maybe change to draw lines instead of rects
+	for (int i = 0; i < days; i++) {
+		dc.Rectangle(dayRects[i]);
 
-	// Get base dayRect
-	CRect dayRect = getDayRect(calRect);
-
-	// Prepare for calculations
-	CRect dayRects[7*6];
-	int dayCount = 1;
-	int count = 0;
-	int dayWidth = (calRect.right - calRect.left) / 7;
-	int dayHeight = (calRect.bottom - calRect.top) / 6;
-
-	// i and j hold values for offset dayRect
-	for (int j = calRect.top; j < calRect.bottom-dayHeight+1; j += dayHeight) {
-		for (int i = calRect.left; i < calRect.right-dayWidth+1; i += dayWidth) {
-			
-			// Create and offset currect dayRect
-			dayRects[count] = CRect(dayRect);
-			dayRects[count].OffsetRect(i, j);
-			dc.Rectangle(dayRects[count]);
-
-			// Add numbers to days
-			if (count+1 >= startDay && dayCount <= monthLength) {
-				CString a;
-				a.Format(L"%d", dayCount);
-				dc.DrawTextW(a, &dayRects[count], DT_LEFT);
-				dayCount++;
-			}
-			count++;
+		// Add numbers to days
+		if (i + 1 >= startDay && dayCount <= monthLength) {
+			a.Format(L"%d", dayCount);
+			dc.DrawTextW(a, &dayRects[i], DT_LEFT);
+			dayCount++;
 		}
 	}
 }
@@ -58,6 +48,30 @@ CRect Calendar::getDayRect(CRect& calRect) {
 	int weeks = 6;
 	CRect result(0, 0, calRect.right/days, calRect.bottom/weeks);
 	return result;
+}
+
+// Builds the day rects, without drawing them
+void Calendar::buildDayRects(CRect& calRect) {
+
+	// Get base dayRect
+	CRect dayRect = getDayRect(calRect);
+
+	// Prepare for calculations
+	int count = 0;
+	int dayWidth = (calRect.right - calRect.left) / 7;
+	int dayHeight = (calRect.bottom - calRect.top) / 6;
+
+	// i and j hold values for offset dayRect
+	for (int j = calRect.top; j < calRect.bottom - dayHeight + 1; j += dayHeight) {
+		for (int i = calRect.left; i < calRect.right - dayWidth + 1; i += dayWidth) {
+
+			// Create and offset currect dayRect
+			dayRects[count] = CRect(dayRect);
+			dayRects[count].OffsetRect(i, j);
+			count++;
+		}
+	}
+
 }
 
 // Sets the current dateTime object 
@@ -146,4 +160,22 @@ CString Calendar::getMonthAsString() {
 	else
 		result = L"Unknown";
 	return result;
+}
+
+//
+// Events
+//
+
+int Calendar::getClickedDay(CPoint& p) {
+	for (int i = 0; i < 7 * 6; i++) {
+		if (p.x > dayRects[i].left && 
+			p.x < dayRects[i].right && 
+			p.y > dayRects[i].top && 
+			p.y < dayRects[i].bottom) {
+
+			if (i >= startDay-1 && i <= monthLength)
+				return (i + startDay - 2);
+		}
+	}
+	return 0;
 }

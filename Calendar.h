@@ -10,7 +10,11 @@ private:
 	int monthLength;
 	int startDay;
 	COleDateTime dateTime;
+
+	// dayRects
+	CRect dayRects[7 * 6];
 	CRect getDayRect(CRect&);
+	void buildDayRects(CRect&);
 
 
 public:
@@ -21,6 +25,8 @@ public:
 	void decrementMonth();
 	CString getMonthAsString();
 	void setDateTime(COleDateTime);
+
+	int getClickedDay(CPoint&);
 
 };
 

@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_L, &CMealPlannerDlg::OnBnClickedButtonL)
 	ON_BN_CLICKED(IDC_BUTTON_R, &CMealPlannerDlg::OnBnClickedButtonR)
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -134,4 +135,14 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 	UpdateData(FALSE);
 	Invalidate(TRUE);
 	UpdateWindow();
+}
+
+// L Mouse button up event handler
+//	Gets and displays the day clicked on via message box
+// TODO: Create a dialog to get the users requested meal/dish
+void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	CString s;
+	int day = calendar.getClickedDay(point);
+	s.Format(L"You clicked on %d", day);
+	MessageBox(s);
 }
