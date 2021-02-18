@@ -14,6 +14,9 @@ public:
 	AddMealDlg(int);
 	~AddMealDlg();
 
+	CString GetMealName();
+
 	CString d_staticText;
+	CString d_newMealName;
 };
 

@@ -146,6 +146,21 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	// If it's a valid day selected, display a dialog
 	if (day > 0) {
 		AddMealDlg tmpDlg(day);
-		tmpDlg.DoModal();
+		INT_PTR nResponse = tmpDlg.DoModal();
+		if (nResponse == IDOK) {
+			CString mealName = tmpDlg.GetMealName();
+			CPoint end(point.x + 50, point.y + 15);
+			CRect test(point, end);
+			calendar.setMealTest(mealName);
+			calendar.setMealTestRect(test);
+
+			UpdateData(FALSE);
+			Invalidate(TRUE);
+			UpdateWindow();
+		}
+		else if (nResponse == -1) {
+			TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
+			TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
+		}
 	}
 }

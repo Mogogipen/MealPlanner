@@ -1,10 +1,20 @@
 #include "pch.h"
+#include "MealPlannerDlg.h"
 #include "Calendar.h"
+#include <vector>
 
 Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
 
 Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
+}
+
+// Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
+CRect Calendar::getDayRect(CRect& calRect) {
+	int days = 7;
+	int weeks = 6;
+	CRect result(0, 0, calRect.right/days, calRect.bottom/weeks);
+	return result;
 }
 
 // Calendar paints itself
@@ -40,14 +50,9 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 			dayCount++;
 		}
 	}
-}
 
-// Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
-CRect Calendar::getDayRect(CRect& calRect) {
-	int days = 7;
-	int weeks = 6;
-	CRect result(0, 0, calRect.right/days, calRect.bottom/weeks);
-	return result;
+	dc.DrawTextW(mealTest, &mealTestRect, DT_LEFT);
+
 }
 
 // Builds the day rects, without drawing them
@@ -178,4 +183,16 @@ int Calendar::getClickedDay(CPoint& p) {
 		}
 	}
 	return 0;
+}
+
+//
+// Test Setters
+//
+
+void Calendar::setMealTest(CString& mealName) {
+	mealTest = mealName;
+}
+
+void Calendar::setMealTestRect(CRect& mealRect) {
+	mealTestRect = mealRect;
 }
