@@ -17,6 +17,7 @@ private:
 	std::vector<CRect> mealRects; // Don't draw
 
 public:
+	Day();
 	Day(COleDateTime);
 	void addMeal(CString);
 	CString& pointInMealRect(CPoint&);

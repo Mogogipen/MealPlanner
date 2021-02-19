@@ -1,4 +1,5 @@
 #include <vector>
+#include "Day.h"
 
 #ifndef CALENDAR_H
 #define CALENDAR_H
@@ -11,8 +12,8 @@ private:
 	COleDateTime dateTime;
 
 	// dayRects
-	CRect dayRects[7 * 6];
-	CRect getDayRect(CRect&);
+	Day days[7 * 6];
+	CRect getBaseDayRect(CRect&);
 	void buildDayRects(CRect&);
 
 	// Meal stuff

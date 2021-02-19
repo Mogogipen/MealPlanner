@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MealPlannerDlg.h"
 #include "Calendar.h"
+#include "Day.h"
 #include <vector>
 
 Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
@@ -10,7 +11,7 @@ Calendar::Calendar(COleDateTime& date) {
 }
 
 // Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
-CRect Calendar::getDayRect(CRect& calRect) {
+CRect Calendar::getBaseDayRect(CRect& calRect) {
 	int days = 7;
 	int weeks = 6;
 	CRect result(0, 0, calRect.right/days, calRect.bottom/weeks);
@@ -21,7 +22,7 @@ CRect Calendar::getDayRect(CRect& calRect) {
 void Calendar::buildDayRects(CRect& calRect) {
 
 	// Get base dayRect
-	CRect dayRect = getDayRect(calRect);
+	CRect dayRect = getBaseDayRect(calRect);
 
 	// Prepare for calculations
 	int count = 0;
@@ -33,8 +34,9 @@ void Calendar::buildDayRects(CRect& calRect) {
 		for (int i = calRect.left; i < calRect.right - dayWidth + 1; i += dayWidth) {
 
 			// Create and offset currect dayRect
-			dayRects[count] = CRect(dayRect);
-			dayRects[count].OffsetRect(i, j);
+			CRect tmpRect(dayRect);
+			tmpRect.OffsetRect(i, j);
+			days[count].setRect(tmpRect);
 			count++;
 		}
 	}
@@ -56,22 +58,22 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	buildDayRects(calRect);
 
 	CString a;
-	int dayCount = 1;
-	int days = 7 * 6;
+	int dayCounter = 1;
+	int dayCount = 7 * 6;
 
 	// Initialize drawing
 	dc.SetBkMode(0xFF000000);
 	
 	// Draw each rect and day number
 	// TODO: In the future maybe change to draw lines instead of rects
-	for (int i = 0; i < days; i++) {
-		dc.Rectangle(dayRects[i]);
+	for (int i = 0; i < dayCount; i++) {
+		dc.Rectangle(days[i].getRect());
 
 		// Add numbers to days
-		if (i + 1 >= startDay && dayCount <= monthLength) {
-			a.Format(L"%d", dayCount);
-			dc.DrawTextW(a, &dayRects[i], DT_LEFT);
-			dayCount++;
+		if (i + 1 >= startDay && dayCounter <= monthLength) {
+			a.Format(L"%d", dayCounter);
+			dc.DrawTextW(a, &days[i].getRect(), DT_LEFT);
+			dayCounter++;
 		}
 	}
 
@@ -197,10 +199,11 @@ int Calendar::getYear() {
 
 int Calendar::getClickedDay(CPoint& p) {
 	for (int i = 0; i < 7 * 6; i++) {
-		if (p.x > dayRects[i].left && 
-			p.x < dayRects[i].right && 
-			p.y > dayRects[i].top && 
-			p.y < dayRects[i].bottom) {
+		CRect dayRect = &days[i].getRect();
+		if (p.x > dayRect.left && 
+			p.x < dayRect.right && 
+			p.y > dayRect.top && 
+			p.y < dayRect.bottom) {
 
 			if (i >= startDay-1 && i <= monthLength)
 				return (i + startDay - 2);

@@ -4,6 +4,8 @@
 #include "Day.h"
 
 
+Day::Day() { }
+
 Day::Day(COleDateTime date) {
 	Day::date = date;
 }
