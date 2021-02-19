@@ -26,14 +26,6 @@ void AddMealDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_NEWMEAL, d_newMealName);
 }
 
-BEGIN_MESSAGE_MAP(AddMealDlg, CDialog)
-	ON_WM_PAINT()
-END_MESSAGE_MAP()
-
-void AddMealDlg::OnPaint() {
-	CPaintDC dc(this);
-}
-
 CString AddMealDlg::GetMealName() {
 	return d_newMealName;
 }

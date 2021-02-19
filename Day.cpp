@@ -10,21 +10,25 @@ Day::Day(COleDateTime date) {
 	Day::date = date;
 }
 
-void Day::rebuildRects() {
+void Day::buildRects() {
 	CRect previousRect;
-	for (int i = 0; i < mealRects.size(); i++) {
+	for (int i = 0; i < meals.size(); i++) {
 
 		if (i == 0) {
-			mealRects[i] = CRect(dayRect.left + 5, dayRect.top + 10,
-				dayRect.right - 3, dayRect.top + 30);
-			previousRect = &mealRects[i];
+			meals[i].rect = CRect(dayRect.left + 5, dayRect.top + 5,
+				dayRect.right - 3, dayRect.top + 20);
+			previousRect = &meals[i].rect;
 		}
 		else {
-			mealRects[i] = CRect(previousRect.left, previousRect.bottom,
+			meals[i].rect = CRect(previousRect.left, previousRect.bottom,
 				previousRect.right, previousRect.bottom + previousRect.Height());
-			previousRect = &mealRects[i];
+			previousRect = &meals[i].rect;
 		}
 	}
+}
+
+void Day::buildEditRects() {
+
 }
 
 COleDateTime Day::getDate() {
@@ -37,7 +41,7 @@ CRect Day::getRect() {
 
 void Day::setRect(CRect rect) {
 	dayRect = rect;
-	rebuildRects();
+	buildRects();
 }
 
 void Day::addMeal(CString mealName) {
@@ -45,20 +49,15 @@ void Day::addMeal(CString mealName) {
 	newMeal.name = mealName;
 	meals.push_back(newMeal);
 
-	CRect newMealRect;
-	mealRects.push_back(newMealRect);
-
-	rebuildRects();
+	buildRects();
 }
 
 bool Day::addDish(CString& mealName, CString dishName) {
 	Meal meal;
 	meal.name = "";
-	int meali = -1;
 	for (int i = 0; i < meals.size(); i++) {
 		if (mealName == meals[i].name) {
 			meal = meals[i];
-			meali = i;
 		}
 	}
 	if (meal.name == "")
@@ -68,30 +67,22 @@ bool Day::addDish(CString& mealName, CString dishName) {
 
 	CRect newDishRect;
 	if (meal.dishRects.size() < 1) {
-		newDishRect = CRect(mealRects[meali].left + 3, mealRects[meali].top + 3,
-			mealRects[meali].right - 3, mealRects[meali].top + 10);
+		CRect rect = &meal.rect;
+		newDishRect = CRect(rect.left + 3, rect.top + 5,
+			rect.right - 10, rect.top + 20);
 	}
 	else {
 		CRect bottomRect = meal.dishRects[meal.dishRects.size() - 1];
 		newDishRect = CRect(bottomRect.left, bottomRect.bottom,
 			bottomRect.right, bottomRect.bottom + bottomRect.Height());
 	}
-	mealRects.push_back(newDishRect);
+	meal.dishRects.push_back(newDishRect);
 
 	return true;
 }
 
-//CString& Day::pointInMealRect(CPoint& mousePoint) {
-//	for (int i = 0; i < mealRects.size(); i++) {
-//		if (mousePoint.x > mealRects[i].left && mousePoint.x < mealRects[i].right
-//			&& mousePoint.y > mealRects[i].top && mousePoint.y < mealRects[i].bottom) {
-//			return meals[i].name;
-//		}
-//	}
-//}
-
 void Day::paintMeals(CPaintDC& dc) {
-	for (int i = 0; i < mealRects.size(); i++) {
-		dc.DrawTextW(meals[i].name, &mealRects[i], DT_LEFT);
+	for (int i = 0; i < meals.size(); i++) {
+		dc.DrawTextW(meals[i].name, &meals[i].rect, DT_LEFT);
 	}
 }

@@ -8,8 +8,6 @@ class AddMealDlg : public CDialog
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
-	afx_msg void OnPaint();
-	DECLARE_MESSAGE_MAP();
 
 public:
 	AddMealDlg();

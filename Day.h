@@ -4,8 +4,12 @@
 
 struct Meal {
 	CString name;
+	CRect rect;
+	CRect editRect;
+	CRect btnRect;
 	std::vector<CString> dishes;
 	std::vector<CRect> dishRects;
+	std::vector<CRect> dishBtnRects;
 };
 
 class Day
@@ -14,9 +18,9 @@ private:
 	COleDateTime date;
 	CRect dayRect;
 	std::vector<Meal> meals;
-	std::vector<CRect> mealRects; // Don't draw
 
-	void rebuildRects();
+	void buildRects();
+	void buildEditRects();
 
 public:
 	Day();
@@ -27,7 +31,6 @@ public:
 
 	void addMeal(CString);
 	bool addDish(CString&, CString);
-	//CString& pointInMealRect(CPoint&);
 
 	void paintMeals(CPaintDC&);
 };

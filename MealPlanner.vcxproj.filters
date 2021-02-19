@@ -42,6 +42,9 @@
     <ClInclude Include="Day.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MealPlanner.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Day.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

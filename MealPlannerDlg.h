@@ -37,6 +37,7 @@ public:
 //
 public:
 	Calendar calendar;
+	bool hasDrawnOnce;
 
 // Implementation
 protected:
