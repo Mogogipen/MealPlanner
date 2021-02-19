@@ -168,8 +168,7 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 			CString mealName = tmpDlg.GetMealName();
 			CPoint end(point.x + 50, point.y + 15);
 			CRect test(point, end);
-			calendar.setMealTest(mealName);
-			calendar.setMealTestRect(test);
+			calendar.addMeal(mealName, day);
 
 			UpdateData(FALSE);
 			Invalidate(TRUE);

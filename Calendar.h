@@ -12,15 +12,11 @@ private:
 	COleDateTime dateTime;
 
 	// dayRects
-	Day days[7 * 6];
+	void buildDays();
+	std::vector<Day> days;
+	CRect dayRects[7 * 6];
 	CRect getBaseDayRect(CRect&);
 	void buildDayRects(CRect&);
-
-	// Meal stuff
-	CString mealTest;
-	CRect mealTestRect;
-	std::vector<CRect> mealRects[7 * 6];
-	std::vector<CString> mealNames[7 * 6];
 
 public:
 	Calendar();
@@ -34,8 +30,7 @@ public:
 
 	int getClickedDay(CPoint&);
 
-	void setMealTest(CString&);
-	void setMealTestRect(CRect&);
+	void addMeal(CString&, int);
 
 };
 

@@ -8,6 +8,16 @@ Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
 
 Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
+	buildDays();
+}
+
+// Creates day vector using 
+void Calendar::buildDays() {
+	for (int i = 1; i <= monthLength; i++) {
+		COleDateTime dayDate(dateTime);
+		dayDate.SetDate(dateTime.GetYear(), dateTime.GetMonth(), i);
+		days.push_back(Day(dayDate));
+	}
 }
 
 // Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
@@ -36,7 +46,11 @@ void Calendar::buildDayRects(CRect& calRect) {
 			// Create and offset currect dayRect
 			CRect tmpRect(dayRect);
 			tmpRect.OffsetRect(i, j);
-			days[count].setRect(tmpRect);
+			dayRects[count] = tmpRect;
+
+			if (count + 1 >= startDay && count < monthLength) {
+				days[count].setRect(tmpRect);
+			}
 			count++;
 		}
 	}
@@ -67,12 +81,12 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	// Draw each rect and day number
 	// TODO: In the future maybe change to draw lines instead of rects
 	for (int i = 0; i < dayCount; i++) {
-		dc.Rectangle(days[i].getRect());
+		dc.Rectangle(dayRects[i]);
 
 		// Add numbers to days
 		if (i + 1 >= startDay && dayCounter <= monthLength) {
 			a.Format(L"%d", dayCounter);
-			dc.DrawTextW(a, &days[i].getRect(), DT_LEFT);
+			dc.DrawTextW(a, &dayRects[i], DT_LEFT);
 			dayCounter++;
 		}
 	}
@@ -88,7 +102,7 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 			calRect.top);
 	}
 
-	// Draw day labels with undrawn rects
+	// Draw day of the week labels with undrawn rects
 	dc.DrawText(L"Sunday", &weekRects[0], DT_CENTER);
 	dc.DrawText(L"Monday", &weekRects[1], DT_CENTER);
 	dc.DrawText(L"Tuesday", &weekRects[2], DT_CENTER);
@@ -97,7 +111,10 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	dc.DrawText(L"Friday", &weekRects[5], DT_CENTER);
 	dc.DrawText(L"Saturday", &weekRects[6], DT_CENTER);
 
-	dc.DrawTextW(mealTest, &mealTestRect, DT_LEFT);
+	// Draw meals
+	for (int i = 0; i < days.size(); i++) {
+		days[i].paintMeals(dc);
+	}
 
 }
 
@@ -199,7 +216,7 @@ int Calendar::getYear() {
 
 int Calendar::getClickedDay(CPoint& p) {
 	for (int i = 0; i < 7 * 6; i++) {
-		CRect dayRect = &days[i].getRect();
+		CRect dayRect = &dayRects[i];
 		if (p.x > dayRect.left && 
 			p.x < dayRect.right && 
 			p.y > dayRect.top && 
@@ -212,14 +229,6 @@ int Calendar::getClickedDay(CPoint& p) {
 	return 0;
 }
 
-//
-// Test Setters
-//
-
-void Calendar::setMealTest(CString& mealName) {
-	mealTest = mealName;
-}
-
-void Calendar::setMealTestRect(CRect& mealRect) {
-	mealTestRect = mealRect;
+void Calendar::addMeal(CString& mealName, int day) {
+	days[day].addMeal(mealName);
 }
