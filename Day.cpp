@@ -11,8 +11,19 @@ Day::Day(COleDateTime date) {
 }
 
 void Day::rebuildRects() {
+	CRect previousRect;
 	for (int i = 0; i < mealRects.size(); i++) {
 
+		if (i == 0) {
+			mealRects[i] = CRect(dayRect.left + 5, dayRect.top + 10,
+				dayRect.right - 3, dayRect.top + 30);
+			previousRect = &mealRects[i];
+		}
+		else {
+			mealRects[i] = CRect(previousRect.left, previousRect.bottom,
+				previousRect.right, previousRect.bottom + previousRect.Height());
+			previousRect = &mealRects[i];
+		}
 	}
 }
 
@@ -26,6 +37,7 @@ CRect Day::getRect() {
 
 void Day::setRect(CRect rect) {
 	dayRect = rect;
+	rebuildRects();
 }
 
 void Day::addMeal(CString mealName) {
@@ -34,16 +46,9 @@ void Day::addMeal(CString mealName) {
 	meals.push_back(newMeal);
 
 	CRect newMealRect;
-	if (mealRects.size() < 1) {
-		newMealRect = CRect(dayRect.left + 5, dayRect.top + 10,
-			dayRect.right - 3, dayRect.top + 30);
-	}
-	else {
-		CRect bottomRect = mealRects[mealRects.size() - 1];
-		newMealRect = CRect(bottomRect.left, bottomRect.bottom,
-			bottomRect.right, bottomRect.bottom + bottomRect.Height());
-	}
 	mealRects.push_back(newMealRect);
+
+	rebuildRects();
 }
 
 bool Day::addDish(CString& mealName, CString dishName) {
