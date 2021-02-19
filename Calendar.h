@@ -29,6 +29,7 @@ public:
 	void incrementMonth();
 	void decrementMonth();
 	CString getMonthAsString();
+	int getYear();
 
 	int getClickedDay(CPoint&);
 

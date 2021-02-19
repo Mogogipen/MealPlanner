@@ -17,13 +17,37 @@ CRect Calendar::getDayRect(CRect& calRect) {
 	return result;
 }
 
+// Builds the day rects, without drawing them
+void Calendar::buildDayRects(CRect& calRect) {
+
+	// Get base dayRect
+	CRect dayRect = getDayRect(calRect);
+
+	// Prepare for calculations
+	int count = 0;
+	int dayWidth = calRect.Width() / 7;
+	int dayHeight = calRect.Height() / 6;
+
+	// i and j hold values for offset dayRect
+	for (int j = calRect.top; j < calRect.bottom - dayHeight + 1; j += dayHeight) {
+		for (int i = calRect.left; i < calRect.right - dayWidth + 1; i += dayWidth) {
+
+			// Create and offset currect dayRect
+			dayRects[count] = CRect(dayRect);
+			dayRects[count].OffsetRect(i, j);
+			count++;
+		}
+	}
+
+}
+
 // Calendar paints itself
 void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	
 	// Build calendar rect
 	CRect c_rect;
 	m_dlg.GetClientRect(&c_rect);
-	CRect calRect(c_rect.left+20, c_rect.top+70, c_rect.right-20, c_rect.bottom-20);
+	CRect calRect(c_rect.left+20, c_rect.top+80, c_rect.right-20, c_rect.bottom-20);
 
 	//
 	// Build day rects
@@ -51,31 +75,27 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 		}
 	}
 
-	dc.DrawTextW(mealTest, &mealTestRect, DT_LEFT);
-
-}
-
-// Builds the day rects, without drawing them
-void Calendar::buildDayRects(CRect& calRect) {
-
-	// Get base dayRect
-	CRect dayRect = getDayRect(calRect);
-
-	// Prepare for calculations
-	int count = 0;
-	int dayWidth = (calRect.right - calRect.left) / 7;
-	int dayHeight = (calRect.bottom - calRect.top) / 6;
-
-	// i and j hold values for offset dayRect
-	for (int j = calRect.top; j < calRect.bottom - dayHeight + 1; j += dayHeight) {
-		for (int i = calRect.left; i < calRect.right - dayWidth + 1; i += dayWidth) {
-
-			// Create and offset currect dayRect
-			dayRects[count] = CRect(dayRect);
-			dayRects[count].OffsetRect(i, j);
-			count++;
-		}
+	// Build days of the week rects
+	CRect weekRects[7];
+	int width = calRect.Width() / 7;
+	for (int i = 0; i < 7; i++) {
+		weekRects[i] = CRect(
+			calRect.left + (i * width), 
+			calRect.top - 20,
+			calRect.left + ((i * width) + width), 
+			calRect.top);
 	}
+
+	// Draw day labels with undrawn rects
+	dc.DrawText(L"Sunday", &weekRects[0], DT_CENTER);
+	dc.DrawText(L"Monday", &weekRects[1], DT_CENTER);
+	dc.DrawText(L"Tuesday", &weekRects[2], DT_CENTER);
+	dc.DrawText(L"Wednesday", &weekRects[3], DT_CENTER);
+	dc.DrawText(L"Thursday", &weekRects[4], DT_CENTER);
+	dc.DrawText(L"Friday", &weekRects[5], DT_CENTER);
+	dc.DrawText(L"Saturday", &weekRects[6], DT_CENTER);
+
+	dc.DrawTextW(mealTest, &mealTestRect, DT_LEFT);
 
 }
 
@@ -165,6 +185,10 @@ CString Calendar::getMonthAsString() {
 	else
 		result = L"Unknown";
 	return result;
+}
+
+int Calendar::getYear() {
+	return dateTime.GetYear();
 }
 
 //

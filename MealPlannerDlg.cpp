@@ -57,7 +57,24 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	// Init Month label
-	m_staticText = calendar.getMonthAsString();
+	CFont font;
+	font.CreateFont(
+		20,
+		0,
+		0,
+		0,
+		FW_BOLD,
+		FALSE,
+		FALSE,
+		0,
+		ANSI_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_SWISS,
+		_T("Arial"));
+	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&font);
+	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
 	UpdateData(FALSE);
 	
 

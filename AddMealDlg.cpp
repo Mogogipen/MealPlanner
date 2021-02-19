@@ -14,11 +14,8 @@ AddMealDlg::AddMealDlg()
 AddMealDlg::AddMealDlg(int day)
 	: CDialog(IDD_DIALOGMEAL)
 	, d_staticText(_T("Meal Name"))
-	, d_newMealName(_T("")) {
-	CString text;
-	text.Format(L"%d", day);
-	d_staticText = text;
-}
+	, d_newMealName(_T(""))
+{ }
 
 AddMealDlg::~AddMealDlg() { }
 
@@ -27,6 +24,14 @@ void AddMealDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_TEXT, d_staticText);
 	DDX_Text(pDX, IDC_EDIT_NEWMEAL, d_newMealName);
+}
+
+BEGIN_MESSAGE_MAP(AddMealDlg, CDialog)
+	ON_WM_PAINT()
+END_MESSAGE_MAP()
+
+void AddMealDlg::OnPaint() {
+	CPaintDC dc(this);
 }
 
 CString AddMealDlg::GetMealName() {
