@@ -190,7 +190,4 @@ void DayDlg::OnBnClickedButtonNewmeal()
 
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 
-	CRect tmpRect(c_rect);
-	tmpRect.OffsetRect(c_rect.left, c_rect.top + 40);
-	dc.Rectangle(tmpRect);
 }
