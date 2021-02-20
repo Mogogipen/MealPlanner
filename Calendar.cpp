@@ -230,11 +230,13 @@ std::pair<Day, int> Calendar::getClickedDay(CPoint& p) {
 			p.y > dayRect.top && 
 			p.y < dayRect.bottom) {
 
-			if (i >= startDay-1 && i <= monthLength)
+			if (i >= startDay - 1 && i <= monthLength) {
 				result.second = (i + startDay - 2);
+				result.first = days[result.second];
+				break;
+			}
 		}
 	}
-	result.first = days[result.second];
 	return result;
 }
 

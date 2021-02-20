@@ -39,7 +39,17 @@ void DayDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(DayDlg, CDialog)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
 // DayDlg message handlers
+
+void DayDlg::OnPaint() {
+	CPaintDC dc(this);
+	CRect c_rect;
+	GetClientRect(c_rect);
+	CRect tmpRect(c_rect);
+	tmpRect.OffsetRect(c_rect.left, c_rect.top + 40);
+	dc.Rectangle(tmpRect);
+}

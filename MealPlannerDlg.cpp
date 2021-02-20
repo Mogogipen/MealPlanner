@@ -58,9 +58,24 @@ BOOL CMealPlannerDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 
-	// Init Month label
-	CFont font;
-	font.CreateFont(
+	// Build Fonts
+	normFont.CreateFont(
+		14,
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		0,
+		ANSI_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_SWISS,
+		_T("Arial"));
+
+	bigFont.CreateFont(
 		20,
 		0,
 		0,
@@ -75,7 +90,9 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
-	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&font);
+
+	// Init Month label
+	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&bigFont);
 	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
 	UpdateData(FALSE);
 	
@@ -120,6 +137,7 @@ void CMealPlannerDlg::OnPaint()
 		UpdateWindow();
 		// Paint the calendar
 		CPaintDC dc(this);
+		dc.SelectObject(normFont);
 		calendar.paint(dc, *this);
 	}
 

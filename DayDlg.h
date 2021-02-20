@@ -23,7 +23,7 @@ private:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_staticDate;
