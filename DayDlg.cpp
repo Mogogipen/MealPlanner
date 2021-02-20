@@ -6,6 +6,7 @@
 #include <vector>
 #include "MealPlanner.h"
 #include "DayDlg.h"
+#include "afxdialogex.h"
 #include "Day.h"
 #include "AddMealDlg.h"
 
@@ -189,4 +190,7 @@ void DayDlg::OnBnClickedButtonNewmeal()
 
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 
+	CRect tmpRect(c_rect);
+	tmpRect.OffsetRect(c_rect.left, c_rect.top + 40);
+	dc.Rectangle(tmpRect);
 }
