@@ -186,6 +186,7 @@
     <ClInclude Include="AddMealDlg.h" />
     <ClInclude Include="Calendar.h" />
     <ClInclude Include="Day.h" />
+    <ClInclude Include="DayDlg.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MealPlanner.h" />
     <ClInclude Include="MealPlannerDlg.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="AddMealDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Day.cpp" />
+    <ClCompile Include="DayDlg.cpp" />
     <ClCompile Include="MealPlanner.cpp" />
     <ClCompile Include="MealPlannerDlg.cpp" />
     <ClCompile Include="pch.cpp">

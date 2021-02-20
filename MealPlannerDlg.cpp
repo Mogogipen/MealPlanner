@@ -9,6 +9,8 @@
 #include "afxdialogex.h"
 #include "Calendar.h"
 #include "AddMealDlg.h"
+#include "Day.h"
+#include "DayDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,9 +58,24 @@ BOOL CMealPlannerDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 
-	// Init Month label
-	CFont font;
-	font.CreateFont(
+	// Build Fonts
+	normFont.CreateFont(
+		14,
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		0,
+		ANSI_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_SWISS,
+		_T("Arial"));
+
+	bigFont.CreateFont(
 		20,
 		0,
 		0,
@@ -73,7 +90,9 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
-	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&font);
+
+	// Init Month label
+	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&bigFont);
 	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
 	UpdateData(FALSE);
 	
@@ -116,9 +135,9 @@ void CMealPlannerDlg::OnPaint()
 		// Clear old stuff
 		Invalidate(TRUE);
 		UpdateWindow();
-
 		// Paint the calendar
 		CPaintDC dc(this);
+		dc.SelectObject(normFont);
 		calendar.paint(dc, *this);
 	}
 
@@ -158,25 +177,12 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 //	Gets and displays the day clicked on via message box
 // TODO: Create a dialog to get the users requested meal/dish
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-	int day = calendar.getClickedDay(point);
+	std::pair<Day, int> day = calendar.getClickedDay(point);
 	
 	// If it's a valid day selected, display a dialog
-	if (day > 0) {
-		AddMealDlg tmpDlg(day);
-		INT_PTR nResponse = tmpDlg.DoModal();
-		if (nResponse == IDOK) {
-			CString mealName = tmpDlg.GetMealName();
-			CPoint end(point.x + 50, point.y + 15);
-			CRect test(point, end);
-			calendar.addMeal(mealName, day);
+	if (day.second > 0) {
 
-			UpdateData(FALSE);
-			Invalidate(TRUE);
-			UpdateWindow();
-		}
-		else if (nResponse == -1) {
-			TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
-			TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
-		}
+		DayDlg d_dlg(day.first);
+		INT_PTR nResponse = d_dlg.DoModal();
 	}
 }

@@ -37,6 +37,7 @@ public:
 //
 public:
 	Calendar calendar;
+	bool hasDrawnOnce;
 
 // Implementation
 protected:
@@ -48,6 +49,8 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+	CFont normFont;
+	CFont bigFont;
 	CString m_staticText;
 	afx_msg void OnBnClickedButtonL();
 	afx_msg void OnBnClickedButtonR();

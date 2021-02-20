@@ -1,8 +1,8 @@
 #include "pch.h"
+#include <vector>
 #include "MealPlannerDlg.h"
 #include "Calendar.h"
 #include "Day.h"
-#include <vector>
 
 Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
 
@@ -13,6 +13,9 @@ Calendar::Calendar(COleDateTime& date) {
 
 // Creates day vector using 
 void Calendar::buildDays() {
+	if (days.size() > 0) {
+		days.clear();
+	}
 	for (int i = 1; i <= monthLength; i++) {
 		COleDateTime dayDate(dateTime);
 		dayDate.SetDate(dateTime.GetYear(), dateTime.GetMonth(), i);
@@ -65,9 +68,29 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	m_dlg.GetClientRect(&c_rect);
 	CRect calRect(c_rect.left+20, c_rect.top+80, c_rect.right-20, c_rect.bottom-20);
 
+	// Build days of the week rects
+	CRect weekRects[7];
+	int width = calRect.Width() / 7;
+	for (int i = 0; i < 7; i++) {
+		weekRects[i] = CRect(
+			calRect.left + (i * width),
+			calRect.top - 20,
+			calRect.left + ((i * width) + width),
+			calRect.top);
+	}
+
+	// Draw day of the week labels with undrawn rects
+	dc.DrawText(L"Sunday", &weekRects[0], DT_CENTER);
+	dc.DrawText(L"Monday", &weekRects[1], DT_CENTER);
+	dc.DrawText(L"Tuesday", &weekRects[2], DT_CENTER);
+	dc.DrawText(L"Wednesday", &weekRects[3], DT_CENTER);
+	dc.DrawText(L"Thursday", &weekRects[4], DT_CENTER);
+	dc.DrawText(L"Friday", &weekRects[5], DT_CENTER);
+	dc.DrawText(L"Saturday", &weekRects[6], DT_CENTER);
+
+
 	//
 	// Build day rects
-
 
 	buildDayRects(calRect);
 
@@ -85,31 +108,11 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 
 		// Add numbers to days
 		if (i + 1 >= startDay && dayCounter <= monthLength) {
-			a.Format(L"%d", dayCounter);
-			dc.DrawTextW(a, &dayRects[i], DT_LEFT);
+			a.Format(L"%d ", dayCounter);
+			dc.DrawTextW(a, &dayRects[i], DT_RIGHT);
 			dayCounter++;
 		}
 	}
-
-	// Build days of the week rects
-	CRect weekRects[7];
-	int width = calRect.Width() / 7;
-	for (int i = 0; i < 7; i++) {
-		weekRects[i] = CRect(
-			calRect.left + (i * width), 
-			calRect.top - 20,
-			calRect.left + ((i * width) + width), 
-			calRect.top);
-	}
-
-	// Draw day of the week labels with undrawn rects
-	dc.DrawText(L"Sunday", &weekRects[0], DT_CENTER);
-	dc.DrawText(L"Monday", &weekRects[1], DT_CENTER);
-	dc.DrawText(L"Tuesday", &weekRects[2], DT_CENTER);
-	dc.DrawText(L"Wednesday", &weekRects[3], DT_CENTER);
-	dc.DrawText(L"Thursday", &weekRects[4], DT_CENTER);
-	dc.DrawText(L"Friday", &weekRects[5], DT_CENTER);
-	dc.DrawText(L"Saturday", &weekRects[6], DT_CENTER);
 
 	// Draw meals
 	for (int i = 0; i < days.size(); i++) {
@@ -134,6 +137,8 @@ void Calendar::setDateTime(COleDateTime date) {
 		monthLength = 28;
 	else
 		monthLength = 30;
+
+	buildDays();
 
 }
 
@@ -214,7 +219,10 @@ int Calendar::getYear() {
 // Events
 //
 
-int Calendar::getClickedDay(CPoint& p) {
+std::pair<Day, int> Calendar::getClickedDay(CPoint& p) {
+	std::pair<Day, int> result;
+	result.first = Day();
+	result.second = -1;
 	for (int i = 0; i < 7 * 6; i++) {
 		CRect dayRect = &dayRects[i];
 		if (p.x > dayRect.left && 
@@ -222,11 +230,14 @@ int Calendar::getClickedDay(CPoint& p) {
 			p.y > dayRect.top && 
 			p.y < dayRect.bottom) {
 
-			if (i >= startDay-1 && i <= monthLength)
-				return (i + startDay - 2);
+			if (i >= startDay - 1 && i <= monthLength) {
+				result.second = (i + startDay - 2);
+				result.first = days[result.second];
+				break;
+			}
 		}
 	}
-	return 0;
+	return result;
 }
 
 void Calendar::addMeal(CString& mealName, int day) {

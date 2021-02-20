@@ -8,17 +8,12 @@ class AddMealDlg : public CDialog
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
-	afx_msg void OnPaint();
-	DECLARE_MESSAGE_MAP();
+	CString d_newMealName;
 
 public:
-	AddMealDlg();
-	AddMealDlg(int);
+	AddMealDlg(CWnd* pParent = nullptr);
 	~AddMealDlg();
 
 	CString GetMealName();
-
-	CString d_staticText;
-	CString d_newMealName;
 };
 

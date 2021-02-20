@@ -28,7 +28,7 @@ public:
 	CString getMonthAsString();
 	int getYear();
 
-	int getClickedDay(CPoint&);
+	std::pair<Day, int> getClickedDay(CPoint&);
 
 	void addMeal(CString&, int);
 
