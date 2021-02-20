@@ -24,9 +24,11 @@ private:
 	CFont bigFont;
 
 protected:
+	// The vector indices correspond to the meal indices
 	std::vector<CRect> rmMeal_btns;
 	std::vector<CRect> addDish_btns;
 	std::vector<CRect> rmDish_btns;
+	std::vector<int> rmDish_indices;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
@@ -34,4 +36,5 @@ public:
 	CString m_staticDate;
 	afx_msg void OnBnClickedButtonNewmeal();
 	afx_msg void OnLButtonUp(UINT, CPoint);
+	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
 };

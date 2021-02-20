@@ -90,6 +90,12 @@ void DayDlg::OnPaint() {
 	Invalidate(TRUE);
 	UpdateWindow();
 
+	// Clear CRect vectors
+	rmMeal_btns.clear();
+	addDish_btns.clear();
+	rmDish_btns.clear();
+	rmDish_indices.clear();
+
 	// Build drawing rect area
 	CPaintDC dc(this);
 	CRect c_rect;
@@ -162,6 +168,7 @@ void DayDlg::OnPaint() {
 			CRect rmDish_btn(btn);
 			rmDish_btn.OffsetRect(nextDishRect.right - 17, nextDishRect.top + 2);
 			rmDish_btns.push_back(rmDish_btn);
+			rmDish_indices.push_back(int(j));
 
 			// Draw rm button
 			dc.Rectangle(rmDish_btn);
@@ -189,5 +196,42 @@ void DayDlg::OnBnClickedButtonNewmeal()
 }
 
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	int index = clickOnBtnSearch(point, rmMeal_btns);
+	if (index < 0) {
+		index = clickOnBtnSearch(point, addDish_btns);
+		if (index < 0) {
+			index = clickOnBtnSearch(point, rmDish_btns);
+			if (index < 0);
+				//return;
+			// Clicked remove dish button
+			else {
 
+			}
+		}
+		// Clicked add dish button
+		else {
+
+		}
+	}
+	// Clicked remove meal
+	else {
+
+	}
+
+	CString s;
+	s.Format(L"index found: %d", index);
+	MessageBox(s);
+}
+
+int DayDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
+	for (int i = 0; i < searchList.size(); i++) {
+		if (mousePoint.x > searchList[i].left &&
+			mousePoint.x < searchList[i].right &&
+			mousePoint.y > searchList[i].top &&
+			mousePoint.y < searchList[i].bottom)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
