@@ -8,7 +8,6 @@
 #include "MealPlannerDlg.h"
 #include "afxdialogex.h"
 #include "Calendar.h"
-#include "AddMealDlg.h"
 #include "Day.h"
 #include "DayDlg.h"
 
@@ -177,28 +176,17 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 //	Gets and displays the day clicked on via message box
 // TODO: Create a dialog to get the users requested meal/dish
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-	std::pair<Day, int> day = calendar.getClickedDay(point);
+	std::pair<Day&, int> day = calendar.getClickedDay(point);
 	
 	// If it's a valid day selected, display a dialog
-	if (day.second > 0) {
+	if (day.second > -1) {
 
-		DayDlg d_dlg(day.first, nullptr);
+		DayDlg d_dlg(day.first);
 		INT_PTR nResponse = d_dlg.DoModal();
-		//AddMealDlg tmpDlg(day);
-		//INT_PTR nResponse = tmpDlg.DoModal();
-		//if (nResponse == IDOK) {
-		//	CString mealName = tmpDlg.GetMealName();
-		//	CPoint end(point.x + 50, point.y + 15);
-		//	CRect test(point, end);
-		//	calendar.addMeal(mealName, day);
-
-		//	UpdateData(FALSE);
-		//	Invalidate(TRUE);
-		//	UpdateWindow();
-		//}
-		//else if (nResponse == -1) {
-		//	TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
-		//	TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
-		//}
+		if (nResponse == IDOK) {
+			UpdateData(FALSE);
+			Invalidate(TRUE);
+			UpdateWindow();
+		}
 	}
 }
