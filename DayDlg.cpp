@@ -100,8 +100,11 @@ void DayDlg::OnPaint() {
 	CPaintDC dc(this);
 	CRect c_rect;
 	GetClientRect(c_rect);
-	CRect draw_rect(c_rect);
-	draw_rect.OffsetRect(c_rect.left, c_rect.top + 40);
+	CRect draw_rect(
+		c_rect.left + 10,
+		c_rect.top + 40,
+		c_rect.right - 10,
+		c_rect.bottom - 40);
 
 	// Init drawing
 	dc.SetBkMode(0xFF000000);
@@ -118,9 +121,9 @@ void DayDlg::OnPaint() {
 	int m_width;
 	int m_count = day.getMealCount();
 	if (m_count > 0)
-		m_width = c_rect.Width() / m_count;
+		m_width = draw_rect.Width() / m_count;
 	else
-		m_width = c_rect.Width();
+		m_width = draw_rect.Width();
 
 	// Init rect containers
 	std::vector<CRect> mealRects;
@@ -156,6 +159,8 @@ void DayDlg::OnPaint() {
 
 		//
 		// Draw dishes
+		//
+
 		for (int j = 0; j < day.getDishCount(i); j++) {
 			CRect nextDishRect(
 				nextRect.left + 5,
