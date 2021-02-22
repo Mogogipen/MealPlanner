@@ -14,23 +14,21 @@ private:
 	// dayRects
 	void buildDays();
 	std::vector<Day> days;
-	CRect dayRects[7 * 6];
 	CRect getBaseDayRect(CRect&);
 	void buildDayRects(CRect&);
 
 public:
 	Calendar();
 	Calendar(COleDateTime&);
-	void paint(CPaintDC&, CMealPlannerDlg&);
 	void setDateTime(COleDateTime);
 	void incrementMonth();
 	void decrementMonth();
 	CString getMonthAsString();
 	int getYear();
 
-	std::pair<Day, int> getClickedDay(CPoint&);
+	void paint(CPaintDC&, CMealPlannerDlg&);
 
-	void addMeal(CString&, int);
+	std::pair<Day&, int> getClickedDay(CPoint&);
 
 };
 

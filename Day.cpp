@@ -1,5 +1,4 @@
 #include <vector>
-#include <map>
 #include "pch.h"
 #include "Day.h"
 
@@ -24,6 +23,21 @@ void Day::buildRects() {
 				previousRect.right, previousRect.bottom + previousRect.Height());
 			previousRect = &meals[i].rect;
 		}
+
+		for (int j = 0; j < meals[i].dishes.size(); j++) {
+			CRect newDishRect;
+			if (meals[i].dishRects.size() < 1) {
+				CRect rect = &meals[i].rect;
+				newDishRect = CRect(rect.left + 3, rect.top + 5,
+					rect.right - 10, rect.top + 20);
+			}
+			else {
+				CRect bottomRect = meals[i].dishRects[meals[i].dishRects.size() - 1];
+				newDishRect = CRect(bottomRect.left, bottomRect.bottom,
+					bottomRect.right, bottomRect.bottom + bottomRect.Height());
+			}
+			meals[i].dishRects.push_back(newDishRect);
+		}
 	}
 }
 
@@ -39,6 +53,22 @@ CRect Day::getRect() {
 	return dayRect;
 }
 
+int Day::getMealCount() {
+	return meals.size();
+}
+
+CString Day::getMealName(int index) {
+	return meals[index].name;
+}
+
+int Day::getDishCount(int index) {
+	return meals[index].dishes.size();
+}
+
+CString Day::getDishName(int m_index, int d_index) {
+	return meals[m_index].dishes[d_index];
+}
+
 void Day::setRect(CRect rect) {
 	dayRect = rect;
 	buildRects();
@@ -52,33 +82,31 @@ void Day::addMeal(CString mealName) {
 	buildRects();
 }
 
-bool Day::addDish(CString& mealName, CString dishName) {
-	Meal meal;
-	meal.name = "";
-	for (int i = 0; i < meals.size(); i++) {
-		if (mealName == meals[i].name) {
-			meal = meals[i];
+bool Day::addDish(int mealIndex, CString dishName) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		meals[mealIndex].dishes.push_back(dishName);
+		return true;
+	}
+	return false;
+}
+
+bool Day::rmMeal(int mealIndex) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		meals.erase(meals.begin() + mealIndex);
+		return true;
+	}
+	return false;
+}
+
+bool Day::rmDish(int mealIndex, int dishIndex) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		if (dishIndex > -1 && dishIndex < meals[mealIndex].dishes.size()) {
+			Meal& m = meals[mealIndex];
+			m.dishes.erase(m.dishes.begin() + dishIndex);
+			return true;
 		}
 	}
-	if (meal.name == "")
-		return false;
-
-	meal.dishes.push_back(dishName);
-
-	CRect newDishRect;
-	if (meal.dishRects.size() < 1) {
-		CRect rect = &meal.rect;
-		newDishRect = CRect(rect.left + 3, rect.top + 5,
-			rect.right - 10, rect.top + 20);
-	}
-	else {
-		CRect bottomRect = meal.dishRects[meal.dishRects.size() - 1];
-		newDishRect = CRect(bottomRect.left, bottomRect.bottom,
-			bottomRect.right, bottomRect.bottom + bottomRect.Height());
-	}
-	meal.dishRects.push_back(newDishRect);
-
-	return true;
+	return false;
 }
 
 void Day::paintMeals(CPaintDC& dc) {

@@ -183,7 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AddMealDlg.h" />
+    <ClInclude Include="GetStrDlg.h" />
     <ClInclude Include="Calendar.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
@@ -195,7 +195,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AddMealDlg.cpp" />
+    <ClCompile Include="GetStrDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DayDlg.cpp" />

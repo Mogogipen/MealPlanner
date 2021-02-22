@@ -6,6 +6,8 @@
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOGMEAL                  134
 #define IDD_DIALOG1                     134
+#define IDD_DIALOG_ADD_STR              134
+#define IDD_DIALOG_GET_STR              134
 #define IDD_DIALOG_DAY                  136
 #define IDC_STATIC_TEXT                 1012
 #define IDC_BUTTON_LEFT                 1016
@@ -14,6 +16,7 @@
 #define IDC_EDIT1                       1021
 #define IDC_EDIT_NEWMEAL                1021
 #define IDC_BUTTON1                     1023
+#define IDC_BUTTON_NEWMEAL              1023
 #define ID_BUTTON2                      32771
 
 // Next default values for new objects
