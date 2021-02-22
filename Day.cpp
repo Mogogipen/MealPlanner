@@ -1,5 +1,4 @@
 #include <vector>
-#include <map>
 #include "pch.h"
 #include "Day.h"
 
@@ -83,20 +82,31 @@ void Day::addMeal(CString mealName) {
 	buildRects();
 }
 
-bool Day::addDish(CString& mealName, CString dishName) {
-	Meal meal;
-	meal.name = "";
-	for (int i = 0; i < meals.size(); i++) {
-		if (mealName == meals[i].name) {
-			meal = meals[i];
+bool Day::addDish(int mealIndex, CString dishName) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		meals[mealIndex].dishes.push_back(dishName);
+		return true;
+	}
+	return false;
+}
+
+bool Day::rmMeal(int mealIndex) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		meals.erase(meals.begin() + mealIndex);
+		return true;
+	}
+	return false;
+}
+
+bool Day::rmDish(int mealIndex, int dishIndex) {
+	if (mealIndex > -1 && mealIndex < meals.size()) {
+		if (dishIndex > -1 && dishIndex < meals[mealIndex].dishes.size()) {
+			Meal& m = meals[mealIndex];
+			m.dishes.erase(m.dishes.begin() + dishIndex);
+			return true;
 		}
 	}
-	if (meal.name == "")
-		return false;
-
-	meal.dishes.push_back(dishName);
-
-	return true;
+	return false;
 }
 
 void Day::paintMeals(CPaintDC& dc) {

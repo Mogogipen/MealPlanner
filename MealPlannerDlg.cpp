@@ -8,7 +8,6 @@
 #include "MealPlannerDlg.h"
 #include "afxdialogex.h"
 #include "Calendar.h"
-#include "AddMealDlg.h"
 #include "Day.h"
 #include "DayDlg.h"
 

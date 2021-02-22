@@ -8,7 +8,7 @@
 #include "DayDlg.h"
 #include "afxdialogex.h"
 #include "Day.h"
-#include "AddMealDlg.h"
+#include "GetStrDlg.h"
 
 
 // DayDlg dialog
@@ -159,9 +159,9 @@ void DayDlg::OnPaint() {
 		for (int j = 0; j < day.getDishCount(i); j++) {
 			CRect nextDishRect(
 				nextRect.left + 5,
-				nextRect.top + (j * 15),
+				nextRect.top + ((j + 1) * 15),
 				nextRect.right - 5,
-				nextRect.top + (j * 15 + 15));
+				nextRect.top + ((j + 2) * 15));
 			dc.DrawTextW(day.getDishName(i, j), nextDishRect, DT_LEFT);
 
 			// Build rm button
@@ -179,7 +179,7 @@ void DayDlg::OnPaint() {
 
 void DayDlg::OnBnClickedButtonNewmeal()
 {
-	AddMealDlg am_dlg;
+	AddStringDlg am_dlg(L"Add a meal", L"Meal Name");
 	INT_PTR nResponse = am_dlg.DoModal();
 	if (nResponse == IDOK) {
 		CString mealName = am_dlg.GetMealName();
@@ -205,22 +205,43 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 				//return;
 			// Clicked remove dish button
 			else {
-
+				bool dishRmved = day.rmDish(index, rmDish_indices[index]);
+				if (!dishRmved) {
+					CString s;
+					s.Format(L"Bad index: %d", index);
+					MessageBox(s);
+				}
 			}
 		}
 		// Clicked add dish button
 		else {
-
+			// Create a dlg box for this
+			AddStringDlg ad_dlg(L"Add a dish", L"Dish name");
+			INT_PTR nResponse = ad_dlg.DoModal();
+			if (nResponse == IDOK) {
+				CString dishName = ad_dlg.GetMealName();
+				day.addDish(index, dishName);
+			}
+			else if (nResponse == -1) {
+				TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
+				TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
+			}
 		}
 	}
 	// Clicked remove meal
 	else {
-
+		bool mealRmved = day.rmMeal(index);
+		if (!mealRmved) {
+			CString s;
+			s.Format(L"Bad index: %d", index);
+			MessageBox(s);
+		}
 	}
-
-	CString s;
-	s.Format(L"index found: %d", index);
-	MessageBox(s);
+	if (index > -1) {
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
 }
 
 int DayDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
