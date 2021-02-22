@@ -19,7 +19,7 @@ public:
 #endif
 
 private:
-	Day day;
+	Day& day;
 	CFont normFont;
 	CFont bigFont;
 

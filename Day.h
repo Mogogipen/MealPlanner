@@ -32,7 +32,9 @@ public:
 	void setRect(CRect);
 
 	void addMeal(CString);
+	bool rmMeal(int, CString);
 	bool addDish(CString&, CString);
+	bool rmDish(int, int, CString);
 
 	void paintMeals(CPaintDC&);
 };

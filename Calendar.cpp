@@ -8,10 +8,9 @@ Calendar::Calendar() : Calendar(COleDateTime::GetCurrentTime()) { }
 
 Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
-	buildDays();
 }
 
-// Creates day vector using 
+// Creates day vector using the current date
 void Calendar::buildDays() {
 	if (days.size() > 0) {
 		days.clear();
@@ -23,38 +22,34 @@ void Calendar::buildDays() {
 	}
 }
 
-// Splits the calendar rectangle into a 7 (days) by 6 (weeks) grid
-CRect Calendar::getBaseDayRect(CRect& calRect) {
-	int days = 7;
-	int weeks = 6;
-	CRect result(0, 0, calRect.right/days, calRect.bottom/weeks);
-	return result;
-}
-
 // Builds the day rects, without drawing them
 void Calendar::buildDayRects(CRect& calRect) {
-
-	// Get base dayRect
-	CRect dayRect = getBaseDayRect(calRect);
 
 	// Prepare for calculations
 	int count = 0;
 	int dayWidth = calRect.Width() / 7;
 	int dayHeight = calRect.Height() / 6;
+	bool build = false;
 
 	// i and j hold values for offset dayRect
-	for (int j = calRect.top; j < calRect.bottom - dayHeight + 1; j += dayHeight) {
-		for (int i = calRect.left; i < calRect.right - dayWidth + 1; i += dayWidth) {
+	for (int j = 0; j < 6; j++) {
+		for (int i = 0; i < 7; i++) {
+			if (i >= startDay - 1)
+				build = true;
 
-			// Create and offset currect dayRect
-			CRect tmpRect(dayRect);
-			tmpRect.OffsetRect(i, j);
-			dayRects[count] = tmpRect;
+			if (build) {
 
-			if (count + 1 >= startDay && count < monthLength) {
-				days[count].setRect(tmpRect);
+				// Create and offset currect dayRect
+				if (count < monthLength) {
+					CRect tmpRect(
+						calRect.left + i * dayWidth, 
+						calRect.top + j * dayHeight,
+						calRect.left + ((i + 1) * dayWidth)+1,
+						calRect.top + ((j + 1) * dayHeight)+1);
+					days[count].setRect(tmpRect);
+				}
+				count++;
 			}
-			count++;
 		}
 	}
 
@@ -95,23 +90,18 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	buildDayRects(calRect);
 
 	CString a;
-	int dayCounter = 1;
-	int dayCount = 7 * 6;
 
 	// Initialize drawing
 	dc.SetBkMode(0xFF000000);
 	
 	// Draw each rect and day number
 	// TODO: In the future maybe change to draw lines instead of rects
-	for (int i = 0; i < dayCount; i++) {
-		dc.Rectangle(dayRects[i]);
+	for (int i = 0; i < days.size(); i++) {
+		dc.Rectangle(days[i].getRect());
 
 		// Add numbers to days
-		if (i + 1 >= startDay && dayCounter <= monthLength) {
-			a.Format(L"%d ", dayCounter);
-			dc.DrawTextW(a, &dayRects[i], DT_RIGHT);
-			dayCounter++;
-		}
+		a.Format(L"%d ", i+1);
+		dc.DrawTextW(a, &days[i].getRect(), DT_RIGHT);
 	}
 
 	// Draw meals
@@ -219,27 +209,17 @@ int Calendar::getYear() {
 // Events
 //
 
-std::pair<Day, int> Calendar::getClickedDay(CPoint& p) {
-	std::pair<Day, int> result;
-	result.first = Day();
-	result.second = -1;
-	for (int i = 0; i < 7 * 6; i++) {
-		CRect dayRect = &dayRects[i];
+std::pair<Day&, int> Calendar::getClickedDay(CPoint& p) {
+	for (int i = 0; i < days.size(); i++) {
+		CRect dayRect = &days[i].getRect();
 		if (p.x > dayRect.left && 
 			p.x < dayRect.right && 
 			p.y > dayRect.top && 
 			p.y < dayRect.bottom) {
 
-			if (i >= startDay - 1 && i <= monthLength) {
-				result.second = (i + startDay - 2);
-				result.first = days[result.second];
-				break;
-			}
+			int resulti(i);
+			return std::pair<Day&, int>(days[resulti], resulti);
 		}
 	}
-	return result;
-}
-
-void Calendar::addMeal(CString& mealName, int day) {
-	days[day].addMeal(mealName);
+	return std::pair<Day&, int>(Day(), -1);
 }

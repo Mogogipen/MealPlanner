@@ -18,14 +18,14 @@ IMPLEMENT_DYNAMIC(DayDlg, CDialog)
 DayDlg::DayDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_DIALOG_DAY, pParent)
 	, m_staticDate(_T(""))
-{
+	, day(Day())
+{ }
 
-}
-
-DayDlg::DayDlg(Day& day, CWnd* pParent /*=nullptr*/)
+DayDlg::DayDlg(Day& day_, CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_DIALOG_DAY, pParent)
+	, day(day_)
 {
-	this->day = day;
+	//day = day_;
 	COleDateTime date = day.getDate();
 	m_staticDate.Format(L"%d/%d/%d", date.GetMonth(), date.GetDay(), date.GetYear());
 	// Build Fonts

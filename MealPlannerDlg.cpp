@@ -177,12 +177,17 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 //	Gets and displays the day clicked on via message box
 // TODO: Create a dialog to get the users requested meal/dish
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-	std::pair<Day, int> day = calendar.getClickedDay(point);
+	std::pair<Day&, int> day = calendar.getClickedDay(point);
 	
 	// If it's a valid day selected, display a dialog
-	if (day.second > 0) {
+	if (day.second > -1) {
 
 		DayDlg d_dlg(day.first);
 		INT_PTR nResponse = d_dlg.DoModal();
+		if (nResponse == IDOK) {
+			UpdateData(FALSE);
+			Invalidate(TRUE);
+			UpdateWindow();
+		}
 	}
 }

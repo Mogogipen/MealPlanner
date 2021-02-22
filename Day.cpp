@@ -24,6 +24,21 @@ void Day::buildRects() {
 				previousRect.right, previousRect.bottom + previousRect.Height());
 			previousRect = &meals[i].rect;
 		}
+
+		for (int j = 0; j < meals[i].dishes.size(); j++) {
+			CRect newDishRect;
+			if (meals[i].dishRects.size() < 1) {
+				CRect rect = &meals[i].rect;
+				newDishRect = CRect(rect.left + 3, rect.top + 5,
+					rect.right - 10, rect.top + 20);
+			}
+			else {
+				CRect bottomRect = meals[i].dishRects[meals[i].dishRects.size() - 1];
+				newDishRect = CRect(bottomRect.left, bottomRect.bottom,
+					bottomRect.right, bottomRect.bottom + bottomRect.Height());
+			}
+			meals[i].dishRects.push_back(newDishRect);
+		}
 	}
 }
 
@@ -80,19 +95,6 @@ bool Day::addDish(CString& mealName, CString dishName) {
 		return false;
 
 	meal.dishes.push_back(dishName);
-
-	CRect newDishRect;
-	if (meal.dishRects.size() < 1) {
-		CRect rect = &meal.rect;
-		newDishRect = CRect(rect.left + 3, rect.top + 5,
-			rect.right - 10, rect.top + 20);
-	}
-	else {
-		CRect bottomRect = meal.dishRects[meal.dishRects.size() - 1];
-		newDishRect = CRect(bottomRect.left, bottomRect.bottom,
-			bottomRect.right, bottomRect.bottom + bottomRect.Height());
-	}
-	meal.dishRects.push_back(newDishRect);
 
 	return true;
 }
