@@ -14,7 +14,6 @@ private:
 	// dayRects
 	void buildDays();
 	std::vector<Day> days;
-	CRect getBaseDayRect(CRect&);
 	void buildDayRects(CRect&);
 
 public:

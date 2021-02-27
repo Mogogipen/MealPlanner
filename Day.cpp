@@ -9,12 +9,12 @@ Day::Day(COleDateTime date) {
 	Day::date = date;
 }
 
-// Build the rects to be filled with text
+// Build the rects to be filled with text in Calendar
 void Day::buildRects() {
 	CRect previousRect;
 	for (int i = 0; i < meals.size(); i++) {
 
-		// Build each meal Rect
+		// Build each meal Rect offset within the day Rect
 		if (i == 0) {
 			meals[i].rect = CRect(dayRect.left + 5, dayRect.top + 5,
 				dayRect.right - 3, dayRect.top + 20);
@@ -24,23 +24,6 @@ void Day::buildRects() {
 			meals[i].rect = CRect(previousRect.left, previousRect.bottom,
 				previousRect.right, previousRect.bottom + previousRect.Height());
 			previousRect = &meals[i].rect;
-		}
-
-		for (int j = 0; j < meals[i].dishes.size(); j++) {
-
-			// Build each dish Rect and add it to the vector of Rects
-			CRect newDishRect;
-			if (meals[i].dishRects.size() < 1) {
-				CRect rect = &meals[i].rect;
-				newDishRect = CRect(rect.left + 3, rect.top + 5,
-					rect.right - 10, rect.top + 20);
-			}
-			else {
-				CRect bottomRect = meals[i].dishRects[meals[i].dishRects.size() - 1];
-				newDishRect = CRect(bottomRect.left, bottomRect.bottom,
-					bottomRect.right, bottomRect.bottom + bottomRect.Height());
-			}
-			meals[i].dishRects.push_back(newDishRect);
 		}
 	}
 }

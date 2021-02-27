@@ -6,8 +6,6 @@ struct Meal {
 	CString name;
 	CRect rect;
 	std::vector<CString> dishes;
-	std::vector<CRect> dishRects;
-	std::vector<CRect> dishBtnRects;
 };
 
 class Day
