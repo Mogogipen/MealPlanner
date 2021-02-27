@@ -92,7 +92,7 @@ BOOL CMealPlannerDlg::OnInitDialog()
 
 	// Init Month label
 	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&bigFont);
-	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
+	reset_m_staticText();
 	UpdateData(FALSE);
 	
 
@@ -154,7 +154,7 @@ HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 void CMealPlannerDlg::OnBnClickedButtonL()
 {
 	calendar.decrementMonth();
-	m_staticText = calendar.getMonthAsString();
+	reset_m_staticText();
 
 	UpdateData(FALSE);
 	Invalidate(TRUE);
@@ -165,7 +165,7 @@ void CMealPlannerDlg::OnBnClickedButtonL()
 void CMealPlannerDlg::OnBnClickedButtonR()
 {
 	calendar.incrementMonth();
-	m_staticText = calendar.getMonthAsString();
+	reset_m_staticText();
 
 	UpdateData(FALSE);
 	Invalidate(TRUE);
@@ -174,7 +174,6 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 
 // L Mouse button up event handler
 //	Gets and displays the day clicked on via message box
-// TODO: Create a dialog to get the users requested meal/dish
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	std::pair<Day&, int> day = calendar.getClickedDay(point);
 	
@@ -188,4 +187,8 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 		Invalidate(TRUE);
 		UpdateWindow();
 	}
+}
+
+void CMealPlannerDlg::reset_m_staticText() {
+	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
 }

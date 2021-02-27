@@ -35,6 +35,8 @@ public:
 //
 // My additions
 //
+private:
+	void reset_m_staticText();
 public:
 	Calendar calendar;
 	bool hasDrawnOnce;
