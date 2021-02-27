@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <map>
+
 // Know about CMealPlannerDlg
 #ifndef DLG
 #define DLG

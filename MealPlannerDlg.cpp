@@ -2,6 +2,7 @@
 // MealPlannerDlg.cpp : implementation file
 //
 
+#include <map>
 #include "pch.h"
 #include "framework.h"
 #include "MealPlanner.h"

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <vector>
+#include <map>
 #include "MealPlannerDlg.h"
 #include "Calendar.h"
 #include "Day.h"
@@ -10,15 +11,21 @@ Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
 }
 
+// Returns the date as an int
+//	Format: YYYYMMDD
+int Calendar::getSelectedDateAsInt() {
+	return selectedDate.GetYear() * 10000 + selectedDate.GetMonth() * 100 + selectedDate.GetDay();
+}
+
 // Creates day vector using the current date
 void Calendar::buildDays() {
-	if (days.size() > 0) {
-		days.clear();
-	}
+	if (days.count(getSelectedDateAsInt()) > 0)
+		return;
 	for (int i = 1; i <= monthLength; i++) {
-		COleDateTime dayDate(dateTime);
-		dayDate.SetDate(dateTime.GetYear(), dateTime.GetMonth(), i);
-		days.push_back(Day(dayDate));
+		COleDateTime dayDate(selectedDate);
+		int dayHash = getSelectedDateAsInt() + i - 1;
+		dayDate.SetDate(selectedDate.GetYear(), selectedDate.GetMonth(), i);
+		days[dayHash] = Day(dayDate);
 	}
 }
 
@@ -26,7 +33,7 @@ void Calendar::buildDays() {
 void Calendar::buildDayRects(CRect& calRect) {
 
 	// Prepare for calculations
-	int count = 0;
+	int count = getSelectedDateAsInt();
 	int dayWidth = calRect.Width() / 7;
 	int dayHeight = calRect.Height() / 6;
 	bool build = false;
@@ -40,7 +47,7 @@ void Calendar::buildDayRects(CRect& calRect) {
 			if (build) {
 
 				// Create and offset currect dayRect
-				if (count < monthLength) {
+				if (count < getSelectedDateAsInt() + monthLength) {
 					CRect tmpRect(
 						calRect.left + i * dayWidth, 
 						calRect.top + j * dayHeight,
@@ -96,29 +103,29 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	
 	// Draw each rect and day number
 	// TODO: In the future maybe change to draw lines instead of rects
-	for (int i = 0; i < days.size(); i++) {
+	for (int i = getSelectedDateAsInt(); i < getSelectedDateAsInt() + monthLength; i++) {
 		dc.Rectangle(days[i].getRect());
 
 		// Add numbers to days
-		a.Format(L"%d ", i+1);
+		a.Format(L"%d ", days[i].getDate().GetDay());
 		dc.DrawTextW(a, &days[i].getRect(), DT_RIGHT);
 	}
 
 	// Draw meals
-	for (int i = 0; i < days.size(); i++) {
+	for (int i = getSelectedDateAsInt(); i < getSelectedDateAsInt() + monthLength; i++) {
 		days[i].paintMeals(dc);
 	}
 
 }
 
-// Sets the current dateTime object 
+// Sets the current dateTime object to the first day of the month
 //	as well as the month length and starting day of the week
 void Calendar::setDateTime(COleDateTime date) {
-
-	dateTime = date;
-
 	int month = date.GetMonth();
 	date.SetDate(date.GetYear(), date.GetMonth(), 1);
+
+	selectedDate = date;
+
 	startDay = date.GetDayOfWeek();
 
 	if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
@@ -134,8 +141,8 @@ void Calendar::setDateTime(COleDateTime date) {
 
 // Resets the dateTime object with the next month
 void Calendar::incrementMonth() {
-	int year = dateTime.GetYear();
-	int month = dateTime.GetMonth();
+	int year = selectedDate.GetYear();
+	int month = selectedDate.GetMonth();
 
 	// If the month is greater than 12, set it to 1 and increment year
 	if (month + 1 > 12) {
@@ -145,15 +152,15 @@ void Calendar::incrementMonth() {
 	else {
 		month++;
 	}
-	dateTime.SetDate(year, month, 1);
+	selectedDate.SetDate(year, month, 1);
 
-	setDateTime(dateTime);
+	setDateTime(selectedDate);
 }
 
 // Resets the dateTime object with the previous month
 void Calendar::decrementMonth() {
-	int year = dateTime.GetYear();
-	int month = dateTime.GetMonth();
+	int year = selectedDate.GetYear();
+	int month = selectedDate.GetMonth();
 
 	// If the month is less than 1, set it to 12 and decrement year
 	if (month - 1 < 1) {
@@ -163,14 +170,14 @@ void Calendar::decrementMonth() {
 	else {
 		month--;
 	}
-	dateTime.SetDate(year, month, 1);
+	selectedDate.SetDate(year, month, 1);
 
-	setDateTime(dateTime);
+	setDateTime(selectedDate);
 }
 
 // Returns a string value for the selected month
 CString Calendar::getMonthAsString() {
-	int month = dateTime.GetMonth();
+	int month = selectedDate.GetMonth();
 	CString result;
 	CString months[] = {
 		L"January",
@@ -192,7 +199,7 @@ CString Calendar::getMonthAsString() {
 
 // Return the year of the current DateTime
 int Calendar::getYear() {
-	return dateTime.GetYear();
+	return selectedDate.GetYear();
 }
 
 //
@@ -201,7 +208,7 @@ int Calendar::getYear() {
 
 // Returns the day and true if a the Point p is in a day's Rect, new day and false otherwise
 std::pair<Day&, bool> Calendar::getClickedDay(CPoint& p) {
-	for (int i = 0; i < days.size(); i++) {
+	for (int i = getSelectedDateAsInt(); i < getSelectedDateAsInt() + monthLength; i++) {
 		CRect dayRect = &days[i].getRect();
 		if (p.x > dayRect.left && 
 			p.x < dayRect.right && 

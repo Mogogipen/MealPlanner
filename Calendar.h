@@ -9,12 +9,12 @@ class Calendar
 private:
 	int monthLength;
 	int startDay;
-	COleDateTime dateTime;
+	COleDateTime selectedDate;
+	std::map<int, Day> days;
 
-	// dayRects
 	void buildDays();
-	std::vector<Day> days;
 	void buildDayRects(CRect&);
+	int getSelectedDateAsInt();
 
 public:
 	Calendar();
