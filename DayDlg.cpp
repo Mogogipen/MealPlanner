@@ -182,11 +182,16 @@ void DayDlg::OnPaint() {
 	}
 }
 
+// New meal button pushed
+//	Opens GetStrDlg to get the meal name from the user
+//	Adds a new meal to the day based on user input
 void DayDlg::OnBnClickedButtonNewmeal()
 {
+	// Create Dlg
 	AddStringDlg am_dlg(L"Add a meal", L"Meal Name");
 	INT_PTR nResponse = am_dlg.DoModal();
 	if (nResponse == IDOK) {
+		// If OK, add meal to the day
 		CString mealName = am_dlg.GetMealName();
 		day.addMeal(mealName);
 
@@ -200,16 +205,18 @@ void DayDlg::OnBnClickedButtonNewmeal()
 	}
 }
 
+// Left Mouse button released
+//	Checks to see if the LMB was released on a pseudo button.
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	int index = clickOnBtnSearch(point, rmMeal_btns);
 	if (index < 0) {
 		index = clickOnBtnSearch(point, addDish_btns);
 		if (index < 0) {
 			index = clickOnBtnSearch(point, rmDish_btns);
-			if (index < 0);
-				//return;
+			if (index < 0) return;
 			// Clicked remove dish button
 			else {
+				// Remove the dish selected
 				bool dishRmved = day.rmDish(index, rmDish_indices[index]);
 				if (!dishRmved) {
 					CString s;
@@ -224,6 +231,7 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 			AddStringDlg ad_dlg(L"Add a dish", L"Dish name");
 			INT_PTR nResponse = ad_dlg.DoModal();
 			if (nResponse == IDOK) {
+				// If OK pushed, add dish to day's selected meal
 				CString dishName = ad_dlg.GetMealName();
 				day.addDish(index, dishName);
 			}
@@ -235,6 +243,7 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 	// Clicked remove meal
 	else {
+		// Remove selected meal from day
 		bool mealRmved = day.rmMeal(index);
 		if (!mealRmved) {
 			CString s;
@@ -242,6 +251,7 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 			MessageBox(s);
 		}
 	}
+	// Redraw if anything should have changed
 	if (index > -1) {
 		UpdateData(FALSE);
 		Invalidate(TRUE);
@@ -249,6 +259,11 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 }
 
+//
+// Misc Methods
+//
+
+// Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
 int DayDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
 	for (int i = 0; i < searchList.size(); i++) {
 		if (mousePoint.x > searchList[i].left &&

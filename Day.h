@@ -18,7 +18,6 @@ private:
 	std::vector<Meal> meals;
 
 	void buildRects();
-	void buildEditRects();
 
 public:
 	Day();

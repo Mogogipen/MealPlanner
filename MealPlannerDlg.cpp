@@ -179,14 +179,13 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	std::pair<Day&, int> day = calendar.getClickedDay(point);
 	
 	// If it's a valid day selected, display a dialog
-	if (day.second > -1) {
+	if (day.second) {
 
 		DayDlg d_dlg(day.first);
 		INT_PTR nResponse = d_dlg.DoModal();
-		if (nResponse == IDOK) {
-			UpdateData(FALSE);
-			Invalidate(TRUE);
-			UpdateWindow();
-		}
+		// Repaint window after closing
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
 	}
 }

@@ -172,35 +172,25 @@ void Calendar::decrementMonth() {
 CString Calendar::getMonthAsString() {
 	int month = dateTime.GetMonth();
 	CString result;
-	if (month == 1)
-		result = L"January";
-	else if (month == 2)
-		result = L"February";
-	else if (month == 3)
-		result = L"March";
-	else if (month == 4)
-		result = L"April";
-	else if (month == 5)
-		result = L"May";
-	else if (month == 6)
-		result = L"June";
-	else if (month == 7)
-		result = L"July";
-	else if (month == 8)
-		result = L"August";
-	else if (month == 9)
-		result = L"September";
-	else if (month == 10)
-		result = L"October";
-	else if (month == 11)
-		result = L"November";
-	else if (month == 12)
-		result = L"December";
-	else
-		result = L"Unknown";
+	CString months[] = {
+		L"January",
+		L"February",
+		L"March",
+		L"April",
+		L"May",
+		L"June",
+		L"July",
+		L"August",
+		L"September",
+		L"October",
+		L"November",
+		L"December"};
+	if (month > 0 && month < 13)
+		result = months[month - 1];
 	return result;
 }
 
+// Return the year of the current DateTime
 int Calendar::getYear() {
 	return dateTime.GetYear();
 }
@@ -209,7 +199,8 @@ int Calendar::getYear() {
 // Events
 //
 
-std::pair<Day&, int> Calendar::getClickedDay(CPoint& p) {
+// Returns the day and true if a the Point p is in a day's Rect, new day and false otherwise
+std::pair<Day&, bool> Calendar::getClickedDay(CPoint& p) {
 	for (int i = 0; i < days.size(); i++) {
 		CRect dayRect = &days[i].getRect();
 		if (p.x > dayRect.left && 
@@ -218,8 +209,8 @@ std::pair<Day&, int> Calendar::getClickedDay(CPoint& p) {
 			p.y < dayRect.bottom) {
 
 			int resulti(i);
-			return std::pair<Day&, int>(days[resulti], resulti);
+			return std::pair<Day&, bool>(days[resulti], true);
 		}
 	}
-	return std::pair<Day&, int>(Day(), -1);
+	return std::pair<Day&, bool>(Day(), false);
 }

@@ -28,7 +28,7 @@ public:
 
 	void paint(CPaintDC&, CMealPlannerDlg&);
 
-	std::pair<Day&, int> getClickedDay(CPoint&);
+	std::pair<Day&, bool> getClickedDay(CPoint&);
 
 };
 

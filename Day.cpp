@@ -9,10 +9,12 @@ Day::Day(COleDateTime date) {
 	Day::date = date;
 }
 
+// Build the rects to be filled with text
 void Day::buildRects() {
 	CRect previousRect;
 	for (int i = 0; i < meals.size(); i++) {
 
+		// Build each meal Rect
 		if (i == 0) {
 			meals[i].rect = CRect(dayRect.left + 5, dayRect.top + 5,
 				dayRect.right - 3, dayRect.top + 20);
@@ -25,6 +27,8 @@ void Day::buildRects() {
 		}
 
 		for (int j = 0; j < meals[i].dishes.size(); j++) {
+
+			// Build each dish Rect and add it to the vector of Rects
 			CRect newDishRect;
 			if (meals[i].dishRects.size() < 1) {
 				CRect rect = &meals[i].rect;
@@ -41,39 +45,43 @@ void Day::buildRects() {
 	}
 }
 
-void Day::buildEditRects() {
-
-}
-
+// Return a copy of the day's DateTime
 COleDateTime Day::getDate() {
 	return date;
 }
 
+// Return a copy of the day's Rect
 CRect Day::getRect() {
 	return dayRect;
 }
 
+// Return how many meals there are
 int Day::getMealCount() {
 	return meals.size();
 }
 
+// Return the name for a meal at the given index
 CString Day::getMealName(int index) {
 	return meals[index].name;
 }
 
+// Return how many dishes there are within a meal at the givent index
 int Day::getDishCount(int index) {
 	return meals[index].dishes.size();
 }
 
+// Return the name of a dish at the given meal and dish indices
 CString Day::getDishName(int m_index, int d_index) {
 	return meals[m_index].dishes[d_index];
 }
 
+// Sets the day's Rect
 void Day::setRect(CRect rect) {
 	dayRect = rect;
 	buildRects();
 }
 
+// Adds a new meal to the day with the given name
 void Day::addMeal(CString mealName) {
 	Meal newMeal;
 	newMeal.name = mealName;
@@ -82,6 +90,7 @@ void Day::addMeal(CString mealName) {
 	buildRects();
 }
 
+// Adds a new dish with the given name to the meal at the given index
 bool Day::addDish(int mealIndex, CString dishName) {
 	if (mealIndex > -1 && mealIndex < meals.size()) {
 		meals[mealIndex].dishes.push_back(dishName);
@@ -90,6 +99,7 @@ bool Day::addDish(int mealIndex, CString dishName) {
 	return false;
 }
 
+// Removes a meal at the given index
 bool Day::rmMeal(int mealIndex) {
 	if (mealIndex > -1 && mealIndex < meals.size()) {
 		meals.erase(meals.begin() + mealIndex);
@@ -98,6 +108,7 @@ bool Day::rmMeal(int mealIndex) {
 	return false;
 }
 
+// Removes a dish at the given meal and dish vector indices
 bool Day::rmDish(int mealIndex, int dishIndex) {
 	if (mealIndex > -1 && mealIndex < meals.size()) {
 		if (dishIndex > -1 && dishIndex < meals[mealIndex].dishes.size()) {
@@ -109,6 +120,7 @@ bool Day::rmDish(int mealIndex, int dishIndex) {
 	return false;
 }
 
+// Paint meal text in their respective Rects (for use in Calendar)
 void Day::paintMeals(CPaintDC& dc) {
 	for (int i = 0; i < meals.size(); i++) {
 		dc.DrawTextW(meals[i].name, &meals[i].rect, DT_LEFT);
