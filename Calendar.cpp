@@ -11,6 +11,10 @@ Calendar::Calendar(COleDateTime& date) {
 	setDateTime(date);
 }
 
+Calendar::Calendar(CString& fileName) : Calendar(COleDateTime::GetCurrentTime()) {
+	loadFromFile(fileName);
+}
+
 // Returns the date as an int
 //	Format: YYYYMMDD
 int Calendar::getSelectedDateAsInt() {
@@ -202,6 +206,10 @@ int Calendar::getYear() {
 	return selectedDate.GetYear();
 }
 
+//
+// I/O methods
+//
+
 // Returns the entire calendar as a multi-line string to be written to a file
 CString Calendar::toString() {
 	CString result;
@@ -213,6 +221,27 @@ CString Calendar::toString() {
 			result += days[i].toString() + L"\n";
 	}
 	return result;
+}
+
+void Calendar::loadFromFile(CString& filePath) {
+	CString line;
+	CStdioFile file;
+
+	file.Open(filePath, CFile::modeRead | CFile::typeText);
+	BOOL eof = !file.ReadString(line);
+	while (!eof) {
+		// Prep this day's date
+		COleDateTime d_date = COleDateTime::GetCurrentTime();
+		int year = _ttoi(line.Mid(0, 4));
+		int month = _ttoi(line.Mid(4, 2));
+		int day = _ttoi(line.Mid(6, 2));
+		d_date.SetDate(year, month, day);
+		int dateAsInt = _ttoi(line.Mid(0, 8));
+
+		// Create a new day at the date built
+		days[dateAsInt] = Day(d_date, line);
+	}
+	file.Close();
 }
 
 //

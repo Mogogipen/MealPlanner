@@ -18,9 +18,13 @@ private:
 	void buildRects();
 	int getDateAsInt();
 
+	void loadFromString(CString&);
+
 public:
 	Day();
 	Day(COleDateTime);
+	Day(COleDateTime, CString&);
+
 	COleDateTime getDate();
 	CRect getRect();
 	int getMealCount();

@@ -16,9 +16,13 @@ private:
 	void buildDayRects(CRect&);
 	int getSelectedDateAsInt();
 
+	void loadFromFile(CString&);
+
 public:
 	Calendar();
 	Calendar(COleDateTime&);
+	Calendar(CString& fileName);
+
 	void setDateTime(COleDateTime);
 	void incrementMonth();
 	void decrementMonth();

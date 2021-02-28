@@ -9,6 +9,11 @@ Day::Day(COleDateTime date) {
 	Day::date = date;
 }
 
+Day::Day(COleDateTime date, CString& fileLine) {
+	Day::date = date;
+	loadFromString(fileLine);
+}
+
 //
 // Private methods
 //
@@ -79,7 +84,7 @@ void Day::setRect(CRect rect) {
 }
 
 //
-// toString
+// I/O methods
 //
 
 // Returns a one-line String to be written to a file
@@ -87,12 +92,60 @@ CString Day::toString() {
 	CString result;
 	result.Format(L"%d", getDateAsInt());
 	for (int i = 0; i < meals.size(); i++) {
-		result += L"|M:" + meals[i].name;
+		result += L"|%" + meals[i].name;
 		for (int j = 0; j < meals[i].dishes.size(); j++) {
 			result += L"|" + meals[i].dishes[j];
 		}
 	}
 	return result;
+}
+
+// Builds the day from a given string (loaded from a file)
+//	Possibly only used from the constructor??
+void Day::loadFromString(CString& line) {
+	bool dateFound = false;
+	CString dateString;
+
+	bool isMeal = false;
+	int mealCounter = -1;
+	CString nextName;
+
+	for (int i = 0; i < line.GetLength(); i++) {
+		// If the current character is '|' the word or date is finished
+		if (line[i] == '|') {
+			// Mark the date as finished
+			if (!dateFound)
+				dateFound = true;
+			else {
+				// Add a new meal with the built name if it is a meal
+				if (isMeal) {
+					Meal newMeal;
+					newMeal.name = nextName;
+					meals.push_back(newMeal);
+					mealCounter++;
+				}
+				// Add a new dish at the current location with the built name if it is not a meal
+				else {
+					meals[mealCounter].dishes.push_back(nextName);
+				}
+				nextName = L"";
+				isMeal = false;
+			}
+			continue;
+		}
+
+		// Skip over the date
+		if (!dateFound);
+		// If the character is a '%' the following will be a meal, set isMeal to true
+		else if (line[i] == '%') {
+			isMeal = true;
+		}
+		// Build the next name
+		else {
+			nextName += line[i];
+		}
+	}
+	return dateFound;
 }
 
 // Adds a new meal to the day with the given name
