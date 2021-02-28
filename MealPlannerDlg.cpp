@@ -199,8 +199,6 @@ void CMealPlannerDlg::reset_m_staticText() {
 
 void CMealPlannerDlg::OnBnClickedButtonSave()
 {
-	CString cal_string = calendar.toString();
-	MessageBox(cal_string);
 	// Open explorer dialog for file name input
 	const TCHAR szFilter[] = L"Meal Plan Files (*.mpl)|*.mpl|All Files (*.*)|*.*||";
 	CFileDialog f_dlg(FALSE, L"mpl", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
@@ -208,9 +206,10 @@ void CMealPlannerDlg::OnBnClickedButtonSave()
 		CString sFilePath = f_dlg.GetPathName();
 		
 		// Write to the file
+		CString cal_string = calendar.toString();
 		CStdioFile file;
 		file.Open(sFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
-		file.WriteString(L"Smiley! :)");
+		file.WriteString(cal_string);
 		file.Close();
 	}
 }
@@ -224,12 +223,12 @@ void CMealPlannerDlg::OnBnClickedButtonLoad()
 	if (f_dlg.DoModal() == IDOK) {
 		CString sFilePath = f_dlg.GetPathName();
 
-		// Read the file and display string in a message box
-		CString mb_text;
-		CStdioFile file;
-		file.Open(sFilePath, CFile::modeRead | CFile::typeText);
-		file.ReadString(mb_text);
-		file.Close();
-		MessageBox(mb_text);
+		// Create a new Calendar from file
+		calendar = Calendar(sFilePath);
+		
+		// Repaint
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
 	}
 }

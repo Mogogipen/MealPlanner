@@ -240,6 +240,8 @@ void Calendar::loadFromFile(CString& filePath) {
 
 		// Create a new day at the date built
 		days[dateAsInt] = Day(d_date, line);
+
+		eof = !file.ReadString(line);
 	}
 	file.Close();
 }

@@ -90,11 +90,11 @@ void Day::setRect(CRect rect) {
 // Returns a one-line String to be written to a file
 CString Day::toString() {
 	CString result;
-	result.Format(L"%d", getDateAsInt());
+	result.Format(L"%d|", getDateAsInt());
 	for (int i = 0; i < meals.size(); i++) {
-		result += L"|%" + meals[i].name;
+		result += L"%" + meals[i].name + L"|";
 		for (int j = 0; j < meals[i].dishes.size(); j++) {
-			result += L"|" + meals[i].dishes[j];
+			result += meals[i].dishes[j] + L"|";
 		}
 	}
 	return result;
@@ -145,7 +145,8 @@ void Day::loadFromString(CString& line) {
 			nextName += line[i];
 		}
 	}
-	return dateFound;
+
+	buildRects();
 }
 
 // Adds a new meal to the day with the given name
