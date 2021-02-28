@@ -202,6 +202,19 @@ int Calendar::getYear() {
 	return selectedDate.GetYear();
 }
 
+// Returns the entire calendar as a multi-line string to be written to a file
+CString Calendar::toString() {
+	CString result;
+	int dateAsInt = getSelectedDateAsInt();
+	for (int i = dateAsInt; i < dateAsInt + monthLength; i++) {
+		if (i == dateAsInt + monthLength - 1)
+			result += days[i].toString();
+		else
+			result += days[i].toString() + L"\n";
+	}
+	return result;
+}
+
 //
 // Events
 //

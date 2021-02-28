@@ -42,6 +42,8 @@ BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_L, &CMealPlannerDlg::OnBnClickedButtonL)
 	ON_BN_CLICKED(IDC_BUTTON_R, &CMealPlannerDlg::OnBnClickedButtonR)
 	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CMealPlannerDlg::OnBnClickedButtonSave)
+	ON_BN_CLICKED(IDC_BUTTON_LOAD, &CMealPlannerDlg::OnBnClickedButtonLoad)
 END_MESSAGE_MAP()
 
 
@@ -190,6 +192,44 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 }
 
+// Used to reset the Calendar text according to the current month
 void CMealPlannerDlg::reset_m_staticText() {
 	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
+}
+
+void CMealPlannerDlg::OnBnClickedButtonSave()
+{
+	CString cal_string = calendar.toString();
+	MessageBox(cal_string);
+	// Open explorer dialog for file name input
+	const TCHAR szFilter[] = L"Meal Plan Files (*.mpl)|*.mpl|All Files (*.*)|*.*||";
+	CFileDialog f_dlg(FALSE, L"mpl", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	if (f_dlg.DoModal() == IDOK) {
+		CString sFilePath = f_dlg.GetPathName();
+		
+		// Write to the file
+		CStdioFile file;
+		file.Open(sFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
+		file.WriteString(L"Smiley! :)");
+		file.Close();
+	}
+}
+
+
+void CMealPlannerDlg::OnBnClickedButtonLoad()
+{
+	// Open explorer dialog for file name input
+	const TCHAR szFilter[] = L"Meal Plan Files (*.mpl)|*.mpl|All Files (*.*)|*.*||";
+	CFileDialog f_dlg(TRUE, L"mpl", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	if (f_dlg.DoModal() == IDOK) {
+		CString sFilePath = f_dlg.GetPathName();
+
+		// Read the file and display string in a message box
+		CString mb_text;
+		CStdioFile file;
+		file.Open(sFilePath, CFile::modeRead | CFile::typeText);
+		file.ReadString(mb_text);
+		file.Close();
+		MessageBox(mb_text);
+	}
 }

@@ -16,6 +16,7 @@ private:
 	std::vector<Meal> meals;
 
 	void buildRects();
+	int getDateAsInt();
 
 public:
 	Day();
@@ -27,6 +28,8 @@ public:
 	int getDishCount(int);
 	CString getDishName(int, int);
 	void setRect(CRect);
+
+	CString toString();
 
 	void addMeal(CString);
 	bool rmMeal(int);

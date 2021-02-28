@@ -13,8 +13,11 @@
 #define IDC_BUTTON_LEFT                 1016
 #define IDC_BUTTON_L                    1018
 #define IDC_BUTTON_R                    1019
+#define IDC_BUTTON_SAVE                 1020
 #define IDC_EDIT1                       1021
 #define IDC_EDIT_NEWMEAL                1021
+#define IDC_BUTTON_R3                   1021
+#define IDC_BUTTON_LOAD                 1021
 #define IDC_BUTTON1                     1023
 #define IDC_BUTTON_NEWMEAL              1023
 #define ID_BUTTON2                      32771

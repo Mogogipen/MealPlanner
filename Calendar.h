@@ -25,6 +25,8 @@ public:
 	CString getMonthAsString();
 	int getYear();
 
+	CString toString();
+
 	void paint(CPaintDC&, CMealPlannerDlg&);
 
 	std::pair<Day&, bool> getClickedDay(CPoint&);

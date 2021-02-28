@@ -59,4 +59,6 @@ public:
 	afx_msg void OnBnClickedButtonL();
 	afx_msg void OnBnClickedButtonR();
 	afx_msg void OnLButtonUp(UINT, CPoint);
+	afx_msg void OnBnClickedButtonSave();
+	afx_msg void OnBnClickedButtonLoad();
 };

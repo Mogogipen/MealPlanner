@@ -9,6 +9,10 @@ Day::Day(COleDateTime date) {
 	Day::date = date;
 }
 
+//
+// Private methods
+//
+
 // Build the rects to be filled with text in Calendar
 void Day::buildRects() {
 	CRect previousRect;
@@ -27,6 +31,16 @@ void Day::buildRects() {
 		}
 	}
 }
+
+// Returns the Day's Date as an int
+//	Format: YYYYMMDD
+int Day::getDateAsInt() {
+	return date.GetYear() * 10000 + date.GetMonth() * 100 + date.GetDay();
+}
+
+//
+// Getters & Setters
+//
 
 // Return a copy of the day's DateTime
 COleDateTime Day::getDate() {
@@ -62,6 +76,23 @@ CString Day::getDishName(int m_index, int d_index) {
 void Day::setRect(CRect rect) {
 	dayRect = rect;
 	buildRects();
+}
+
+//
+// toString
+//
+
+// Returns a one-line String to be written to a file
+CString Day::toString() {
+	CString result;
+	result.Format(L"%d", getDateAsInt());
+	for (int i = 0; i < meals.size(); i++) {
+		result += L"|M:" + meals[i].name;
+		for (int j = 0; j < meals[i].dishes.size(); j++) {
+			result += L"|" + meals[i].dishes[j];
+		}
+	}
+	return result;
 }
 
 // Adds a new meal to the day with the given name
