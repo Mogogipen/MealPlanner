@@ -11,6 +11,7 @@
 #include "Calendar.h"
 #include "Day.h"
 #include "DayDlg.h"
+#include "RecipeBookDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,8 +45,13 @@ BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CMealPlannerDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, &CMealPlannerDlg::OnBnClickedButtonLoad)
+	ON_BN_CLICKED(IDC_BUTTON_RECIPES, &CMealPlannerDlg::OnBnClickedButtonRecipes)
 END_MESSAGE_MAP()
 
+// Used to reset the Calendar text according to the current month
+void CMealPlannerDlg::reset_m_staticText() {
+	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
+}
 
 // CMealPlannerDlg message handlers
 
@@ -132,11 +138,12 @@ void CMealPlannerDlg::OnPaint()
 	}
 	else
 	{
-
 		CDialogEx::OnPaint();
+
 		// Clear old stuff
 		Invalidate(TRUE);
 		UpdateWindow();
+		
 		// Paint the calendar
 		CPaintDC dc(this);
 		dc.SelectObject(normFont);
@@ -150,6 +157,23 @@ void CMealPlannerDlg::OnPaint()
 HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+// L Mouse button up event handler
+//	Gets and displays the day clicked on via message box
+void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	std::pair<Day&, int> day = calendar.getClickedDay(point);
+	
+	// If it's a valid day selected, display a dialog
+	if (day.second) {
+
+		DayDlg d_dlg(day.first);
+		INT_PTR nResponse = d_dlg.DoModal();
+		// Repaint window after closing
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
 }
 
 
@@ -173,28 +197,6 @@ void CMealPlannerDlg::OnBnClickedButtonR()
 	UpdateData(FALSE);
 	Invalidate(TRUE);
 	UpdateWindow();
-}
-
-// L Mouse button up event handler
-//	Gets and displays the day clicked on via message box
-void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
-	std::pair<Day&, int> day = calendar.getClickedDay(point);
-	
-	// If it's a valid day selected, display a dialog
-	if (day.second) {
-
-		DayDlg d_dlg(day.first);
-		INT_PTR nResponse = d_dlg.DoModal();
-		// Repaint window after closing
-		UpdateData(FALSE);
-		Invalidate(TRUE);
-		UpdateWindow();
-	}
-}
-
-// Used to reset the Calendar text according to the current month
-void CMealPlannerDlg::reset_m_staticText() {
-	m_staticText.Format(L"%s %d", calendar.getMonthAsString(), calendar.getYear());
 }
 
 void CMealPlannerDlg::OnBnClickedButtonSave()
@@ -231,4 +233,11 @@ void CMealPlannerDlg::OnBnClickedButtonLoad()
 		Invalidate(TRUE);
 		UpdateWindow();
 	}
+}
+
+// Creates the RecipeBookDlg when its button is pushed
+void CMealPlannerDlg::OnBnClickedButtonRecipes()
+{
+	RecipeBookDlg rb_dlg;
+	INT_PTR nResponse = rb_dlg.DoModal();
 }

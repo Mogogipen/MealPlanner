@@ -61,4 +61,5 @@ public:
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonSave();
 	afx_msg void OnBnClickedButtonLoad();
+	afx_msg void OnBnClickedButtonRecipes();
 };
