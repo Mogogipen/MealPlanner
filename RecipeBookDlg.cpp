@@ -102,10 +102,11 @@ void RecipeBookDlg::OnPaint() {
 
 	// Build Recipes
 	int width = c_rect.Width() / 3;
+	int topMargin = 50;
 	int height = 200;
 	int padding = 10;
 	for (int i = 0; i < recipes.size(); i++) {
-		CRect tmpRect(c_rect.left, c_rect.top, c_rect.left + width, c_rect.top + height);
+		CRect tmpRect(c_rect.left, c_rect.top + topMargin, c_rect.left + width, c_rect.top + topMargin + height);
 		int col = i % 3;
 		int row = i / 3;
 		int tmpLeft = c_rect.left + (col * width);

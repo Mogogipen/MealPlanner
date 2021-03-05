@@ -12,6 +12,7 @@
 #include "Day.h"
 #include "DayDlg.h"
 #include "RecipeBookDlg.h"
+#include "IngredientsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -46,6 +47,7 @@ BEGIN_MESSAGE_MAP(CMealPlannerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CMealPlannerDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, &CMealPlannerDlg::OnBnClickedButtonLoad)
 	ON_BN_CLICKED(IDC_BUTTON_RECIPES, &CMealPlannerDlg::OnBnClickedButtonRecipes)
+	ON_BN_CLICKED(IDC_BUTTON_LIST, &CMealPlannerDlg::OnBnClickedButtonList)
 END_MESSAGE_MAP()
 
 // Used to reset the Calendar text according to the current month
@@ -240,4 +242,11 @@ void CMealPlannerDlg::OnBnClickedButtonRecipes()
 {
 	RecipeBookDlg rb_dlg;
 	INT_PTR nResponse = rb_dlg.DoModal();
+}
+
+
+void CMealPlannerDlg::OnBnClickedButtonList()
+{
+	IngredientsDlg i_dlg;
+	INT_PTR nResponse = i_dlg.DoModal();
 }
