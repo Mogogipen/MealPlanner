@@ -104,7 +104,7 @@ void DayDlg::OnPaint() {
 		c_rect.left + 10,
 		c_rect.top + 40,
 		c_rect.right - 10,
-		c_rect.bottom - 40);
+		c_rect.bottom - 10);
 
 	// Init drawing
 	dc.SetBkMode(0xFF000000);
@@ -164,14 +164,14 @@ void DayDlg::OnPaint() {
 		for (int j = 0; j < day.getDishCount(i); j++) {
 			CRect nextDishRect(
 				nextRect.left + 5,
-				nextRect.top + ((j + 1) * 15),
+				nextRect.top + ((j + 1) * 15) + 2,
 				nextRect.right - 5,
-				nextRect.top + ((j + 2) * 15));
+				nextRect.top + ((j + 2) * 15) + 2);
 			dc.DrawTextW(day.getDishName(i, j), nextDishRect, DT_LEFT);
 
 			// Build rm button
 			CRect rmDish_btn(btn);
-			rmDish_btn.OffsetRect(nextDishRect.right - 17, nextDishRect.top + 2);
+			rmDish_btn.OffsetRect(nextDishRect.right - 18, nextDishRect.top + 3);
 			rmDish_btns.push_back(rmDish_btn);
 			rmDish_indices.push_back(int(j));
 
