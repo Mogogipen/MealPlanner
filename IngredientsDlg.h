@@ -30,6 +30,8 @@ private:
 	std::vector<CRect> rmvSL_rects;
 	CFont normFont;
 	CFont bigFont;
+
+	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
 public:
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonShop();

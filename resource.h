@@ -23,11 +23,14 @@
 #define IDC_BUTTON1                     1023
 #define IDC_BUTTON_NEWMEAL              1023
 #define IDC_BUTTON_HAND                 1023
+#define IDC_BUTTON_ADD                  1023
 #define IDC_BUTTON_RECIPES2             1024
 #define IDC_BUTTON_LIST                 1024
 #define IDC_BUTTON_SHOP                 1024
+#define IDC_BUTTON_UP                   1024
 #define IDC_BUTTON_RECIPES              1025
 #define IDC_DATETIMEPICKER_END          1025
+#define IDC_BUTTON_DOWN                 1025
 #define IDC_DATETIMEPICKER2             1026
 #define IDC_BUTTON3                     1027
 #define ID_BUTTON2                      32771
@@ -38,7 +41,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1028
+#define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

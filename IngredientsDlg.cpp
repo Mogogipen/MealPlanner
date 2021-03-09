@@ -190,7 +190,44 @@ void IngredientsDlg::OnPaint() {
 // Handle Left mouse button up
 //	If on a rmv button, remove the item from the list
 void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	int index = clickOnBtnSearch(point, rmvOH_rects);
+	if (index < 0) {
+		index = clickOnBtnSearch(point, rmvSL_rects);
+		if (index < 0) return;
+
+		// Clicked remove shopping list item button
+		else {
+			// Remove the ingredient selected
+			shoppingList.erase(shoppingList.begin() + index);
+		}
+	}
 	
+	// Clicked remove on-hand item button
+	else {
+		// Remove the ingredient selected
+		onHand.erase(onHand.begin() + index);
+	}
+
+	// Redraw the window if something changed
+	if (index > -1) {
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
+}
+// Companion to OnLButtonUp()
+//	Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
+int IngredientsDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
+	for (int i = 0; i < searchList.size(); i++) {
+		if (mousePoint.x > searchList[i].left &&
+			mousePoint.x < searchList[i].right &&
+			mousePoint.y > searchList[i].top &&
+			mousePoint.y < searchList[i].bottom)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
 // Add an item to the on-hand ingredients button pushed
