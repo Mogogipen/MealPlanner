@@ -188,9 +188,12 @@
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="IngredientsDlg.h" />
     <ClInclude Include="MealPlanner.h" />
     <ClInclude Include="MealPlannerDlg.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Recipe.h" />
+    <ClInclude Include="RecipeBookDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -199,6 +202,7 @@
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DayDlg.cpp" />
+    <ClCompile Include="IngredientsDlg.cpp" />
     <ClCompile Include="MealPlanner.cpp" />
     <ClCompile Include="MealPlannerDlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -207,6 +211,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Recipe.cpp" />
+    <ClCompile Include="RecipeBookDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MealPlanner.rc" />
