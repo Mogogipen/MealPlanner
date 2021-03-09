@@ -33,8 +33,10 @@ BEGIN_MESSAGE_MAP(RecipeBookDlg, CDialogEx)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
-
+//
 // RecipeBookDlg message handlers
+//
+
 BOOL RecipeBookDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -75,6 +77,7 @@ BOOL RecipeBookDlg::OnInitDialog()
 	// Init Month label
 	UpdateData(FALSE);
 
+	// Used for testing, remove upon release
 	recipes.push_back(Recipe(1));
 	recipes.push_back(Recipe(2));
 	recipes.push_back(Recipe(3));

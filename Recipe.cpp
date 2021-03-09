@@ -11,6 +11,7 @@ Recipe::Recipe() {
 	author = L"Sharon Cornett";
 }
 
+// Used for testing, remove upon release
 Recipe::Recipe(int count) : Recipe() {
 	CString num;
 	num.Format(L"%d", count);
