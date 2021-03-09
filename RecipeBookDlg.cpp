@@ -90,7 +90,6 @@ void RecipeBookDlg::OnPaint() {
 
 	// Clear old stuff
 	Invalidate(TRUE);
-	UpdateWindow();
 
 	// Init DC object
 	CPaintDC dc(this);

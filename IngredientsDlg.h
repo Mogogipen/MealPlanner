@@ -26,6 +26,12 @@ protected:
 private:
 	std::vector<CString> onHand;
 	std::vector<CString> shoppingList;
+	std::vector<CRect> rmvOH_rects;
+	std::vector<CRect> rmvSL_rects;
 	CFont normFont;
 	CFont bigFont;
+public:
+	afx_msg void OnLButtonUp(UINT, CPoint);
+	afx_msg void OnBnClickedButtonShop();
+	afx_msg void OnBnClickedButtonHand();
 };

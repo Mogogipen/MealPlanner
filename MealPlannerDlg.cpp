@@ -144,7 +144,6 @@ void CMealPlannerDlg::OnPaint()
 
 		// Clear old stuff
 		Invalidate(TRUE);
-		UpdateWindow();
 		
 		// Paint the calendar
 		CPaintDC dc(this);

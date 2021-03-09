@@ -6,6 +6,7 @@
 #include "MealPlanner.h"
 #include "IngredientsDlg.h"
 #include "afxdialogex.h"
+#include "GetStrDlg.h"
 
 
 // IngredientsDlg dialog
@@ -29,6 +30,9 @@ void IngredientsDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(IngredientsDlg, CDialogEx)
 	ON_WM_PAINT()
+	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(IDC_BUTTON_SHOP, &IngredientsDlg::OnBnClickedButtonShop)
+	ON_BN_CLICKED(IDC_BUTTON_HAND, &IngredientsDlg::OnBnClickedButtonHand)
 END_MESSAGE_MAP()
 
 BOOL IngredientsDlg::OnInitDialog() {
@@ -89,7 +93,6 @@ void IngredientsDlg::OnPaint() {
 
 	// Clear old stuff
 	Invalidate(TRUE);
-	UpdateData();
 
 	// Init Painter
 	CPaintDC dc(this);
@@ -118,7 +121,7 @@ void IngredientsDlg::OnPaint() {
 	// Build on-hand ingredients text Rects
 	std::vector<CRect> oh_rects;
 	CRect baseRect(
-		leftRect.left + 10,
+		leftRect.left + 20,
 		leftRect.top + 20,
 		leftRect.right,
 		leftRect.top + 40);
@@ -130,13 +133,29 @@ void IngredientsDlg::OnPaint() {
 	// Build shopping list text Rects
 	std::vector<CRect> sl_rects;
 	baseRect = CRect(
-		rightRect.left + 10,
+		rightRect.left + 20,
 		rightRect.top + 20,
 		rightRect.right,
 		rightRect.top + 40);
-	for (int i = 0; i < onHand.size(); i++) {
+	for (int i = 0; i < shoppingList.size(); i++) {
 		baseRect.OffsetRect(0, 20);
 		sl_rects.push_back(CRect(baseRect));
+	}
+
+	// Build remove on-hand ingredient button Rects
+	rmvOH_rects.clear();
+	for (int i = 0; i < oh_rects.size(); i++) {
+		baseRect = CRect(0, 0, 15, 15);
+		baseRect.OffsetRect(leftRect.left + 3, oh_rects[i].top);
+		rmvOH_rects.push_back(CRect(baseRect));
+	}
+
+	// Build remove shopping item button Rects
+	rmvSL_rects.clear();
+	for (int i = 0; i < sl_rects.size(); i++) {
+		baseRect = CRect(0, 0, 15, 15);
+		baseRect.OffsetRect(rightRect.left + 3, sl_rects[i].top);
+		rmvSL_rects.push_back(CRect(baseRect));
 	}
 
 	//
@@ -155,5 +174,53 @@ void IngredientsDlg::OnPaint() {
 	}
 	for (int i = 0; i < sl_rects.size(); i++) {
 		dc.DrawTextW(shoppingList[i], sl_rects[i], DT_LEFT);
+	}
+
+	// Draw remove buttons
+	for (int i = 0; i < rmvOH_rects.size(); i++) {
+		dc.Rectangle(rmvOH_rects[i]);
+		dc.DrawTextW(L"-", rmvOH_rects[i], DT_CENTER);
+	}
+	for (int i = 0; i < rmvSL_rects.size(); i++) {
+		dc.Rectangle(rmvSL_rects[i]);
+		dc.DrawTextW(L"-", rmvSL_rects[i], DT_CENTER);
+	}
+}
+
+// Handle Left mouse button up
+//	If on a rmv button, remove the item from the list
+void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	
+}
+
+// Add an item to the on-hand ingredients button pushed
+void IngredientsDlg::OnBnClickedButtonHand()
+{
+	AddStringDlg as_dlg(L"Add an ingredient", L"Ingredient");
+	INT_PTR nResponse = as_dlg.DoModal();
+	if (nResponse == IDOK) {
+		// If OK, add an ingredient to the on-hand ingredients list
+		CString ingredient = as_dlg.GetMealName();
+		onHand.push_back(ingredient);
+
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
+}
+
+// Add an item to the shopping list button pushed
+void IngredientsDlg::OnBnClickedButtonShop()
+{
+	AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
+	INT_PTR nResponse = as_dlg.DoModal();
+	if (nResponse == IDOK) {
+		// If OK, add an ingredient to the shopping list
+		CString ingredient = as_dlg.GetMealName();
+		shoppingList.push_back(ingredient);
+
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
 	}
 }

@@ -88,7 +88,6 @@ void DayDlg::OnPaint() {
 
 	// Clear old paint
 	Invalidate(TRUE);
-	UpdateWindow();
 
 	// Clear CRect vectors
 	rmMeal_btns.clear();
