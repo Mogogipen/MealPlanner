@@ -194,6 +194,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Recipe.h" />
     <ClInclude Include="RecipeBookDlg.h" />
+    <ClInclude Include="RecipeDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -213,6 +214,7 @@
     </ClCompile>
     <ClCompile Include="Recipe.cpp" />
     <ClCompile Include="RecipeBookDlg.cpp" />
+    <ClCompile Include="RecipeDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MealPlanner.rc" />

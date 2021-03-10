@@ -11,6 +11,7 @@
 #define IDD_DIALOG_DAY                  136
 #define IDD_DIALOG_BOOK                 138
 #define IDD_DIALOG_LIST                 140
+#define IDD_DIALOG_RECIPE               144
 #define IDC_STATIC_TEXT                 1012
 #define IDC_BUTTON_LEFT                 1016
 #define IDC_BUTTON_L                    1018
@@ -20,6 +21,8 @@
 #define IDC_EDIT_NEWMEAL                1021
 #define IDC_BUTTON_R3                   1021
 #define IDC_BUTTON_LOAD                 1021
+#define IDC_EDIT_SEARCH                 1021
+#define IDC_EDIT_TITLE                  1021
 #define IDC_BUTTON1                     1023
 #define IDC_BUTTON_NEWMEAL              1023
 #define IDC_BUTTON_HAND                 1023
@@ -32,16 +35,20 @@
 #define IDC_DATETIMEPICKER_END          1025
 #define IDC_BUTTON_DOWN                 1025
 #define IDC_DATETIMEPICKER2             1026
+#define IDC_BUTTON_SEARCH               1026
 #define IDC_BUTTON3                     1027
+#define IDC_EDIT_AUTHOR                 1029
+#define IDC_EDIT3                       1030
+#define IDC_EDIT_INSTR                  1030
 #define ID_BUTTON2                      32771
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        142
+#define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1029
+#define _APS_NEXT_CONTROL_VALUE         1031
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

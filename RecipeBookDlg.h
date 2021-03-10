@@ -28,4 +28,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_searchTerm;
+	afx_msg void OnBnClickedButtonAdd();
 };

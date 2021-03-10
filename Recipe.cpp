@@ -18,13 +18,21 @@ Recipe::Recipe(int count) : Recipe() {
 	title += num;
 }
 
-Recipe::Recipe(CString title, CString author, std::vector<CString> ingredients) {
+Recipe::Recipe(CString title, CString author, std::vector<CString> ingredients, CString instructions = L"") {
 	this->title = title;
 	this->author = author;
 	this->ingredients = ingredients;
 }
 
 Recipe::~Recipe() { }
+
+// Getters
+CString Recipe::getTitle() {
+	return title;
+}
+CString Recipe::getAuthor() {
+	return author;
+}
 
 // Builds the Recipe Rect (main and text rects)
 void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {

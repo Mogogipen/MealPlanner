@@ -7,6 +7,7 @@
 #include "Recipe.h"
 #include "MealPlanner.h"
 #include "RecipeBookDlg.h"
+#include "RecipeDlg.h"
 
 
 // RecipeBookDlg dialog
@@ -15,6 +16,7 @@ IMPLEMENT_DYNAMIC(RecipeBookDlg, CDialogEx)
 
 RecipeBookDlg::RecipeBookDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BOOK, pParent)
+	, m_searchTerm(_T("Search..."))
 {
 
 }
@@ -26,11 +28,13 @@ RecipeBookDlg::~RecipeBookDlg()
 void RecipeBookDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_SEARCH, m_searchTerm);
 }
 
 
 BEGIN_MESSAGE_MAP(RecipeBookDlg, CDialogEx)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BUTTON_ADD, &RecipeBookDlg::OnBnClickedButtonAdd)
 END_MESSAGE_MAP()
 
 //
@@ -102,17 +106,23 @@ void RecipeBookDlg::OnPaint() {
 	CRect c_rect;
 	GetClientRect(c_rect);
 
+	CRect draw_rect(
+		c_rect.left,
+		c_rect.top + 50,
+		c_rect.right - 25,
+		c_rect.bottom);
+
 	// Build Recipes
-	int width = c_rect.Width() / 3;
+	int width = draw_rect.Width() / 3;
 	int topMargin = 50;
-	int height = 200;
+	int height = 250;
 	int padding = 10;
 	for (int i = 0; i < recipes.size(); i++) {
-		CRect tmpRect(c_rect.left, c_rect.top + topMargin, c_rect.left + width, c_rect.top + topMargin + height);
+		CRect tmpRect(c_rect.left, c_rect.top, c_rect.left + width, c_rect.top + height);
 		int col = i % 3;
 		int row = i / 3;
-		int tmpLeft = c_rect.left + (col * width);
-		int tmpTop = c_rect.top + (row * height);
+		int tmpLeft = draw_rect.left + (col * width);
+		int tmpTop = draw_rect.top + (row * height);
 		tmpRect.OffsetRect(
 			tmpLeft,
 			tmpTop);
@@ -122,5 +132,15 @@ void RecipeBookDlg::OnPaint() {
 	// Paint Recipes
 	for (int i = 0; i < recipes.size(); i++) {
 		recipes[i].paint(dc);
+	}
+}
+
+void RecipeBookDlg::OnBnClickedButtonAdd()
+{
+	RecipeDlg r_dlg(recipes[0]);
+	INT_PTR nResponse = r_dlg.DoModal();
+
+	if (nResponse == IDOK) {
+		// Add a new recipe
 	}
 }
