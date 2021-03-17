@@ -33,6 +33,10 @@ RecipeDlg::~RecipeDlg()
 {
 }
 
+Recipe RecipeDlg::getRecipe() {
+	return recipe;
+}
+
 void RecipeDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -104,5 +108,10 @@ void RecipeDlg::OnPaint() {
 	CRect draw_rect(c_rect.left + 10, c_rect.top + 80, c_rect.right/2, c_rect.bottom - 10);
 
 	dc.Rectangle(draw_rect);
+
+	int rmBtn_leftMargin = 5;
+	int rmBtnSize = 15;
+	int ing_leftMargin = 5;
+	int ingHeight = 20;
 
 }

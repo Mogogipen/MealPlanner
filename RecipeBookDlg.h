@@ -30,5 +30,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_searchTerm;
+	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonAdd();
 };

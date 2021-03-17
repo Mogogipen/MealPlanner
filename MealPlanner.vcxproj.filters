@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{dfb1c7f3-9b7b-483c-9ac9-e659688868a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{c7ce7377-7840-43e7-98e4-9780137f0acd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MealPlanner.h">
@@ -56,6 +62,63 @@
     </ClInclude>
     <ClInclude Include="RecipeDlg.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\mysql_connection.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\mysql_driver.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\mysql_error.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\build_config.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\config.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\connection.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\datatype.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\driver.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\exception.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\metadata.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\parameter_metadata.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\prepared_statement.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\resultset.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\resultset_metadata.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\sqlstring.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\statement.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\variant.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\version_info.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cppconn\warning.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -102,10 +165,42 @@
     <None Include="res\MealPlanner.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Libraries\libcrypto-1_1-x64.dll">
+      <Filter>Libraries</Filter>
+    </None>
+    <None Include="Libraries\libssl-1_1-x64.dll">
+      <Filter>Libraries</Filter>
+    </None>
+    <None Include="Libraries\mysqlcppconn8-2-vs14.dll">
+      <Filter>Libraries</Filter>
+    </None>
+    <None Include="Libraries\mysqlcppconn-9-vs14.dll">
+      <Filter>Libraries</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MealPlanner.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Libraries\libcrypto.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="Libraries\libssl.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="Libraries\mysqlcppconn.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="Libraries\mysqlcppconn8.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="Libraries\mysqlcppconn8-static.lib">
+      <Filter>Libraries</Filter>
+    </Library>
+    <Library Include="Libraries\mysqlcppconn-static.lib">
+      <Filter>Libraries</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -19,6 +19,18 @@
 #endif
 
 
+//
+// SQL stuff
+// 
+// Acct: 491257
+// 
+// Host: sql3.freesqldatabase.com
+// Name: sql3393434
+// User: sql3393434
+// Pass: glGrQlB4Ly
+// Port: 3306
+//
+
 // CMealPlannerDlg dialog
 
 
@@ -105,7 +117,35 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&bigFont);
 	reset_m_staticText();
 	UpdateData(FALSE);
-	
+
+	// // TODO: Create a Google Cloud SQL DB
+	// Host: 
+	// Name: 
+	// User: 
+	// Pass: 
+	//try {
+	//	sql::Driver* driver;
+	//	sql::Connection* con;
+	//	sql::Statement* stmt;
+	//	sql::ResultSet* res;
+
+	//	// Create a connection
+	//	char s[] = "testStr";
+	//	driver = get_driver_instance();
+	//	con = driver->connect(s,s,s);
+
+	//	stmt = con->createStatement();
+	//	res = stmt->executeQuery(s);
+
+	//	delete res;
+	//	delete stmt;
+	//	delete con;
+	//}
+	//catch (sql::SQLException& e) {
+	//	CString errMsg;
+	//	errMsg.Format(L"SQL Exception: %d", e.getErrorCode());
+	//	MessageBox(errMsg);
+	//}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

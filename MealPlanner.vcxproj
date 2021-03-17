@@ -76,15 +76,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)/Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)/Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)/Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)/Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)/Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)/Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,9 +99,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>C:\Program Files\MySQL\Connector C++ 8.0\include\jdbc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -188,6 +196,25 @@
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Include\cppconn\build_config.h" />
+    <ClInclude Include="Include\cppconn\config.h" />
+    <ClInclude Include="Include\cppconn\connection.h" />
+    <ClInclude Include="Include\cppconn\datatype.h" />
+    <ClInclude Include="Include\cppconn\driver.h" />
+    <ClInclude Include="Include\cppconn\exception.h" />
+    <ClInclude Include="Include\cppconn\metadata.h" />
+    <ClInclude Include="Include\cppconn\parameter_metadata.h" />
+    <ClInclude Include="Include\cppconn\prepared_statement.h" />
+    <ClInclude Include="Include\cppconn\resultset.h" />
+    <ClInclude Include="Include\cppconn\resultset_metadata.h" />
+    <ClInclude Include="Include\cppconn\sqlstring.h" />
+    <ClInclude Include="Include\cppconn\statement.h" />
+    <ClInclude Include="Include\cppconn\variant.h" />
+    <ClInclude Include="Include\cppconn\version_info.h" />
+    <ClInclude Include="Include\cppconn\warning.h" />
+    <ClInclude Include="Include\mysql_connection.h" />
+    <ClInclude Include="Include\mysql_driver.h" />
+    <ClInclude Include="Include\mysql_error.h" />
     <ClInclude Include="IngredientsDlg.h" />
     <ClInclude Include="MealPlanner.h" />
     <ClInclude Include="MealPlannerDlg.h" />
@@ -220,10 +247,22 @@
     <ResourceCompile Include="MealPlanner.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Libraries\libcrypto-1_1-x64.dll" />
+    <None Include="Libraries\libssl-1_1-x64.dll" />
+    <None Include="Libraries\mysqlcppconn-9-vs14.dll" />
+    <None Include="Libraries\mysqlcppconn8-2-vs14.dll" />
     <None Include="res\MealPlanner.rc2" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MealPlanner.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Libraries\libcrypto.lib" />
+    <Library Include="Libraries\libssl.lib" />
+    <Library Include="Libraries\mysqlcppconn-static.lib" />
+    <Library Include="Libraries\mysqlcppconn.lib" />
+    <Library Include="Libraries\mysqlcppconn8-static.lib" />
+    <Library Include="Libraries\mysqlcppconn8.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

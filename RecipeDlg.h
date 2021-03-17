@@ -11,6 +11,7 @@ public:
 	RecipeDlg(CWnd* pParent = nullptr);   // standard constructor
 	RecipeDlg(Recipe, CWnd* pParent = nullptr);
 	virtual ~RecipeDlg();
+	Recipe getRecipe();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

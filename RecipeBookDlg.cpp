@@ -34,6 +34,7 @@ void RecipeBookDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(RecipeBookDlg, CDialogEx)
 	ON_WM_PAINT()
+	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &RecipeBookDlg::OnBnClickedButtonAdd)
 END_MESSAGE_MAP()
 
@@ -135,9 +136,37 @@ void RecipeBookDlg::OnPaint() {
 	}
 }
 
+void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
+
+	int rI = -1;
+
+	// Find the recipe clicked on, return otherwise
+	for (int i = 0; i < recipes.size(); i++) {
+		CRect r_rect = &recipes[i].mainRect;
+		if (mousePoint.y > r_rect.top &&
+			mousePoint.y < r_rect.bottom &&
+			mousePoint.x > r_rect.left &&
+			mousePoint.x < r_rect.right) {
+
+			rI = i;
+			break;
+		}
+	}
+	if (rI < 0) return;
+
+	// Create RecipeDlg from the recipe clicked on
+	RecipeDlg r_dlg(recipes[rI]);
+	INT_PTR nResponse = r_dlg.DoModal();
+
+	if (nResponse == IDOK) {
+		recipes[rI] = r_dlg.getRecipe();
+	}
+
+}
+
 void RecipeBookDlg::OnBnClickedButtonAdd()
 {
-	RecipeDlg r_dlg(recipes[0]);
+	RecipeDlg r_dlg;
 	INT_PTR nResponse = r_dlg.DoModal();
 
 	if (nResponse == IDOK) {

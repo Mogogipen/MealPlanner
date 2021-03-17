@@ -6,10 +6,6 @@ class Recipe
 {
 
 private:
-	CString title;
-	CString author;
-	std::vector<CString> ingredients;
-	CString instructions;
 
 	CRect titleRect;
 	CRect authorRect;
@@ -17,6 +13,11 @@ private:
 	CRect instRect;
 
 public:
+	CString title;
+	CString author;
+	std::vector<CString> ingredients;
+	CString instructions;
+
 	Recipe();
 	Recipe(int);
 	Recipe(CString, CString, std::vector<CString>, CString);
