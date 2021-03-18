@@ -12,6 +12,8 @@ private:
 	CFont normFont;
 	CFont bigFont;
 
+	int scrollPos;
+
 public:
 	RecipeBookDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~RecipeBookDlg();
@@ -32,4 +34,6 @@ public:
 	CString m_searchTerm;
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonAdd();
+	afx_msg void OnBnClickedButtonUp();
+	afx_msg void OnBnClickedButtonDown();
 };

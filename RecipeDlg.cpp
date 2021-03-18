@@ -202,7 +202,6 @@ void RecipeDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
 	ingredients.erase(ingredients.begin() + index);
 
-	UpdateData(FALSE);
 	Invalidate(TRUE);
 	UpdateWindow();
 
@@ -219,7 +218,6 @@ void RecipeDlg::OnBnClickedButtonAddIng()
 		CString ingredient = as_dlg.GetMealName();
 		ingredients.push_back(ingredient);
 
-		UpdateData(FALSE);
 		Invalidate(TRUE);
 		UpdateWindow();
 	}

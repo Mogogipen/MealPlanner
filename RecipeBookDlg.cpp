@@ -17,8 +17,8 @@ IMPLEMENT_DYNAMIC(RecipeBookDlg, CDialogEx)
 RecipeBookDlg::RecipeBookDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BOOK, pParent)
 	, m_searchTerm(_T("Search..."))
+	, scrollPos{ 0 }
 {
-
 }
 
 RecipeBookDlg::~RecipeBookDlg()
@@ -36,6 +36,8 @@ BEGIN_MESSAGE_MAP(RecipeBookDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &RecipeBookDlg::OnBnClickedButtonAdd)
+	ON_BN_CLICKED(IDC_BUTTON_UP, &RecipeBookDlg::OnBnClickedButtonUp)
+	ON_BN_CLICKED(IDC_BUTTON_DOWN, &RecipeBookDlg::OnBnClickedButtonDown)
 END_MESSAGE_MAP()
 
 //
@@ -89,6 +91,7 @@ BOOL RecipeBookDlg::OnInitDialog()
 	recipes.push_back(Recipe(4));
 	recipes.push_back(Recipe(5));
 	recipes.push_back(Recipe(6));
+	recipes.push_back(Recipe(7));
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -118,7 +121,9 @@ void RecipeBookDlg::OnPaint() {
 	int topMargin = 50;
 	int height = 250;
 	int padding = 10;
-	for (int i = 0; i < recipes.size(); i++) {
+	for (int i = 0; i < recipes.size() && i < 6; i++) {
+		int r_index = i + scrollPos * 6;
+		if (r_index >= recipes.size()) break;
 		CRect tmpRect(c_rect.left, c_rect.top, c_rect.left + width, c_rect.top + height);
 		int col = i % 3;
 		int row = i / 3;
@@ -127,12 +132,14 @@ void RecipeBookDlg::OnPaint() {
 		tmpRect.OffsetRect(
 			tmpLeft,
 			tmpTop);
-		recipes[i].buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
+		recipes[r_index].buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
 	}
 
 	// Paint Recipes
-	for (int i = 0; i < recipes.size(); i++) {
-		recipes[i].paint(dc);
+	for (int i = 0; i < recipes.size() && i < 6; i++) {
+		int r_index = i + scrollPos * 6;
+		if (r_index >= recipes.size()) break;
+		recipes[r_index].paint(dc);
 	}
 }
 
@@ -174,6 +181,32 @@ void RecipeBookDlg::OnBnClickedButtonAdd()
 	INT_PTR nResponse = r_dlg.DoModal();
 
 	if (nResponse == IDOK) {
-		// Add a new recipe
+		recipes.push_back(r_dlg.getRecipe());
+
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
+}
+
+
+void RecipeBookDlg::OnBnClickedButtonUp()
+{
+	if (scrollPos > 0) {
+		scrollPos--;
+
+		Invalidate(TRUE);
+		UpdateWindow();
+	}
+}
+
+
+void RecipeBookDlg::OnBnClickedButtonDown()
+{
+	int tmp = scrollPos * 6;
+	if (tmp < recipes.size()) {
+		scrollPos++;
+
+		Invalidate(TRUE);
+		UpdateWindow();
 	}
 }
