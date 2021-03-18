@@ -1,10 +1,1 @@
-﻿  MealPlannerDlg.cpp
-  Recipe.cpp
-  RecipeBookDlg.cpp
-  RecipeDlg.cpp
-  Generating code
-  38 of 797 functions ( 4.8%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  MealPlanner.vcxproj -> C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\x64\Release\MealPlanner.exe
+﻿  MealPlanner.vcxproj -> C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\x64\Release\MealPlanner.exe

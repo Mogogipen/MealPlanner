@@ -27,6 +27,7 @@
 #define IDC_BUTTON_NEWMEAL              1023
 #define IDC_BUTTON_HAND                 1023
 #define IDC_BUTTON_ADD                  1023
+#define IDC_BUTTON_ADD_ING              1023
 #define IDC_BUTTON_RECIPES2             1024
 #define IDC_BUTTON_LIST                 1024
 #define IDC_BUTTON_SHOP                 1024
@@ -38,7 +39,6 @@
 #define IDC_BUTTON_SEARCH               1026
 #define IDC_BUTTON3                     1027
 #define IDC_EDIT_AUTHOR                 1029
-#define IDC_EDIT3                       1030
 #define IDC_EDIT_INSTR                  1030
 #define ID_BUTTON2                      32771
 

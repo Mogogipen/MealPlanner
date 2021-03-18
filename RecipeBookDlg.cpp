@@ -138,7 +138,7 @@ void RecipeBookDlg::OnPaint() {
 
 void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
-	int rI = -1;
+	int index = -1;
 
 	// Find the recipe clicked on, return otherwise
 	for (int i = 0; i < recipes.size(); i++) {
@@ -148,18 +148,22 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 			mousePoint.x > r_rect.left &&
 			mousePoint.x < r_rect.right) {
 
-			rI = i;
+			index = i;
 			break;
 		}
 	}
-	if (rI < 0) return;
+	if (index < 0) return;
 
 	// Create RecipeDlg from the recipe clicked on
-	RecipeDlg r_dlg(recipes[rI]);
+	RecipeDlg r_dlg(recipes[index]);
 	INT_PTR nResponse = r_dlg.DoModal();
 
 	if (nResponse == IDOK) {
-		recipes[rI] = r_dlg.getRecipe();
+		recipes[index] = r_dlg.getRecipe();
+
+		UpdateData(FALSE);
+		Invalidate(TRUE);
+		UpdateWindow();
 	}
 
 }

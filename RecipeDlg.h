@@ -30,10 +30,14 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnLButtonUp(UINT, CPoint);
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_editTitle;
 	CString m_textTitle;
 	CEdit m_editAuthor;
 	CString m_textAuthor;
+	CString m_textInstructions;
+	afx_msg void OnBnClickedButtonAddIng();
 };
