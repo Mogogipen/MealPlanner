@@ -17,6 +17,6 @@ public:
 	AddStringDlg(CString, CString, CWnd* pParent = nullptr);
 	~AddStringDlg();
 
-	CString GetMealName();
+	CString GetInput();
 };
 

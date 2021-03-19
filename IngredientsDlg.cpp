@@ -237,7 +237,7 @@ void IngredientsDlg::OnBnClickedButtonHand()
 	INT_PTR nResponse = as_dlg.DoModal();
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
-		CString ingredient = as_dlg.GetMealName();
+		CString ingredient = as_dlg.GetInput();
 		onHand.push_back(ingredient);
 
 		UpdateData(FALSE);
@@ -253,7 +253,7 @@ void IngredientsDlg::OnBnClickedButtonShop()
 	INT_PTR nResponse = as_dlg.DoModal();
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the shopping list
-		CString ingredient = as_dlg.GetMealName();
+		CString ingredient = as_dlg.GetInput();
 		shoppingList.push_back(ingredient);
 
 		UpdateData(FALSE);

@@ -31,6 +31,6 @@ BOOL AddStringDlg::OnInitDialog() {
 }
 
 // Return value of the user's input to be used after OK returned
-CString AddStringDlg::GetMealName() {
+CString AddStringDlg::GetInput() {
 	return d_stringCaptured;
 }

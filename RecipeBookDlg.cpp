@@ -15,15 +15,34 @@
 IMPLEMENT_DYNAMIC(RecipeBookDlg, CDialogEx)
 
 RecipeBookDlg::RecipeBookDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOG_BOOK, pParent)
-	, m_searchTerm(_T("Search..."))
-	, scrollPos{ 0 }
+	: RecipeBookDlg(FALSE, pParent)
 {
+}
+
+RecipeBookDlg::RecipeBookDlg(BOOL select, CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_DIALOG_BOOK, pParent)
+	, scrollPos{ 0 }
+	, m_searchTerm(_T(""))
+	, isSelect{ select }
+{
+
 }
 
 RecipeBookDlg::~RecipeBookDlg()
 {
 }
+
+Recipe RecipeBookDlg::recipeClickedID() {
+	return recipes[selectedRecipeID];
+}
+
+//int RecipeBookDlg::recipeClickedID() {
+//	if (select == FALSE)
+//		return -1;
+//	else {
+//		return selectedRecipeID;
+//	}
+//}
 
 void RecipeBookDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -160,6 +179,15 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 		}
 	}
 	if (index < 0) return;
+
+	// If the Recipe Book is in select mode,
+	//	set the selectedID and close window
+	if (isSelect) {
+		//selectedRecipeID = recipes[index].r_id;
+		selectedRecipeID = index;
+		EndDialog(IDOK);
+		return;
+	}
 
 	// Create RecipeDlg from the recipe clicked on
 	RecipeDlg r_dlg(recipes[index]);

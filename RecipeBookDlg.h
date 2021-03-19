@@ -9,6 +9,9 @@ class RecipeBookDlg : public CDialogEx
 	DECLARE_DYNAMIC(RecipeBookDlg)
 
 private:
+	BOOL isSelect;
+	int selectedRecipeID = -1;
+
 	CFont normFont;
 	CFont bigFont;
 
@@ -16,7 +19,9 @@ private:
 
 public:
 	RecipeBookDlg(CWnd* pParent = nullptr);   // standard constructor
+	RecipeBookDlg(BOOL, CWnd* pParent = nullptr);
 	virtual ~RecipeBookDlg();
+	Recipe recipeClickedID(); // Temporary
 	std::vector<Recipe> recipes;
 
 // Dialog Data

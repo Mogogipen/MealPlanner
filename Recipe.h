@@ -13,6 +13,7 @@ private:
 	CRect instRect;
 
 public:
+	int r_id;
 	CString title;
 	CString author;
 	std::vector<CString> ingredients;

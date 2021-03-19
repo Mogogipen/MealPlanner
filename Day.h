@@ -1,11 +1,12 @@
 #pragma once
 
 #include <vector>
+#include "Recipe.h"
 
 struct Meal {
 	CString name;
 	CRect rect;
-	std::vector<CString> dishes;
+	std::vector<Recipe> dishes;
 };
 
 class Day
@@ -31,13 +32,14 @@ public:
 	CString getMealName(int);
 	int getDishCount(int);
 	CString getDishName(int, int);
+	Recipe getDishRecipe(int, int);
 	void setRect(CRect);
 
 	CString toString();
 
 	void addMeal(CString);
 	bool rmMeal(int);
-	bool addDish(int, CString);
+	bool addDish(int, Recipe);
 	bool rmDish(int, int);
 
 	void paintMeals(CPaintDC&);

@@ -26,9 +26,10 @@ RecipeDlg::RecipeDlg(Recipe r, CWnd* pParent)
 	: CDialogEx(IDD_DIALOG_RECIPE, pParent)
 	, m_textTitle(r.getTitle())
 	, m_textAuthor(r.getAuthor())
+	, m_textInstructions(_T(""))
 	, recipe {r}
+	, ingredients{ recipe.ingredients }
 {
-	ingredients = recipe.ingredients;
 }
 
 RecipeDlg::~RecipeDlg()
@@ -215,7 +216,7 @@ void RecipeDlg::OnBnClickedButtonAddIng()
 
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the shopping list
-		CString ingredient = as_dlg.GetMealName();
+		CString ingredient = as_dlg.GetInput();
 		ingredients.push_back(ingredient);
 
 		Invalidate(TRUE);

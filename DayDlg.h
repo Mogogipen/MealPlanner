@@ -27,8 +27,11 @@ protected:
 	// The vector indices correspond to the meal indices
 	std::vector<CRect> rmMeal_btns;
 	std::vector<CRect> addDish_btns;
+	std::vector<CRect> dishRects;
+	std::vector<int> dishRects_indices;
 	std::vector<CRect> rmDish_btns;
 	std::vector<int> rmDish_indices;
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
