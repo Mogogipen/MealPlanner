@@ -113,6 +113,9 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
 
+	// Set window to fullscreen
+	ShowWindow(SW_MAXIMIZE);
+
 	// Init Month label
 	GetDlgItem(IDC_STATIC_TEXT)->SetFont(&bigFont);
 	reset_m_staticText();

@@ -71,10 +71,10 @@ BOOL IngredientsDlg::OnInitDialog() {
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
 
-	// Set window size?
-	//CRect w_rect;
-	//GetWindowRect(w_rect);
-	//SetWindowPos(NULL, 0, 0, w_rect.right, w_rect.bottom, 0);
+	// Set window size
+	CRect w_rect;
+	GetWindowRect(w_rect);
+	SetWindowPos(NULL, w_rect.left, w_rect.top, w_rect.left + 150, w_rect.top + 200, 0);
 
 	// Test values
 	onHand.push_back(L"Salt");
