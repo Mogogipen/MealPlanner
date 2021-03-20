@@ -42,6 +42,7 @@ private:
 public:
 	Calendar calendar;
 	bool hasDrawnOnce;
+	std::vector<CString> onHandList;
 
 // Implementation
 protected:

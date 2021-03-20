@@ -13,8 +13,9 @@
 
 IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
-IngredientsDlg::IngredientsDlg(CWnd* pParent /*=nullptr*/)
+IngredientsDlg::IngredientsDlg(std::vector<CString>& onHandList, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
+	, onHand{ onHandList }
 {
 }
 

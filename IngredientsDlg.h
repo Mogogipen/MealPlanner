@@ -9,7 +9,7 @@ class IngredientsDlg : public CDialogEx
 	DECLARE_DYNAMIC(IngredientsDlg)
 
 public:
-	IngredientsDlg(CWnd* pParent = nullptr);   // standard constructor
+	IngredientsDlg(std::vector<CString>& onHand, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~IngredientsDlg();
 
 // Dialog Data

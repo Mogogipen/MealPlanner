@@ -24,16 +24,16 @@
 // 
 // Acct: 491257
 // 
-// Host: sql3.freesqldatabase.com
-// Name: sql3393434
-// User: sql3393434
+// Host: 34.106.20.72
+// Name: mydb
+// User: root
 // Pass: glGrQlB4Ly
 // Port: 3306
 //
 
+//
 // CMealPlannerDlg dialog
-
-
+//
 
 CMealPlannerDlg::CMealPlannerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MEALPLANNER_DIALOG, pParent)
@@ -121,34 +121,52 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	reset_m_staticText();
 	UpdateData(FALSE);
 
-	// // TODO: Create a Google Cloud SQL DB
-	// Host: 
-	// Name: 
-	// User: 
-	// Pass: 
-	//try {
-	//	sql::Driver* driver;
-	//	sql::Connection* con;
-	//	sql::Statement* stmt;
-	//	sql::ResultSet* res;
+	// Connect to DB
+	// Host: 34.106.20.72
+	// Name: mydb
+	// User: root
+	// Pass: glGrQlB4Ly
+	// Port: 3306
+	try {
+		sql::Driver* driver;
+		sql::Connection* con;
+		sql::Statement* stmt;
+		sql::ResultSet* res;
 
-	//	// Create a connection
-	//	char s[] = "testStr";
-	//	driver = get_driver_instance();
-	//	con = driver->connect(s,s,s);
+		// Create a connection
+		char host[] = "34.106.20.72";
+		char user[] = "root";
+		char pass[] = "glGrQlB4Ly";
+		driver = get_driver_instance();
+		con = driver->connect(host, user, pass);
 
-	//	stmt = con->createStatement();
-	//	res = stmt->executeQuery(s);
+		stmt = con->createStatement();
+		res = stmt->executeQuery("SELECT * FROM mydb.ingredient");
+		CString msg;
+		while (res->next()) {
+			msg += L"\t... MySQL replies: ";
+			/* Access column data by alias or column name */
+			msg += res->getString("idingredient").c_str();
+			msg += "\n";
+		}
+		CString s(L" ");
+		msg.SetAt(msg.GetLength()-1, *s);
+		MessageBox(msg);
 
-	//	delete res;
-	//	delete stmt;
-	//	delete con;
-	//}
-	//catch (sql::SQLException& e) {
-	//	CString errMsg;
-	//	errMsg.Format(L"SQL Exception: %d", e.getErrorCode());
-	//	MessageBox(errMsg);
-	//}
+		delete res;
+		delete stmt;
+		delete con;
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+		MessageBox(errMsg);
+		EndDialog(TRUE);
+		return FALSE;
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -289,6 +307,6 @@ void CMealPlannerDlg::OnBnClickedButtonRecipes()
 
 void CMealPlannerDlg::OnBnClickedButtonList()
 {
-	IngredientsDlg i_dlg;
+	IngredientsDlg i_dlg(onHandList);
 	INT_PTR nResponse = i_dlg.DoModal();
 }
