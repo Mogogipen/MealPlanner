@@ -100,7 +100,7 @@ CString Day::toString() {
 	for (int i = 0; i < meals.size(); i++) {
 		result += L"%" + meals[i].name + L"|";
 		for (int j = 0; j < meals[i].dishes.size(); j++) {
-			result += meals[i].dishes[j].r_id + L"|";
+			result += meals[i].dishes[j].title + L"|";
 		}
 	}
 	return result;

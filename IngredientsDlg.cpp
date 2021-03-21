@@ -15,8 +15,8 @@ IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
 IngredientsDlg::IngredientsDlg(std::vector<CString>& onHandList, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
-	, onHand{ onHandList }
 {
+	onHand = onHandList;
 }
 
 IngredientsDlg::~IngredientsDlg()
@@ -74,13 +74,10 @@ BOOL IngredientsDlg::OnInitDialog() {
 
 	// Set window size
 	CRect w_rect;
-	GetWindowRect(w_rect);
-	SetWindowPos(NULL, w_rect.left, w_rect.top, w_rect.left + 150, w_rect.top + 200, 0);
+	this->GetWindowRect(w_rect);
+	MoveWindow(w_rect.left, w_rect.top, 450, 450, FALSE);
 
 	// Test values
-	onHand.push_back(L"Salt");
-	onHand.push_back(L"Milk");
-	onHand.push_back(L"Ground Beef");
 	shoppingList.push_back(L"Green Beans");
 	shoppingList.push_back(L"Potatoes");
 	shoppingList.push_back(L"Tomato Soup");
