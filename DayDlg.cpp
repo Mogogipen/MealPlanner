@@ -9,6 +9,8 @@
 #include "afxdialogex.h"
 #include "Day.h"
 #include "GetStrDlg.h"
+#include "RecipeBookDlg.h"
+#include "RecipeDlg.h"
 
 
 // DayDlg dialog
@@ -92,6 +94,8 @@ void DayDlg::OnPaint() {
 	// Clear CRect vectors
 	rmMeal_btns.clear();
 	addDish_btns.clear();
+	dishRects.clear();
+	dishRects_indices.clear();
 	rmDish_btns.clear();
 	rmDish_indices.clear();
 
@@ -126,7 +130,6 @@ void DayDlg::OnPaint() {
 
 	// Init rect containers
 	std::vector<CRect> mealRects;
-	std::vector<CRect> dishRects;
 	for (int i = 0; i < m_count; i++) {
 		// Draw meal
 		CRect nextRect(
@@ -167,6 +170,8 @@ void DayDlg::OnPaint() {
 				nextRect.right - 5,
 				nextRect.top + ((j + 2) * 15) + 2);
 			dc.DrawTextW(day.getDishName(i, j), nextDishRect, DT_LEFT);
+			dishRects.push_back(nextDishRect);
+			dishRects_indices.push_back(int(j));
 
 			// Build rm button
 			CRect rmDish_btn(btn);
@@ -191,7 +196,7 @@ void DayDlg::OnBnClickedButtonNewmeal()
 	INT_PTR nResponse = am_dlg.DoModal();
 	if (nResponse == IDOK) {
 		// If OK, add meal to the day
-		CString mealName = am_dlg.GetMealName();
+		CString mealName = am_dlg.GetInput();
 		day.addMeal(mealName);
 
 		UpdateData(FALSE);
@@ -207,12 +212,24 @@ void DayDlg::OnBnClickedButtonNewmeal()
 // Left Mouse button released
 //	Checks to see if the LMB was released on a pseudo button.
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
+	
+	// Find what was clicked
 	int index = clickOnBtnSearch(point, rmMeal_btns);
 	if (index < 0) {
 		index = clickOnBtnSearch(point, addDish_btns);
 		if (index < 0) {
 			index = clickOnBtnSearch(point, rmDish_btns);
-			if (index < 0) return;
+			if (index < 0) {
+				index = clickOnBtnSearch(point, dishRects);
+				if (index < 0) return;
+
+				// Clicked on a dish
+				else {
+					// Display the RecipeDlg for the dish's recipe
+					RecipeDlg r_dlg(day.getDishRecipe(index, dishRects_indices[index]));
+					r_dlg.DoModal();
+				}
+			}
 			// Clicked remove dish button
 			else {
 				// Remove the dish selected
@@ -226,13 +243,13 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 		}
 		// Clicked add dish button
 		else {
-			// Create a dlg box for this
-			AddStringDlg ad_dlg(L"Add a dish", L"Dish name");
+			// Create a dlg box to get the user's input
+			RecipeBookDlg ad_dlg(TRUE);
 			INT_PTR nResponse = ad_dlg.DoModal();
 			if (nResponse == IDOK) {
 				// If OK pushed, add dish to day's selected meal
-				CString dishName = ad_dlg.GetMealName();
-				day.addDish(index, dishName);
+				Recipe dishRecipe = ad_dlg.recipeClickedID();
+				day.addDish(index, dishRecipe);
 			}
 			else if (nResponse == -1) {
 				TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");

@@ -229,7 +229,7 @@ void Calendar::loadFromFile(CString& filePath) {
 
 	file.Open(filePath, CFile::modeRead | CFile::typeText);
 	BOOL eof = !file.ReadString(line);
-	while (!eof) {
+	while (!eof && line != L"#") {
 		// Prep this day's date
 		COleDateTime d_date = COleDateTime::GetCurrentTime();
 		int year = _ttoi(line.Mid(0, 4));

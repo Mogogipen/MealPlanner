@@ -3,19 +3,21 @@
 
 #include <vector>
 #include "pch.h"
+#include "global.h"
 #include "MealPlanner.h"
-#include "IngredientsDlg.h"
 #include "afxdialogex.h"
-#include "GetStrDlg.h"
+#include "AddIngDlg.h"
+#include "IngredientsDlg.h"
 
 
 // IngredientsDlg dialog
 
 IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
-IngredientsDlg::IngredientsDlg(CWnd* pParent /*=nullptr*/)
+IngredientsDlg::IngredientsDlg(std::vector<CString>& onHandList, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
 {
+	onHand = onHandList;
 }
 
 IngredientsDlg::~IngredientsDlg()
@@ -71,15 +73,12 @@ BOOL IngredientsDlg::OnInitDialog() {
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
 
-	// Set window size?
-	//CRect w_rect;
-	//GetWindowRect(w_rect);
-	//SetWindowPos(NULL, 0, 0, w_rect.right, w_rect.bottom, 0);
+	// Set window size
+	CRect w_rect;
+	this->GetWindowRect(w_rect);
+	MoveWindow(w_rect.left, w_rect.top, 450, 450, FALSE);
 
 	// Test values
-	onHand.push_back(L"Salt");
-	onHand.push_back(L"Milk");
-	onHand.push_back(L"Ground Beef");
 	shoppingList.push_back(L"Green Beans");
 	shoppingList.push_back(L"Potatoes");
 	shoppingList.push_back(L"Tomato Soup");
@@ -216,7 +215,7 @@ void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 }
 // Companion to OnLButtonUp()
-//	Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
+// Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
 int IngredientsDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
 	for (int i = 0; i < searchList.size(); i++) {
 		if (mousePoint.x > searchList[i].left &&
@@ -233,12 +232,14 @@ int IngredientsDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& sea
 // Add an item to the on-hand ingredients button pushed
 void IngredientsDlg::OnBnClickedButtonHand()
 {
-	AddStringDlg as_dlg(L"Add an ingredient", L"Ingredient");
-	INT_PTR nResponse = as_dlg.DoModal();
+	AddIngDlg ai_dlg;
+	INT_PTR nResponse = ai_dlg.DoModal();
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
-		CString ingredient = as_dlg.GetMealName();
-		onHand.push_back(ingredient);
+		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
+		if (ingredient.second == "") return;
+		oh_ids.push_back(ingredient.first);
+		onHand.push_back(ingredient.second);
 
 		UpdateData(FALSE);
 		Invalidate(TRUE);
@@ -249,15 +250,15 @@ void IngredientsDlg::OnBnClickedButtonHand()
 // Add an item to the shopping list button pushed
 void IngredientsDlg::OnBnClickedButtonShop()
 {
-	AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
-	INT_PTR nResponse = as_dlg.DoModal();
-	if (nResponse == IDOK) {
-		// If OK, add an ingredient to the shopping list
-		CString ingredient = as_dlg.GetMealName();
-		shoppingList.push_back(ingredient);
+	//AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
+	//INT_PTR nResponse = as_dlg.DoModal();
+	//if (nResponse == IDOK) {
+	//	// If OK, add an ingredient to the shopping list
+	//	CString ingredient = as_dlg.GetInput();
+	//	shoppingList.push_back(ingredient);
 
-		UpdateData(FALSE);
-		Invalidate(TRUE);
-		UpdateWindow();
-	}
+	//	UpdateData(FALSE);
+	//	Invalidate(TRUE);
+	//	UpdateWindow();
+	//}
 }

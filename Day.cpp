@@ -1,5 +1,6 @@
 #include <vector>
 #include "pch.h"
+#include "Recipe.h"
 #include "Day.h"
 
 
@@ -74,6 +75,11 @@ int Day::getDishCount(int index) {
 
 // Return the name of a dish at the given meal and dish indices
 CString Day::getDishName(int m_index, int d_index) {
+	return meals[m_index].dishes[d_index].getTitle();
+}
+
+// Return the recipe of a dish at the given meal and dish indices
+Recipe Day::getDishRecipe(int m_index, int d_index) {
 	return meals[m_index].dishes[d_index];
 }
 
@@ -94,7 +100,7 @@ CString Day::toString() {
 	for (int i = 0; i < meals.size(); i++) {
 		result += L"%" + meals[i].name + L"|";
 		for (int j = 0; j < meals[i].dishes.size(); j++) {
-			result += meals[i].dishes[j] + L"|";
+			result += meals[i].dishes[j].title + L"|";
 		}
 	}
 	return result;
@@ -126,7 +132,7 @@ void Day::loadFromString(CString& line) {
 				}
 				// Add a new dish at the current location with the built name if it is not a meal
 				else {
-					meals[mealCounter].dishes.push_back(nextName);
+					//meals[mealCounter].dishes.push_back(nextName);
 				}
 				nextName = L"";
 				isMeal = false;
@@ -159,9 +165,9 @@ void Day::addMeal(CString mealName) {
 }
 
 // Adds a new dish with the given name to the meal at the given index
-bool Day::addDish(int mealIndex, CString dishName) {
+bool Day::addDish(int mealIndex, Recipe newDish) {
 	if (mealIndex > -1 && mealIndex < meals.size()) {
-		meals[mealIndex].dishes.push_back(dishName);
+		meals[mealIndex].dishes.push_back(newDish);
 		return true;
 	}
 	return false;

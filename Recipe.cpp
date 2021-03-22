@@ -9,6 +9,7 @@ Recipe::Recipe() {
 	ingredients.push_back(L"Ground Beef");
 	title = L"Shephard's Pie";
 	author = L"Sharon Cornett";
+	instructions = L"Heat the pie up to 3,000 degrees and then boil the whole thing just to be safe. Don't worry all will be well, I've never had it burn before.";
 }
 
 // Used for testing, remove upon release
@@ -36,7 +37,7 @@ CString Recipe::getAuthor() {
 
 // Builds the Recipe Rect (main and text rects)
 void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
-	// Build independant rects (main, title, and author)
+	// Build independant rects (main, title, author, and instructions)
 	mainRect = CRect(
 		left + padding,
 		top + padding,
@@ -83,7 +84,8 @@ void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
 void Recipe::paint(CPaintDC& dc) {
 	dc.Rectangle(&mainRect);
 	dc.DrawTextW(title, &titleRect, DT_CENTER);
-	dc.DrawTextW(author, &authorRect, DT_LEFT);
+	CString a_text = L"By: " + author;
+	dc.DrawTextW(a_text, &authorRect, DT_LEFT);
 	for (int i = 0; i < ingredients.size(); i++) {
 		dc.DrawTextW(ingredients[i], &ingredientRects[i], DT_LEFT);
 	}

@@ -24,6 +24,7 @@ class CMealPlannerDlg : public CDialogEx
 // Construction
 public:
 	CMealPlannerDlg(CWnd* pParent = nullptr);	// standard constructor
+	~CMealPlannerDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -42,6 +43,7 @@ private:
 public:
 	Calendar calendar;
 	bool hasDrawnOnce;
+	std::vector<CString> onHandList;
 
 // Implementation
 protected:
