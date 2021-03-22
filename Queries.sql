@@ -26,11 +26,16 @@ INSERT INTO mydb.recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient
 DELETE FROM mydb.recipe WHERE id = rID;
 DELETE FROM mydb.recipe_has_ingredient WHERE recipe_idrecipe = rID;
 
+--
 -- Add a new ingredient
 INSERT INTO mydb.ingredient (name) VALUES ('<Name>');
 
 -- Get all ingredients
 SELECT * FROM ingredient;
+
+-- Delete all unused ingredients
+DELETE FROM mydb.ingredient
+	WHERE idingredient NOT IN (SELECT ingredient_idingredient FROM recipe_has_ingredient);
 
 -- Get all unique ingredients used in recipes with specific ids
 SELECT idingredient, name
