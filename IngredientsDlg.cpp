@@ -3,10 +3,11 @@
 
 #include <vector>
 #include "pch.h"
+#include "global.h"
 #include "MealPlanner.h"
-#include "IngredientsDlg.h"
 #include "afxdialogex.h"
-#include "GetStrDlg.h"
+#include "AddIngDlg.h"
+#include "IngredientsDlg.h"
 
 
 // IngredientsDlg dialog
@@ -214,7 +215,7 @@ void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 }
 // Companion to OnLButtonUp()
-//	Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
+// Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
 int IngredientsDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
 	for (int i = 0; i < searchList.size(); i++) {
 		if (mousePoint.x > searchList[i].left &&
@@ -231,12 +232,13 @@ int IngredientsDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& sea
 // Add an item to the on-hand ingredients button pushed
 void IngredientsDlg::OnBnClickedButtonHand()
 {
-	AddStringDlg as_dlg(L"Add an ingredient", L"Ingredient");
-	INT_PTR nResponse = as_dlg.DoModal();
+	AddIngDlg ai_dlg;
+	INT_PTR nResponse = ai_dlg.DoModal();
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
-		CString ingredient = as_dlg.GetInput();
-		onHand.push_back(ingredient);
+		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
+		oh_ids.push_back(ingredient.first);
+		onHand.push_back(ingredient.second);
 
 		UpdateData(FALSE);
 		Invalidate(TRUE);
@@ -247,15 +249,15 @@ void IngredientsDlg::OnBnClickedButtonHand()
 // Add an item to the shopping list button pushed
 void IngredientsDlg::OnBnClickedButtonShop()
 {
-	AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
-	INT_PTR nResponse = as_dlg.DoModal();
-	if (nResponse == IDOK) {
-		// If OK, add an ingredient to the shopping list
-		CString ingredient = as_dlg.GetInput();
-		shoppingList.push_back(ingredient);
+	//AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
+	//INT_PTR nResponse = as_dlg.DoModal();
+	//if (nResponse == IDOK) {
+	//	// If OK, add an ingredient to the shopping list
+	//	CString ingredient = as_dlg.GetInput();
+	//	shoppingList.push_back(ingredient);
 
-		UpdateData(FALSE);
-		Invalidate(TRUE);
-		UpdateWindow();
-	}
+	//	UpdateData(FALSE);
+	//	Invalidate(TRUE);
+	//	UpdateWindow();
+	//}
 }

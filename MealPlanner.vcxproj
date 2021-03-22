@@ -191,11 +191,13 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddIngDlg.h" />
     <ClInclude Include="GetStrDlg.h" />
     <ClInclude Include="Calendar.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="global.h" />
     <ClInclude Include="Include\cppconn\build_config.h" />
     <ClInclude Include="Include\cppconn\config.h" />
     <ClInclude Include="Include\cppconn\connection.h" />
@@ -226,6 +228,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddIngDlg.cpp" />
     <ClCompile Include="GetStrDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Day.cpp" />

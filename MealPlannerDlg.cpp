@@ -5,6 +5,7 @@
 #include <map>
 #include "pch.h"
 #include "framework.h"
+#include "global.h"
 #include "MealPlanner.h"
 #include "MealPlannerDlg.h"
 #include "afxdialogex.h"
@@ -13,6 +14,11 @@
 #include "DayDlg.h"
 #include "RecipeBookDlg.h"
 #include "IngredientsDlg.h"
+
+sql::Driver* driver;
+sql::Connection* con;
+sql::Statement* stmt;
+sql::ResultSet* res;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,6 +48,13 @@ CMealPlannerDlg::CMealPlannerDlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	calendar = Calendar();
+}
+
+CMealPlannerDlg::~CMealPlannerDlg()
+{
+	delete res;
+	delete stmt;
+	delete con;
 }
 
 void CMealPlannerDlg::DoDataExchange(CDataExchange* pDX)
@@ -131,10 +144,6 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	// Pass: glGrQlB4Ly
 	// Port: 3306
 	try {
-		sql::Driver* driver;
-		sql::Connection* con;
-		sql::Statement* stmt;
-		sql::ResultSet* res;
 
 		// Create a connection
 		char host[] = "34.106.20.72";
@@ -155,9 +164,6 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		msg.SetAt(msg.GetLength()-1, *s);
 		//MessageBox(msg);
 
-		delete res;
-		delete stmt;
-		delete con;
 	}
 	catch (sql::SQLException& e) {
 		CString errMsg;

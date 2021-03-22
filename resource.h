@@ -12,6 +12,7 @@
 #define IDD_DIALOG_BOOK                 138
 #define IDD_DIALOG_LIST                 140
 #define IDD_DIALOG_RECIPE               144
+#define IDD_DIALOG_ADD_ING              146
 #define IDC_STATIC_TEXT                 1012
 #define IDC_BUTTON_LEFT                 1016
 #define IDC_BUTTON_L                    1018
@@ -40,15 +41,16 @@
 #define IDC_BUTTON3                     1027
 #define IDC_EDIT_AUTHOR                 1029
 #define IDC_EDIT_INSTR                  1030
+#define IDC_COMBO                       1031
 #define ID_BUTTON2                      32771
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        146
+#define _APS_NEXT_RESOURCE_VALUE        148
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1031
+#define _APS_NEXT_CONTROL_VALUE         1032
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -33,6 +33,7 @@ private:
 	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
 public:
 	std::vector<CString> onHand;
+	std::vector<int> oh_ids;
 
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonShop();

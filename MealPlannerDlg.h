@@ -24,6 +24,7 @@ class CMealPlannerDlg : public CDialogEx
 // Construction
 public:
 	CMealPlannerDlg(CWnd* pParent = nullptr);	// standard constructor
+	~CMealPlannerDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
