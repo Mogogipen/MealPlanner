@@ -26,8 +26,10 @@ AddIngDlg::~AddIngDlg()
 // Returns the id of the ingredient selected
 std::pair<int, CString> AddIngDlg::GetIngredient() {
 	std::pair<int, CString> result;
-	result.first = ids[selected];
-	result.second = names[selected];
+	if (names.size() > 0) {
+		result.first = ids[selected];
+		result.second = names[selected];
+	}
 	return result;
 }
 

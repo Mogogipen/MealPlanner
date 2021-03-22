@@ -237,6 +237,7 @@ void IngredientsDlg::OnBnClickedButtonHand()
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
 		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
+		if (ingredient.second == "") return;
 		oh_ids.push_back(ingredient.first);
 		onHand.push_back(ingredient.second);
 
