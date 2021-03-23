@@ -153,16 +153,7 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		con = driver->connect(host, user, pass);
 
 		stmt = con->createStatement();
-		res = stmt->executeQuery("SELECT * FROM mydb.ingredient");
-		CString msg;
-		while (res->next()) {
-			/* Access column data by alias or column name */
-			msg += res->getString("idingredient").c_str();
-			msg += "\n";
-		}
-		CString s(L" ");
-		msg.SetAt(msg.GetLength()-1, *s);
-		//MessageBox(msg);
+		stmt->execute("USE mydb");
 
 	}
 	catch (sql::SQLException& e) {

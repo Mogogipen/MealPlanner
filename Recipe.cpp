@@ -1,39 +1,77 @@
 
 #include <vector>
 #include "pch.h"
+#include "global.h"
 #include "Recipe.h"
 
-Recipe::Recipe() {
-	ingredients.push_back(L"Potatoes");
-	ingredients.push_back(L"Green Beans");
-	ingredients.push_back(L"Ground Beef");
-	title = L"Shephard's Pie";
-	author = L"Sharon Cornett";
-	instructions = L"Heat the pie up to 3,000 degrees and then boil the whole thing just to be safe. Don't worry all will be well, I've never had it burn before.";
+// Constructors
+Recipe::Recipe()
+	: id(0)
+	, title(L"")
+	, instructions(L"")
+{
 }
 
-// Used for testing, remove upon release
-Recipe::Recipe(int count) : Recipe() {
-	CString num;
-	num.Format(L"%d", count);
-	title += num;
+Recipe::Recipe(int r_id) : Recipe() {
+
+	// Generate recipe from SQL database
+	try {
+		CStringA query;
+		query.Format("SELECT * FROM recipe WHERE idrecipe = %d", r_id);
+		stmt = con->createStatement();
+		res = stmt->executeQuery((const char*)query);
+		if (res->next()) {
+			// Build recipe info
+			id = res->getInt("idrecipe");
+			title = res->getString("title").c_str();
+			author = res->getString("author").c_str();
+			instructions = res->getString("instructions").c_str();
+
+			// Build recipe ingredients list
+			query.Format("SELECT name, ingQty FROM ingredient, recipe_has_ingredient WHERE idingredient = ingredient_idingredient AND recipe_idrecipe = %d", id);
+			res = stmt->executeQuery((const char*)query);
+			while (res->next()) {
+				CString line(res->getString("ingQty").c_str());
+				line += res->getString("name").c_str();
+				ingredients.push_back(line);
+			}
+		}
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+	}
 }
 
 Recipe::Recipe(CString title, CString author, std::vector<CString> ingredients, CString instructions = L"") {
 	this->title = title;
 	this->author = author;
 	this->ingredients = ingredients;
+	this->instructions = instructions;
 }
 
 Recipe::~Recipe() { }
 
+//
 // Getters
+//
+
 CString Recipe::getTitle() {
 	return title;
 }
 CString Recipe::getAuthor() {
 	return author;
 }
+CString Recipe::getInstructions() {
+	return instructions;
+}
+
+//
+// Painting
+//
 
 // Builds the Recipe Rect (main and text rects)
 void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {

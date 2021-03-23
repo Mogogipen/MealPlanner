@@ -5,8 +5,8 @@ SET iID = 1;
 -- Get a recipe with a specific id
 SELECT * FROM recipe WHERE idrecipe = rID;
 
--- Get all recipes
-SELECT * FROM recipe;
+-- Get all ids in recipe table
+SELECT id FROM recipe;
 
 -- Get all ingredients associated with a recipe
 SELECT name, ingQty

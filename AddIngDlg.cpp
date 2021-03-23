@@ -47,7 +47,7 @@ BOOL AddIngDlg::OnInitDialog()
 
 		// SQL Query
 		stmt = con->createStatement();
-		res = stmt->executeQuery("SELECT * FROM mydb.ingredient");
+		res = stmt->executeQuery("SELECT * FROM ingredient");
 
 		while (res->next()) {
 			// Fill comboBox with ingredient names and add to id vector

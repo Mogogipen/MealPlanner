@@ -13,7 +13,7 @@ private:
 	CRect instRect;
 
 public:
-	int r_id;
+	int id;
 	CString title;
 	CString author;
 	std::vector<CString> ingredients;
@@ -26,6 +26,7 @@ public:
 
 	CString getTitle();
 	CString getAuthor();
+	CString getInstructions();
 
 	void buildRect(int, int, int, int, int);
 	void paint(CPaintDC&);

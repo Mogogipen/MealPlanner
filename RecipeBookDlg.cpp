@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "pch.h"
+#include "global.h"
 #include "afxdialogex.h"
 #include "Recipe.h"
 #include "MealPlanner.h"
@@ -103,14 +104,34 @@ BOOL RecipeBookDlg::OnInitDialog()
 	// Init Month label
 	UpdateData(FALSE);
 
-	// Used for testing, remove upon release
-	recipes.push_back(Recipe(1));
-	recipes.push_back(Recipe(2));
-	recipes.push_back(Recipe(3));
-	recipes.push_back(Recipe(4));
-	recipes.push_back(Recipe(5));
-	recipes.push_back(Recipe(6));
-	recipes.push_back(Recipe(7));
+	// Build recipe list from sql database
+	try {
+		std::vector<int> ids;
+
+		// Get all ids from DB
+		CStringA query;
+		query.Format("SELECT idrecipe FROM recipe");
+		stmt = con->createStatement();
+		res = stmt->executeQuery((const char*)query);
+		while (res->next()) {
+			ids.push_back(res->getInt("idrecipe"));
+		}
+
+		// Create a new recipe and add it to the recipe book by id
+		for (int i = 0; i < ids.size(); i++) {
+			recipes.push_back(Recipe(ids[i]));
+		}
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+		MessageBox(errMsg);
+		EndDialog(TRUE);
+		return FALSE;
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

@@ -26,7 +26,7 @@ RecipeDlg::RecipeDlg(Recipe r, CWnd* pParent)
 	: CDialogEx(IDD_DIALOG_RECIPE, pParent)
 	, m_textTitle(r.getTitle())
 	, m_textAuthor(r.getAuthor())
-	, m_textInstructions(_T(""))
+	, m_textInstructions(r.getInstructions())
 	, recipe {r}
 	, ingredients{ recipe.ingredients }
 {
