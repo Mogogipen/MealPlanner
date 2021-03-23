@@ -21,6 +21,7 @@ public:
 private:
 	Recipe recipe;
 	std::vector<CString> ingredients;
+	std::vector<int> i_ids;
 	std::vector<CRect> rmv_iRects;
 
 	CFont normFont;

@@ -186,6 +186,7 @@
     <None Include="Libraries\mysqlcppconn-9-vs14.dll">
       <Filter>Libraries</Filter>
     </None>
+    <None Include="Queries.sql" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MealPlanner.ico">
