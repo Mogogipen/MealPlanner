@@ -28,12 +28,14 @@ Recipe::Recipe(int r_id) : Recipe() {
 			instructions = res->getString("instructions").c_str();
 
 			// Build recipe ingredients list
-			query.Format("SELECT name, ingQty FROM ingredient, recipe_has_ingredient WHERE idingredient = ingredient_idingredient AND recipe_idrecipe = %d", id);
+			query.Format("SELECT idingredient, name, ingQty FROM ingredient, recipe_has_ingredient WHERE idingredient = ingredient_idingredient AND recipe_idrecipe = %d", id);
 			res = stmt->executeQuery((const char*)query);
 			while (res->next()) {
-				CString line(res->getString("ingQty").c_str());
-				line += res->getString("name").c_str();
-				ingredients.push_back(line);
+				CString name(res->getString("ingQty").c_str());
+				CString qty(res->getString("name").c_str());
+				ingredients.push_back(name);
+				i_qtys.push_back(qty);
+				i_ids.push_back(res->getInt("idingredient"));
 			}
 		}
 	}
@@ -125,6 +127,7 @@ void Recipe::paint(CPaintDC& dc) {
 	CString a_text = L"By: " + author;
 	dc.DrawTextW(a_text, &authorRect, DT_LEFT);
 	for (int i = 0; i < ingredients.size(); i++) {
-		dc.DrawTextW(ingredients[i], &ingredientRects[i], DT_LEFT);
+		CString text = i_qtys[i] + L" " + ingredients[i];
+		dc.DrawTextW(text, &ingredientRects[i], DT_LEFT);
 	}
 }

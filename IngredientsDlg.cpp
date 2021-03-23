@@ -204,6 +204,7 @@ void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	// Clicked remove on-hand item button
 	else {
 		// Remove the ingredient selected
+		oh_ids.erase(oh_ids.begin() + index);
 		onHand.erase(onHand.begin() + index);
 	}
 

@@ -7,6 +7,7 @@
 #include "RecipeDlg.h"
 #include "GetStrDlg.h"
 #include "afxdialogex.h"
+#include "AddIngDlg.h"
 
 
 // RecipeDlg dialog
@@ -164,8 +165,6 @@ void RecipeDlg::OnPaint() {
 
 void RecipeDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
-
 	UpdateData(TRUE);
 
 	if (m_textTitle.GetLength() == 0 ||
@@ -175,9 +174,13 @@ void RecipeDlg::OnBnClickedOk()
 		return;
 	}
 
+	// Update database
+
+	// Update recipe
 	recipe.title = m_textTitle;
 	recipe.author = m_textAuthor;
 	recipe.ingredients = ingredients;
+	recipe.i_ids = i_ids;
 	recipe.instructions = m_textInstructions;
 
 	CDialogEx::OnOK();
@@ -211,13 +214,14 @@ void RecipeDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
 void RecipeDlg::OnBnClickedButtonAddIng()
 {
-	AddStringDlg as_dlg(L"Add an ingredient", L"Ingredient");
-	INT_PTR nResponse = as_dlg.DoModal();
+	AddIngDlg ai_dlg;
+	INT_PTR nResponse = ai_dlg.DoModal();
 
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the shopping list
-		CString ingredient = as_dlg.GetInput();
-		ingredients.push_back(ingredient);
+		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
+		i_ids.push_back(ingredient.first);
+		ingredients.push_back(ingredient.second);
 
 		Invalidate(TRUE);
 		UpdateWindow();

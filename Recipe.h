@@ -17,6 +17,8 @@ public:
 	CString title;
 	CString author;
 	std::vector<CString> ingredients;
+	std::vector<CString> i_qtys;
+	std::vector<int> i_ids;
 	CString instructions;
 
 	Recipe();
