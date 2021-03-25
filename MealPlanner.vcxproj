@@ -218,6 +218,7 @@
     <ClInclude Include="Include\mysql_driver.h" />
     <ClInclude Include="Include\mysql_error.h" />
     <ClInclude Include="IngredientsDlg.h" />
+    <ClInclude Include="IngToRecDlg.h" />
     <ClInclude Include="MealPlanner.h" />
     <ClInclude Include="MealPlannerDlg.h" />
     <ClInclude Include="pch.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DayDlg.cpp" />
     <ClCompile Include="IngredientsDlg.cpp" />
+    <ClCompile Include="IngToRecDlg.cpp" />
     <ClCompile Include="MealPlanner.cpp" />
     <ClCompile Include="MealPlannerDlg.cpp" />
     <ClCompile Include="pch.cpp">

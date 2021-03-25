@@ -10,6 +10,7 @@ class RecipeDlg : public CDialogEx
 public:
 	RecipeDlg(CWnd* pParent = nullptr);   // standard constructor
 	RecipeDlg(Recipe, CWnd* pParent = nullptr);
+	RecipeDlg(Recipe, BOOL, CWnd* pParent = nullptr);
 	virtual ~RecipeDlg();
 	Recipe getRecipe();
 
@@ -20,9 +21,12 @@ public:
 
 private:
 	Recipe recipe;
-	std::vector<CString> ingredients;
 	std::vector<int> i_ids;
+	std::vector<CString> ingredients;
+	std::vector<CString> qtys;
 	std::vector<CRect> rmv_iRects;
+
+	BOOL makeNew;
 
 	CFont normFont;
 	CFont bigFont;

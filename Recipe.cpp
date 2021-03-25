@@ -31,8 +31,8 @@ Recipe::Recipe(int r_id) : Recipe() {
 			query.Format("SELECT idingredient, name, ingQty FROM ingredient, recipe_has_ingredient WHERE idingredient = ingredient_idingredient AND recipe_idrecipe = %d", id);
 			res = stmt->executeQuery((const char*)query);
 			while (res->next()) {
-				CString name(res->getString("ingQty").c_str());
-				CString qty(res->getString("name").c_str());
+				CString name(res->getString("name").c_str());
+				CString qty(res->getString("ingQty").c_str());
 				ingredients.push_back(name);
 				i_qtys.push_back(qty);
 				i_ids.push_back(res->getInt("idingredient"));

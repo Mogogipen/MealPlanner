@@ -2,12 +2,12 @@
 //
 
 #include "pch.h"
+#include "global.h"
 #include "MealPlanner.h"
 #include "Recipe.h"
 #include "RecipeDlg.h"
-#include "GetStrDlg.h"
+#include "IngToRecDlg.h"
 #include "afxdialogex.h"
-#include "AddIngDlg.h"
 
 
 // RecipeDlg dialog
@@ -19,6 +19,7 @@ RecipeDlg::RecipeDlg(CWnd* pParent /*=nullptr*/)
 	, m_textTitle(_T(""))
 	, m_textAuthor(_T(""))
 	, m_textInstructions(_T(""))
+	, makeNew{TRUE}
 {
 
 }
@@ -30,6 +31,8 @@ RecipeDlg::RecipeDlg(Recipe r, CWnd* pParent)
 	, m_textInstructions(r.getInstructions())
 	, recipe {r}
 	, ingredients{ recipe.ingredients }
+	, qtys{ recipe.i_qtys }
+	, makeNew{ FALSE }
 {
 }
 
@@ -156,6 +159,8 @@ void RecipeDlg::OnPaint() {
 	// Draw ingredient text within ingredient rects
 	//	and remove ingredient button rects with a "-" inside.
 	for (int i = 0; i < ingredients.size(); i++) {
+		CString ing;
+		ing = qtys[i] + " " + ingredients[i];
 		dc.DrawTextW(ingredients[i], textRects[i], DT_LEFT);
 		dc.Rectangle(rmv_iRects[i]);
 		dc.DrawTextW(L"-", rmv_iRects[i], DT_CENTER);
@@ -174,14 +179,44 @@ void RecipeDlg::OnBnClickedOk()
 		return;
 	}
 
-	// Update database
-
 	// Update recipe
 	recipe.title = m_textTitle;
 	recipe.author = m_textAuthor;
 	recipe.ingredients = ingredients;
 	recipe.i_ids = i_ids;
+	recipe.i_qtys = qtys;
 	recipe.instructions = m_textInstructions;
+
+	//
+	// Update database
+
+	try {
+		// If new, add new entry to DB
+		if (makeNew) {
+			CString query;
+			query.Format(L"INSERT INTO recipe (title, author, instructions) VALUES (\"%s\", \"%s\", \"%s\")", recipe.title, recipe.author, recipe.instructions);
+			stmt = con->createStatement();
+			stmt->execute((const char*)(CStringA)query);
+			for (int i = 0; i < recipe.i_ids.size(); i++) {
+				query.Format(L"INSERT INTO recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (%d, %d, \'%s\')", recipe.id, recipe.i_ids[i], recipe.i_qtys[i]);
+				stmt = con->createStatement();
+				stmt->execute((const char*)(CStringA)query);
+			}
+		}
+		// If changing, alter entry in DB
+		else {
+
+		}
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+		MessageBox(errMsg);
+		return;
+	}
 
 	CDialogEx::OnOK();
 }
@@ -204,7 +239,9 @@ void RecipeDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 	}
 	if (index < 0) return;
 
+	i_ids.erase(i_ids.begin() + index);
 	ingredients.erase(ingredients.begin() + index);
+	qtys.erase(qtys.begin() + index);
 
 	Invalidate(TRUE);
 	UpdateWindow();
@@ -214,7 +251,7 @@ void RecipeDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
 void RecipeDlg::OnBnClickedButtonAddIng()
 {
-	AddIngDlg ai_dlg;
+	IngToRecDlg ai_dlg;
 	INT_PTR nResponse = ai_dlg.DoModal();
 
 	if (nResponse == IDOK) {
@@ -222,6 +259,7 @@ void RecipeDlg::OnBnClickedButtonAddIng()
 		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
 		i_ids.push_back(ingredient.first);
 		ingredients.push_back(ingredient.second);
+		qtys.push_back(ai_dlg.GetQuantity());
 
 		Invalidate(TRUE);
 		UpdateWindow();
