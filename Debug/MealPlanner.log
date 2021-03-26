@@ -1,0 +1,44 @@
+﻿  pch.cpp
+  Calendar.cpp
+  Day.cpp
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(24,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(94,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(96,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(163,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(172,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(181,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(182,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Day.cpp(193,20): warning C4018: '<': signed/unsigned mismatch
+  DayDlg.cpp
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\DayDlg.cpp(267,20): warning C4018: '<': signed/unsigned mismatch
+  GetStrDlg.cpp
+  IngredientsDlg.cpp
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(128,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(140,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(147,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(155,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(172,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(175,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(180,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(184,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.cpp(221,20): warning C4018: '<': signed/unsigned mismatch
+  MealPlanner.cpp
+  MealPlannerDlg.cpp
+  Recipe.cpp
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Recipe.cpp(70,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Recipe.cpp(87,20): warning C4018: '<': signed/unsigned mismatch
+  RecipeBookDlg.cpp
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\RecipeBookDlg.cpp(120,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\RecipeBookDlg.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
+  RecipeDlg.cpp
+  Generating Code...
+MealPlannerDlg.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) void __cdecl check(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (__imp_?check@@YAXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function "void __cdecl check_lib(void)" (?check_lib@@YAXXZ)
+MealPlannerDlg.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) void __cdecl check(class std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > > > const &)" (__imp_?check@@YAXABV?$map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@@std@@@2@@std@@@Z) referenced in function "void __cdecl check_lib(void)" (?check_lib@@YAXXZ)
+MealPlannerDlg.obj : error LNK2019: unresolved external symbol __imp___get_driver_instance_by_name referenced in function _get_driver_instance_by_name
+Libraries\libcrypto.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Libraries\libssl.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Libraries\mysqlcppconn-static.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Libraries\mysqlcppconn.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Libraries\mysqlcppconn8-static.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Libraries\mysqlcppconn8.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\Debug\MealPlanner.exe : fatal error LNK1120: 3 unresolved externals
