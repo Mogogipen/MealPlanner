@@ -19,7 +19,7 @@ INSERT INTO mydb.recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient
 
 -- Alter recipe with a specific id
 UPDATE mydb.recipe SET title = '<Title>', author = '<Author>', instructions = '<Instructions>' WHERE (idrecipe = rID);
-DELETE FROM mydb.recipe_has_ingredient WHERE recipe_idrecipe = rID AND ingredient_idingredient = iID; -- to be used for each ingredient
+DELETE FROM mydb.recipe_has_ingredient WHERE recipe_idrecipe = rID;
 INSERT INTO mydb.recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (rID, iID, '<qty>'); -- to be used for each ingredient
 
 -- Remove a recipe

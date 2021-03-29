@@ -8,7 +8,7 @@
 #include "DayDlg.h"
 #include "afxdialogex.h"
 #include "Day.h"
-#include "GetStrDlg.h"
+#include "AddStringDlg.h"
 #include "RecipeBookDlg.h"
 #include "RecipeDlg.h"
 

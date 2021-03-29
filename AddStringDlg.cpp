@@ -2,7 +2,7 @@
 #include "afxdialogex.h"
 #include "framework.h"
 #include "resource.h"
-#include "GetStrDlg.h"
+#include "AddStringDlg.h"
 
 AddStringDlg::AddStringDlg(CString wndName, CString lblName, CWnd* pParent /*= nullptr*/)
 	: CDialog(IDD_DIALOGMEAL)
@@ -22,6 +22,10 @@ void AddStringDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_STATIC_TEXT, d_lblText);
 }
 
+BEGIN_MESSAGE_MAP(AddStringDlg, CDialog)
+	ON_BN_CLICKED(IDOK, &AddStringDlg::OnBnClickedOk)
+END_MESSAGE_MAP()
+
 BOOL AddStringDlg::OnInitDialog() {
 	CDialog::OnInitDialog();
 
@@ -33,4 +37,16 @@ BOOL AddStringDlg::OnInitDialog() {
 // Return value of the user's input to be used after OK returned
 CString AddStringDlg::GetInput() {
 	return d_stringCaptured;
+}
+
+void AddStringDlg::OnBnClickedOk()
+{
+	UpdateData(TRUE);
+
+	if (d_stringCaptured == L"") {
+		MessageBox(L"You must enter a value.");
+		return;
+	}
+
+	CDialog::OnOK();
 }

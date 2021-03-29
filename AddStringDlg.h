@@ -7,12 +7,15 @@ class AddStringDlg : public CDialog
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
 	CString d_wndName;
 	CString d_stringCaptured;
 	CString d_lblText;
 
+	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnInitDialog();
+
+	DECLARE_MESSAGE_MAP()
+	afx_msg void OnBnClickedOk();
 public:
 	AddStringDlg(CString, CString, CWnd* pParent = nullptr);
 	~AddStringDlg();

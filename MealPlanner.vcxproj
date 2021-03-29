@@ -193,7 +193,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddIngDlg.h" />
-    <ClInclude Include="GetStrDlg.h" />
+    <ClInclude Include="AddStringDlg.h" />
     <ClInclude Include="Calendar.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
@@ -231,7 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddIngDlg.cpp" />
-    <ClCompile Include="GetStrDlg.cpp" />
+    <ClCompile Include="AddStringDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DayDlg.cpp" />

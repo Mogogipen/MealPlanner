@@ -6,7 +6,7 @@
 #include "global.h"
 #include "MealPlanner.h"
 #include "IngToRecDlg.h"
-#include "GetStrDlg.h"
+#include "AddStringDlg.h"
 #include "afxdialogex.h"
 
 
@@ -95,6 +95,7 @@ BOOL IngToRecDlg::OnInitDialog()
 BEGIN_MESSAGE_MAP(IngToRecDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO, &IngToRecDlg::OnCbnSelchangeCombo)
 	ON_BN_CLICKED(IDC_BUTTON1, &IngToRecDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDOK, &IngToRecDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -137,4 +138,19 @@ void IngToRecDlg::OnBnClickedButton1()
 
 		refreshList();
 	}
+}
+
+
+void IngToRecDlg::OnBnClickedOk()
+{
+	// Stop if the user failed to enter a quantity
+	UpdateData(TRUE);
+
+	if (m_qty.GetLength() == 0) {
+		MessageBox(L"Please enter a quantity.");
+		return;
+	}
+	qty = m_qty;
+
+	CDialogEx::OnOK();
 }

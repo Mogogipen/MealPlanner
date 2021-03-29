@@ -38,4 +38,5 @@ public:
 	std::pair<int, CString> GetIngredient();
 	CString GetQuantity();
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedOk();
 };

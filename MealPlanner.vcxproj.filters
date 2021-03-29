@@ -48,7 +48,7 @@
     <ClInclude Include="DayDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetStrDlg.h">
+    <ClInclude Include="AddStringDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RecipeBookDlg.h">
@@ -149,7 +149,7 @@
     <ClCompile Include="DayDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetStrDlg.cpp">
+    <ClCompile Include="AddStringDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RecipeBookDlg.cpp">

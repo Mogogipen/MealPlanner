@@ -161,7 +161,7 @@ void RecipeDlg::OnPaint() {
 	for (int i = 0; i < ingredients.size(); i++) {
 		CString ing;
 		ing = qtys[i] + " " + ingredients[i];
-		dc.DrawTextW(ingredients[i], textRects[i], DT_LEFT);
+		dc.DrawTextW(ing, textRects[i], DT_LEFT);
 		dc.Rectangle(rmv_iRects[i]);
 		dc.DrawTextW(L"-", rmv_iRects[i], DT_CENTER);
 	}
@@ -192,20 +192,34 @@ void RecipeDlg::OnBnClickedOk()
 
 	try {
 		// If new, add new entry to DB
+		CString query;
 		if (makeNew) {
-			CString query;
 			query.Format(L"INSERT INTO recipe (title, author, instructions) VALUES (\"%s\", \"%s\", \"%s\")", recipe.title, recipe.author, recipe.instructions);
 			stmt = con->createStatement();
 			stmt->execute((const char*)(CStringA)query);
-			for (int i = 0; i < recipe.i_ids.size(); i++) {
-				query.Format(L"INSERT INTO recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (%d, %d, \'%s\')", recipe.id, recipe.i_ids[i], recipe.i_qtys[i]);
-				stmt = con->createStatement();
-				stmt->execute((const char*)(CStringA)query);
-			}
 		}
+		
 		// If changing, alter entry in DB
 		else {
+			
+			// Update recipe
+			query.Format(
+				L"UPDATE recipe SET title = '<%s>', author = '<%s>', instructions = '<%s>' WHERE(idrecipe = %d);",
+				recipe.title, recipe.author, recipe.instructions, recipe.id);
+			stmt = con->createStatement();
+			stmt->execute((const char*)(CStringA)query);
 
+			// Remove old ingredients list
+			query.Format(L"DELETE FROM recipe_has_ingredient WHERE recipe_idrecipe = %d;", recipe.id);
+			stmt = con->createStatement();
+			stmt->execute((const char*)(CStringA)query);
+		}
+
+		// Insert all new ingredients
+		for (int i = 0; i < recipe.i_ids.size(); i++) {
+			query.Format(L"INSERT INTO recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (%d, %d, \'%s\')", recipe.id, recipe.i_ids[i], recipe.i_qtys[i]);
+			stmt = con->createStatement();
+			stmt->execute((const char*)(CStringA)query);
 		}
 	}
 	catch (sql::SQLException& e) {
