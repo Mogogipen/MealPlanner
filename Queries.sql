@@ -1,7 +1,3 @@
--- placeholder variables
-SET rID = 1;
-SET iID = 1;
-
 --
 -- Get a recipe with a specific id
 SELECT * FROM recipe WHERE idrecipe = rID;

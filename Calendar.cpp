@@ -96,7 +96,7 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 
 
 	//
-	// Build day rects
+	// Draw day rects
 
 	buildDayRects(calRect);
 
@@ -106,7 +106,6 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 	dc.SetBkMode(0xFF000000);
 	
 	// Draw each rect and day number
-	// TODO: In the future maybe change to draw lines instead of rects
 	for (int i = getSelectedDateAsInt(); i < getSelectedDateAsInt() + monthLength; i++) {
 		dc.Rectangle(days[i].getRect());
 
@@ -117,7 +116,7 @@ void Calendar::paint(CPaintDC& dc, CMealPlannerDlg& m_dlg) {
 
 	// Draw meals
 	for (int i = getSelectedDateAsInt(); i < getSelectedDateAsInt() + monthLength; i++) {
-		days[i].paintMeals(dc);
+		days[i].paintDishes(dc);
 	}
 
 }

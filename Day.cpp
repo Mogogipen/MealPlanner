@@ -21,19 +21,22 @@ Day::Day(COleDateTime date, CString& fileLine) {
 
 // Build the rects to be filled with text in Calendar
 void Day::buildRects() {
+	dishRects.clear();
 	CRect previousRect;
-	for (int i = 0; i < meals.size(); i++) {
+	for (int i = 0; i < dishes.size(); i++) {
 
 		// Build each meal Rect offset within the day Rect
 		if (i == 0) {
-			meals[i].rect = CRect(dayRect.left + 5, dayRect.top + 5,
-				dayRect.right - 3, dayRect.top + 20);
-			previousRect = &meals[i].rect;
+			CRect dishRect(CRect(dayRect.left + 5, dayRect.top + 5,
+				dayRect.right - 3, dayRect.top + 20));
+			dishRects.push_back(dishRect);
+			previousRect = &dishRects[i];
 		}
 		else {
-			meals[i].rect = CRect(previousRect.left, previousRect.bottom,
+			CRect dishRect(previousRect.left, previousRect.bottom,
 				previousRect.right, previousRect.bottom + previousRect.Height());
-			previousRect = &meals[i].rect;
+			dishRects.push_back(dishRect);
+			previousRect = &dishRects[i];
 		}
 	}
 }
@@ -58,29 +61,19 @@ CRect Day::getRect() {
 	return dayRect;
 }
 
-// Return how many meals there are
-int Day::getMealCount() {
-	return meals.size();
-}
-
-// Return the name for a meal at the given index
-CString Day::getMealName(int index) {
-	return meals[index].name;
-}
-
 // Return how many dishes there are within a meal at the givent index
-int Day::getDishCount(int index) {
-	return meals[index].dishes.size();
+int Day::getDishCount() {
+	return dishes.size();
 }
 
 // Return the name of a dish at the given meal and dish indices
-CString Day::getDishName(int m_index, int d_index) {
-	return meals[m_index].dishes[d_index].getTitle();
+CString Day::getDishName(int d_index) {
+	return dishes[d_index].getTitle();
 }
 
 // Return the recipe of a dish at the given meal and dish indices
-Recipe Day::getDishRecipe(int m_index, int d_index) {
-	return meals[m_index].dishes[d_index];
+Recipe Day::getDishRecipe(int d_index) {
+	return dishes[d_index];
 }
 
 // Sets the day's Rect
@@ -97,11 +90,8 @@ void Day::setRect(CRect rect) {
 CString Day::toString() {
 	CString result;
 	result.Format(L"%d|", getDateAsInt());
-	for (int i = 0; i < meals.size(); i++) {
-		result += L"%" + meals[i].name + L"|";
-		for (int j = 0; j < meals[i].dishes.size(); j++) {
-			result += meals[i].dishes[j].title + L"|";
-		}
+	for (int i = 0; i < dishes.size(); i++) {
+		result += dishes[i].id + L"|";
 	}
 	return result;
 }
@@ -112,9 +102,7 @@ void Day::loadFromString(CString& line) {
 	bool dateFound = false;
 	CString dateString;
 
-	bool isMeal = false;
-	int mealCounter = -1;
-	CString nextName;
+	CString rID_str;
 
 	for (int i = 0; i < line.GetLength(); i++) {
 		// If the current character is '|' the word or date is finished
@@ -123,80 +111,42 @@ void Day::loadFromString(CString& line) {
 			if (!dateFound)
 				dateFound = true;
 			else {
-				// Add a new meal with the built name if it is a meal
-				if (isMeal) {
-					Meal newMeal;
-					newMeal.name = nextName;
-					meals.push_back(newMeal);
-					mealCounter++;
-				}
-				// Add a new dish at the current location with the built name if it is not a meal
-				else {
-					//meals[mealCounter].dishes.push_back(nextName);
-				}
-				nextName = L"";
-				isMeal = false;
+				// Add a new dish at the current location using the recipe id
+				int rID = _ttoi(rID_str);
+				dishes.push_back(Recipe(rID));
+				rID_str = L"";
 			}
 			continue;
 		}
 
 		// Skip over the date
 		if (!dateFound);
-		// If the character is a '%' the following will be a meal, set isMeal to true
-		else if (line[i] == '%') {
-			isMeal = true;
-		}
 		// Build the next name
 		else {
-			nextName += line[i];
+			rID_str += line[i];
 		}
 	}
-
-	buildRects();
-}
-
-// Adds a new meal to the day with the given name
-void Day::addMeal(CString mealName) {
-	Meal newMeal;
-	newMeal.name = mealName;
-	meals.push_back(newMeal);
 
 	buildRects();
 }
 
 // Adds a new dish with the given name to the meal at the given index
-bool Day::addDish(int mealIndex, Recipe newDish) {
-	if (mealIndex > -1 && mealIndex < meals.size()) {
-		meals[mealIndex].dishes.push_back(newDish);
-		return true;
-	}
-	return false;
-}
-
-// Removes a meal at the given index
-bool Day::rmMeal(int mealIndex) {
-	if (mealIndex > -1 && mealIndex < meals.size()) {
-		meals.erase(meals.begin() + mealIndex);
-		return true;
-	}
-	return false;
+void Day::addDish(Recipe newDish) {
+	dishes.push_back(newDish);
 }
 
 // Removes a dish at the given meal and dish vector indices
-bool Day::rmDish(int mealIndex, int dishIndex) {
-	if (mealIndex > -1 && mealIndex < meals.size()) {
-		if (dishIndex > -1 && dishIndex < meals[mealIndex].dishes.size()) {
-			Meal& m = meals[mealIndex];
-			m.dishes.erase(m.dishes.begin() + dishIndex);
-			return true;
-		}
+bool Day::rmDish(int dishIndex) {
+	if (dishIndex > -1 && dishIndex < dishes.size()) {
+		dishes.erase(dishes.begin() + dishIndex);
+		return true;
 	}
 	return false;
 }
 
 // Paint meal text in their respective Rects (for use in Calendar)
-void Day::paintMeals(CPaintDC& dc) {
-	for (int i = 0; i < meals.size(); i++) {
-		dc.DrawTextW(meals[i].name, &meals[i].rect, DT_LEFT);
+void Day::paintDishes(CPaintDC& dc) {
+	for (int i = 0; i < dishes.size(); i++) {
+		dc.DrawTextW(dishes[i].title, &dishRects[i], DT_LEFT);
 	}
 }
