@@ -121,7 +121,7 @@ void IngToRecDlg::OnBnClickedButton1()
 
 			// Insert new ingredient into ingredient table.
 			CString query;
-			query.Format(L"INSERT INTO ingredient (name) VALUES ('%s')", ingName);
+			query.Format(L"INSERT INTO ingredient (name) VALUES (\"%s\")", ingName);
 			stmt = con->createStatement();
 			stmt->execute((const char*)(CStringA)query);
 

@@ -32,6 +32,7 @@ RecipeDlg::RecipeDlg(Recipe r, CWnd* pParent)
 	, recipe {r}
 	, ingredients{ recipe.ingredients }
 	, qtys{ recipe.i_qtys }
+	, i_ids{ recipe.i_ids }
 	, makeNew{ FALSE }
 {
 }
@@ -204,7 +205,7 @@ void RecipeDlg::OnBnClickedOk()
 			
 			// Update recipe
 			query.Format(
-				L"UPDATE recipe SET title = '<%s>', author = '<%s>', instructions = '<%s>' WHERE(idrecipe = %d);",
+				L"UPDATE recipe SET title = \"%s\", author = \"%s\", instructions = \"%s\" WHERE(idrecipe = %d);",
 				recipe.title, recipe.author, recipe.instructions, recipe.id);
 			stmt = con->createStatement();
 			stmt->execute((const char*)(CStringA)query);
@@ -217,7 +218,7 @@ void RecipeDlg::OnBnClickedOk()
 
 		// Insert all new ingredients
 		for (int i = 0; i < recipe.i_ids.size(); i++) {
-			query.Format(L"INSERT INTO recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (%d, %d, \'%s\')", recipe.id, recipe.i_ids[i], recipe.i_qtys[i]);
+			query.Format(L"INSERT INTO recipe_has_ingredient (recipe_idrecipe, ingredient_idingredient, ingQty) VALUES (%d, %d, \"%s\")", recipe.id, recipe.i_ids[i], recipe.i_qtys[i]);
 			stmt = con->createStatement();
 			stmt->execute((const char*)(CStringA)query);
 		}
