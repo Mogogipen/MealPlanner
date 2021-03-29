@@ -76,7 +76,8 @@ CString Recipe::getInstructions() {
 //
 
 // Builds the Recipe Rect (main and text rects)
-void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
+// Returns the Rect of the remove button
+CRect Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
 	// Build independant rects (main, title, author, and instructions)
 	mainRect = CRect(
 		left + padding,
@@ -93,6 +94,11 @@ void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
 		titleRect.bottom + 5, 
 		titleRect.right, 
 		titleRect.bottom + 25);
+	rmvBtn_rect = CRect(
+		mainRect.right - 20,
+		mainRect.top + 5,
+		mainRect.right - 5,
+		mainRect.top + 20);
 
 	//
 	// Build ingredient rects
@@ -118,6 +124,8 @@ void Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
 		}
 		ingredientRects.push_back(previousRect);
 	}
+
+	return rmvBtn_rect;
 }
 
 // Paints the Recipe
@@ -126,6 +134,8 @@ void Recipe::paint(CPaintDC& dc) {
 	dc.DrawTextW(title, &titleRect, DT_CENTER);
 	CString a_text = L"By: " + author;
 	dc.DrawTextW(a_text, &authorRect, DT_LEFT);
+	dc.Rectangle(&rmvBtn_rect);
+	dc.DrawTextW(L"-", &rmvBtn_rect, DT_CENTER);
 	for (int i = 0; i < ingredients.size(); i++) {
 		CString text = i_qtys[i] + L" " + ingredients[i];
 		dc.DrawTextW(text, &ingredientRects[i], DT_LEFT);

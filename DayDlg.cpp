@@ -248,7 +248,7 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 			INT_PTR nResponse = ad_dlg.DoModal();
 			if (nResponse == IDOK) {
 				// If OK pushed, add dish to day's selected meal
-				Recipe dishRecipe = ad_dlg.recipeClickedID();
+				Recipe dishRecipe = ad_dlg.getRecipeClicked();
 				day.addDish(index, dishRecipe);
 			}
 			else if (nResponse == -1) {

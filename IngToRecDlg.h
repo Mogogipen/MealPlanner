@@ -24,6 +24,8 @@ protected:
 	std::vector<int> ids;
 	std::vector<CString> names;
 
+	BOOL refreshList();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	virtual BOOL OnInitDialog();
