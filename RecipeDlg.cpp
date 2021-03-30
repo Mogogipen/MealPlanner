@@ -198,6 +198,16 @@ void RecipeDlg::OnBnClickedOk()
 			query.Format(L"INSERT INTO recipe (title, author, instructions) VALUES (\"%s\", \"%s\", \"%s\")", recipe.title, recipe.author, recipe.instructions);
 			stmt = con->createStatement();
 			stmt->execute((const char*)(CStringA)query);
+
+			// Get the new recipe's id
+			res = stmt->executeQuery("SELECT idrecipe FROM recipe ORDER BY idrecipe");
+			int id = 0;
+			while (res->next()) {
+				int t_id = res->getInt("idrecipe");
+				if (t_id > id)
+					id = t_id;
+			}
+			recipe.id = id;
 		}
 		
 		// If changing, alter entry in DB

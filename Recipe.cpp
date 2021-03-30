@@ -78,7 +78,7 @@ CString Recipe::getInstructions() {
 // Builds the Recipe Rect (main and text rects)
 // Returns the Rect of the remove button
 CRect Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
-	// Build independant rects (main, title, author, and instructions)
+	// Build independant rects (main, title, author, instructions, and remove button)
 	mainRect = CRect(
 		left + padding,
 		top + padding,
@@ -111,7 +111,7 @@ CRect Recipe::buildRect(int left, int top, int right, int bottom, int padding) {
 	int i_right = authorRect.right - 10;
 	int height = 20;
 
-	// Build rects with padding in between
+	// Build ingredient rects with padding in between
 	CRect previousRect;
 	bool firstRect = true;
 	for (int i = 0; i < ingredients.size(); i++) {
