@@ -8,7 +8,7 @@
 #include "DayDlg.h"
 #include "afxdialogex.h"
 #include "Day.h"
-#include "GetStrDlg.h"
+#include "AddStringDlg.h"
 #include "RecipeBookDlg.h"
 #include "RecipeDlg.h"
 
@@ -92,12 +92,8 @@ void DayDlg::OnPaint() {
 	Invalidate(TRUE);
 
 	// Clear CRect vectors
-	rmMeal_btns.clear();
-	addDish_btns.clear();
 	dishRects.clear();
-	dishRects_indices.clear();
 	rmDish_btns.clear();
-	rmDish_indices.clear();
 
 	// Build drawing rect area
 	CPaintDC dc(this);
@@ -114,76 +110,28 @@ void DayDlg::OnPaint() {
 	dc.SelectObject(normFont);
 
 	//
-	// Draw meals
-	//
+	// Draw Recipes
 
-	// Button template
-	CRect btn(0, 0, 15, 15);
-
-	// Prep rect calculations
-	int m_width;
-	int m_count = day.getMealCount();
-	if (m_count > 0)
-		m_width = draw_rect.Width() / m_count;
-	else
-		m_width = draw_rect.Width();
-
-	// Init rect containers
-	std::vector<CRect> mealRects;
-	for (int i = 0; i < m_count; i++) {
-		// Draw meal
-		CRect nextRect(
-			draw_rect.left + (i*m_width),
-			draw_rect.top,
-			draw_rect.left + (i*m_width + m_width),
-			draw_rect.bottom);
-		mealRects.push_back(nextRect);
-		dc.Rectangle(nextRect);
-		dc.DrawTextW(day.getMealName(i), nextRect, DT_CENTER);
-
-		// Build rm button
-		CRect rmMeal_btn(btn);
-		rmMeal_btn.OffsetRect(nextRect.left + 2, nextRect.top + 2);
-		rmMeal_btns.push_back(rmMeal_btn);
-
-		// Draw rm button
-		dc.Rectangle(rmMeal_btn);
-		dc.DrawTextW(L"-", rmMeal_btn, DT_CENTER);
-
-		// Build add button
-		CRect addDish_btn(btn);
-		addDish_btn.OffsetRect(nextRect.right - 17, nextRect.top + 2);
-		addDish_btns.push_back(addDish_btn);
-
-		// Draw add button
-		dc.Rectangle(addDish_btn);
-		dc.DrawTextW(L"+", addDish_btn, DT_CENTER);
-
-		//
-		// Draw dishes
-		//
-
-		for (int j = 0; j < day.getDishCount(i); j++) {
-			CRect nextDishRect(
-				nextRect.left + 5,
-				nextRect.top + ((j + 1) * 15) + 2,
-				nextRect.right - 5,
-				nextRect.top + ((j + 2) * 15) + 2);
-			dc.DrawTextW(day.getDishName(i, j), nextDishRect, DT_LEFT);
-			dishRects.push_back(nextDishRect);
-			dishRects_indices.push_back(int(j));
-
-			// Build rm button
-			CRect rmDish_btn(btn);
-			rmDish_btn.OffsetRect(nextDishRect.right - 18, nextDishRect.top + 3);
-			rmDish_btns.push_back(rmDish_btn);
-			rmDish_indices.push_back(int(j));
-
-			// Draw rm button
-			dc.Rectangle(rmDish_btn);
-			dc.DrawTextW(L"-", rmDish_btn, DT_CENTER);
-		}
+	// Build Recipes
+	int width = draw_rect.Width() / 2;
+	int topMargin = 50;
+	int height = 250;
+	int padding = 10;
+	for (int i = 0; i < day.getDishCount() && i < 4; i++) {
+		CRect tmpRect(c_rect.left, c_rect.top, c_rect.left + width, c_rect.top + height);
+		int col = i % 2;
+		int row = i / 2;
+		int tmpLeft = draw_rect.left + (col * width);
+		int tmpTop = draw_rect.top + (row * height);
+		tmpRect.OffsetRect(
+			tmpLeft,
+			tmpTop);
+		CRect dishRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom);
+		CRect rmvBtn_Rect = day.getDishRecipe(i).buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
+		dishRects.push_back(dishRect);
+		rmDish_btns.push_back(rmvBtn_Rect);
 	}
+	
 }
 
 // New meal button pushed
@@ -192,12 +140,12 @@ void DayDlg::OnPaint() {
 void DayDlg::OnBnClickedButtonNewmeal()
 {
 	// Create Dlg
-	AddStringDlg am_dlg(L"Add a meal", L"Meal Name");
-	INT_PTR nResponse = am_dlg.DoModal();
+	RecipeBookDlg ad_dlg(TRUE);
+	INT_PTR nResponse = ad_dlg.DoModal();
 	if (nResponse == IDOK) {
-		// If OK, add meal to the day
-		CString mealName = am_dlg.GetInput();
-		day.addMeal(mealName);
+		// If OK pushed, add dish to day's selected meal
+		Recipe dishRecipe = ad_dlg.getRecipeClicked();
+		day.addDish(dishRecipe);
 
 		UpdateData(FALSE);
 		Invalidate(TRUE);
@@ -214,54 +162,23 @@ void DayDlg::OnBnClickedButtonNewmeal()
 void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	
 	// Find what was clicked
-	int index = clickOnBtnSearch(point, rmMeal_btns);
+	int index = clickOnBtnSearch(point, rmDish_btns);
 	if (index < 0) {
-		index = clickOnBtnSearch(point, addDish_btns);
-		if (index < 0) {
-			index = clickOnBtnSearch(point, rmDish_btns);
-			if (index < 0) {
-				index = clickOnBtnSearch(point, dishRects);
-				if (index < 0) return;
+		index = clickOnBtnSearch(point, dishRects);
+		if (index < 0) return;
 
-				// Clicked on a dish
-				else {
-					// Display the RecipeDlg for the dish's recipe
-					RecipeDlg r_dlg(day.getDishRecipe(index, dishRects_indices[index]));
-					r_dlg.DoModal();
-				}
-			}
-			// Clicked remove dish button
-			else {
-				// Remove the dish selected
-				bool dishRmved = day.rmDish(index, rmDish_indices[index]);
-				if (!dishRmved) {
-					CString s;
-					s.Format(L"Bad index: %d", index);
-					MessageBox(s);
-				}
-			}
-		}
-		// Clicked add dish button
+		// Clicked on a dish
 		else {
-			// Create a dlg box to get the user's input
-			RecipeBookDlg ad_dlg(TRUE);
-			INT_PTR nResponse = ad_dlg.DoModal();
-			if (nResponse == IDOK) {
-				// If OK pushed, add dish to day's selected meal
-				Recipe dishRecipe = ad_dlg.recipeClickedID();
-				day.addDish(index, dishRecipe);
-			}
-			else if (nResponse == -1) {
-				TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
-				TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
-			}
+			// Display the RecipeDlg for the dish's recipe
+			RecipeDlg r_dlg(day.getDishRecipe(index));
+			r_dlg.DoModal();
 		}
 	}
-	// Clicked remove meal
+	// Clicked remove dish button
 	else {
-		// Remove selected meal from day
-		bool mealRmved = day.rmMeal(index);
-		if (!mealRmved) {
+		// Remove the dish selected
+		bool dishRmved = day.rmDish(index);
+		if (!dishRmved) {
 			CString s;
 			s.Format(L"Bad index: %d", index);
 			MessageBox(s);

@@ -10,19 +10,24 @@ class RecipeBookDlg : public CDialogEx
 
 private:
 	BOOL isSelect;
-	int selectedRecipeID = -1;
+	int selectedRecipe = -1;
 
 	CFont normFont;
 	CFont bigFont;
 
 	int scrollPos;
 
+	BOOL refreshList();
+	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
+	void removeRecipe(int);
+
 public:
 	RecipeBookDlg(CWnd* pParent = nullptr);   // standard constructor
 	RecipeBookDlg(BOOL, CWnd* pParent = nullptr);
 	virtual ~RecipeBookDlg();
-	Recipe recipeClickedID(); // Temporary
+	Recipe getRecipeClicked();
 	std::vector<Recipe> recipes;
+	std::vector<CRect> rmvRec_btns;
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

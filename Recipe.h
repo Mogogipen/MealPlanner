@@ -9,6 +9,7 @@ private:
 
 	CRect titleRect;
 	CRect authorRect;
+	CRect rmvBtn_rect;
 	std::vector<CRect> ingredientRects;
 	CRect instRect;
 
@@ -30,7 +31,7 @@ public:
 	CString getAuthor();
 	CString getInstructions();
 
-	void buildRect(int, int, int, int, int);
+	CRect buildRect(int, int, int, int, int);
 	void paint(CPaintDC&);
 
 	CRect mainRect;

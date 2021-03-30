@@ -224,7 +224,7 @@ HCURSOR CMealPlannerDlg::OnQueryDragIcon()
 }
 
 // L Mouse button up event handler
-//	Gets and displays the day clicked on via message box
+//	Displays DayDlg
 void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	std::pair<Day&, int> day = calendar.getClickedDay(point);
 	

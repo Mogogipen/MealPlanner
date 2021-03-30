@@ -24,6 +24,8 @@ protected:
 	std::vector<int> ids;
 	std::vector<CString> names;
 
+	BOOL refreshList();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	virtual BOOL OnInitDialog();
@@ -36,4 +38,5 @@ public:
 	std::pair<int, CString> GetIngredient();
 	CString GetQuantity();
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedOk();
 };

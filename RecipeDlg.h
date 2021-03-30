@@ -10,7 +10,6 @@ class RecipeDlg : public CDialogEx
 public:
 	RecipeDlg(CWnd* pParent = nullptr);   // standard constructor
 	RecipeDlg(Recipe, CWnd* pParent = nullptr);
-	RecipeDlg(Recipe, BOOL, CWnd* pParent = nullptr);
 	virtual ~RecipeDlg();
 	Recipe getRecipe();
 

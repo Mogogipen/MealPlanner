@@ -3,18 +3,13 @@
 #include <vector>
 #include "Recipe.h"
 
-struct Meal {
-	CString name;
-	CRect rect;
-	std::vector<Recipe> dishes;
-};
-
 class Day
 {
 private:
 	COleDateTime date;
 	CRect dayRect;
-	std::vector<Meal> meals;
+	std::vector<Recipe> dishes;
+	std::vector<CRect> dishRects;
 
 	void buildRects();
 	int getDateAsInt();
@@ -28,20 +23,16 @@ public:
 
 	COleDateTime getDate();
 	CRect getRect();
-	int getMealCount();
-	CString getMealName(int);
-	int getDishCount(int);
-	CString getDishName(int, int);
-	Recipe getDishRecipe(int, int);
+	int getDishCount();
+	CString getDishName(int);
+	Recipe getDishRecipe(int);
 	void setRect(CRect);
 
 	CString toString();
 
-	void addMeal(CString);
-	bool rmMeal(int);
-	bool addDish(int, Recipe);
-	bool rmDish(int, int);
+	void addDish(Recipe);
+	bool rmDish(int);
 
-	void paintMeals(CPaintDC&);
+	void paintDishes(CPaintDC&);
 };
 
