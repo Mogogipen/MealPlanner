@@ -280,11 +280,7 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 	INT_PTR nResponse = r_dlg.DoModal();
 
 	if (nResponse == IDOK) {
-		recipes[index] = r_dlg.getRecipe();
-
-		UpdateData(FALSE);
-		Invalidate(TRUE);
-		UpdateWindow();
+		refreshList();
 	}
 
 }
@@ -295,10 +291,7 @@ void RecipeBookDlg::OnBnClickedButtonAdd()
 	INT_PTR nResponse = r_dlg.DoModal();
 
 	if (nResponse == IDOK) {
-		recipes.push_back(r_dlg.getRecipe());
-
-		Invalidate(TRUE);
-		UpdateWindow();
+		refreshList();
 	}
 }
 
