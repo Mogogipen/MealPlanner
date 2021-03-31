@@ -14,7 +14,7 @@
 
 IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
-IngredientsDlg::IngredientsDlg(std::vector<CString>& onHandList, CWnd* pParent /*=nullptr*/)
+IngredientsDlg::IngredientsDlg(std::vector<std::pair<int, CString>>& onHandList, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
 {
 	onHand = onHandList;
@@ -169,7 +169,7 @@ void IngredientsDlg::OnPaint() {
 	// Draw list items
 	dc.SelectObject(normFont);
 	for (int i = 0; i < oh_rects.size(); i++) {
-		dc.DrawTextW(onHand[i], oh_rects[i], DT_LEFT);
+		dc.DrawTextW(onHand[i].second, oh_rects[i], DT_LEFT);
 	}
 	for (int i = 0; i < sl_rects.size(); i++) {
 		dc.DrawTextW(shoppingList[i], sl_rects[i], DT_LEFT);
@@ -204,7 +204,6 @@ void IngredientsDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	// Clicked remove on-hand item button
 	else {
 		// Remove the ingredient selected
-		oh_ids.erase(oh_ids.begin() + index);
 		onHand.erase(onHand.begin() + index);
 	}
 
@@ -238,9 +237,7 @@ void IngredientsDlg::OnBnClickedButtonHand()
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
 		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
-		if (ingredient.second == "") return;
-		oh_ids.push_back(ingredient.first);
-		onHand.push_back(ingredient.second);
+		onHand.push_back(ingredient);
 
 		UpdateData(FALSE);
 		Invalidate(TRUE);

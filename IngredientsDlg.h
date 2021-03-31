@@ -9,7 +9,7 @@ class IngredientsDlg : public CDialogEx
 	DECLARE_DYNAMIC(IngredientsDlg)
 
 public:
-	IngredientsDlg(std::vector<CString>& onHand, CWnd* pParent = nullptr);   // standard constructor
+	IngredientsDlg(std::vector<std::pair<int, CString>>& onHand, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~IngredientsDlg();
 
 // Dialog Data
@@ -32,8 +32,7 @@ private:
 
 	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
 public:
-	std::vector<CString> onHand;
-	std::vector<int> oh_ids;
+	std::vector<std::pair<int, CString>> onHand;
 
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonShop();

@@ -91,7 +91,9 @@ CString Day::toString() {
 	CString result;
 	result.Format(L"%d|", getDateAsInt());
 	for (int i = 0; i < dishes.size(); i++) {
-		result += dishes[i].id + L"|";
+		CString dish;
+		dish.Format(L"%d|", dishes[i].id);
+		result += dish;
 	}
 	return result;
 }

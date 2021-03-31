@@ -293,7 +293,9 @@ void CMealPlannerDlg::OnBnClickedButtonSave()
 		CString cal_string = calendar.toString();
 		CString ohl_string;
 		for (int i = 0; i < onHandList.size(); i++) {
-			ohl_string += onHandList[i] + L"\n";
+			CString tmp;
+			tmp.Format(L"%d:%s\n", onHandList[i].first, onHandList[i].second);
+			ohl_string += tmp;
 		}
 		
 		// Write strings to the file
@@ -329,7 +331,11 @@ void CMealPlannerDlg::OnBnClickedButtonLoad()
 			// If the start of the on-hand list has been found...
 			if (start) {
 				// Add items to the list
-				onHandList.push_back(line);
+				int colonPos = line.Find(':', 0);
+				int id = _ttoi(line.Mid(0, colonPos));
+				CString name = line.Right(line.GetLength() - colonPos - 1);
+				std::pair<int, CString> onHandItem(id, name);
+				onHandList.push_back(onHandItem);
 			}
 			// Find the beginning of the on-hand list (#)
 			else if (line == "#") {

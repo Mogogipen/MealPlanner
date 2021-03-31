@@ -43,8 +43,7 @@ private:
 	void reset_m_staticText();
 public:
 	Calendar calendar;
-	bool hasDrawnOnce;
-	std::vector<CString> onHandList;
+	std::vector<std::pair<int, CString>> onHandList;
 
 // Implementation
 protected:
