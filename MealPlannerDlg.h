@@ -13,7 +13,7 @@ class CMealPlannerDlg;
 #endif
 
 // Know everything about Calendar
-#ifndef CALENDAR	
+#ifndef CALENDAR
 #define CALENDAR
 #include "Calendar.h"
 #endif

@@ -195,6 +195,7 @@
     <ClInclude Include="AddIngDlg.h" />
     <ClInclude Include="AddStringDlg.h" />
     <ClInclude Include="Calendar.h" />
+    <ClInclude Include="ConfirmDlg.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DayDlg.h" />
     <ClInclude Include="framework.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="AddIngDlg.cpp" />
     <ClCompile Include="AddStringDlg.cpp" />
     <ClCompile Include="Calendar.cpp" />
+    <ClCompile Include="ConfirmDlg.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DayDlg.cpp" />
     <ClCompile Include="IngredientsDlg.cpp" />

@@ -21,7 +21,6 @@ RecipeDlg::RecipeDlg(CWnd* pParent /*=nullptr*/)
 	, m_textInstructions(_T(""))
 	, makeNew{TRUE}
 {
-
 }
 
 RecipeDlg::RecipeDlg(Recipe r, CWnd* pParent)

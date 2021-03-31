@@ -9,6 +9,7 @@
 #include "MealPlanner.h"
 #include "RecipeBookDlg.h"
 #include "RecipeDlg.h"
+#include "ConfirmDlg.h"
 
 
 // RecipeBookDlg dialog
@@ -88,6 +89,17 @@ int RecipeBookDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& sear
 
 // Removes the recipe at the given index from SQL and the list of Recipes
 void RecipeBookDlg::removeRecipe(int index) {
+
+	// Confirm user wants to remove a recipe
+	CString question;
+	question.Format(L"Are you sure you want to remove this recipe (%s)?", recipes[index].title);
+	ConfirmDlg c_dlg(question);
+	INT_PTR nResponse = c_dlg.DoModal();
+
+	// If user responds no, return; otherwise, proceed
+	if (nResponse == IDOK);
+	else return;
+
 	try {
 		// Remove ingredient links to recipe
 		int rID = recipes[index].id;
@@ -236,7 +248,7 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
 	// Removes a recipe if a remove recipe button was clicked
 	int index = clickOnBtnSearch(mousePoint, rmvRec_btns);
-	if (index >= 0) {
+	if (index >= 0 && !isSelect) {
 		removeRecipe(index);
 		return;
 	}
@@ -304,7 +316,7 @@ void RecipeBookDlg::OnBnClickedButtonUp()
 
 void RecipeBookDlg::OnBnClickedButtonDown()
 {
-	int tmp = scrollPos * 6;
+	int tmp = (scrollPos + 1) * 6 - 1;
 	if (tmp < recipes.size()) {
 		scrollPos++;
 
