@@ -32,13 +32,14 @@ public:
 #endif
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+		virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 
 //
 // My additions
 //
 private:
+	void clearIngredients();
 	void reset_m_staticText();
 public:
 	Calendar calendar;

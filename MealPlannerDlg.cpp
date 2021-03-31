@@ -52,9 +52,26 @@ CMealPlannerDlg::CMealPlannerDlg(CWnd* pParent /*=nullptr*/)
 
 CMealPlannerDlg::~CMealPlannerDlg()
 {
+	// Close database connection
 	delete res;
 	delete stmt;
 	delete con;
+}
+
+// Clears unused ingredients from the database
+void CMealPlannerDlg::clearIngredients() {
+	try {
+		stmt = con->createStatement();
+		stmt->execute("DELETE FROM ingredient WHERE idingredient NOT IN (SELECT ingredient_idingredient FROM recipe_has_ingredient)");
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+		MessageBox(errMsg);
+	}
 }
 
 void CMealPlannerDlg::DoDataExchange(CDataExchange* pDX)
@@ -164,7 +181,6 @@ BOOL CMealPlannerDlg::OnInitDialog()
 		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
 		MessageBox(errMsg);
 		EndDialog(TRUE);
-		return FALSE;
 	}
 
 	// Set window to fullscreen
@@ -238,6 +254,8 @@ void CMealPlannerDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 		Invalidate(TRUE);
 		UpdateWindow();
 	}
+
+	clearIngredients();
 }
 
 
@@ -334,6 +352,8 @@ void CMealPlannerDlg::OnBnClickedButtonRecipes()
 {
 	RecipeBookDlg rb_dlg;
 	INT_PTR nResponse = rb_dlg.DoModal();
+
+	clearIngredients();
 }
 
 
