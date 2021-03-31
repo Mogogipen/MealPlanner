@@ -25,7 +25,7 @@ public:
 	CRect getRect();
 	int getDishCount();
 	CString getDishName(int);
-	Recipe getDishRecipe(int);
+	Recipe& dishRecipe(int);
 	void setRect(CRect);
 
 	CString toString();

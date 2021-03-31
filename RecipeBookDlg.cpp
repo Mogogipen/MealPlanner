@@ -219,12 +219,13 @@ void RecipeBookDlg::OnPaint() {
 		tmpRect.OffsetRect(
 			tmpLeft,
 			tmpTop);
-		CRect rmvBtn_Rect = recipes[r_index].buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
-		rmvRec_btns.push_back(rmvBtn_Rect);
+		recipes[r_index].buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
+		rmvRec_btns.push_back(recipes[r_index].getRmvRect());
 	}
 
 	// Paint Recipes
 	for (int i = 0; i < recipes.size() && i < 6; i++) {
+		// Draw based on scroll position
 		int r_index = i + scrollPos * 6;
 		if (r_index >= recipes.size()) break;
 		recipes[r_index].paint(dc);
@@ -242,7 +243,7 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 
 	// Opens a dlg if a recipe was clicked
 	for (int i = 0; i < recipes.size(); i++) {
-		CRect r_rect = &recipes[i].mainRect;
+		CRect r_rect = &recipes[i].getRect();
 		if (mousePoint.y > r_rect.top &&
 			mousePoint.y < r_rect.bottom &&
 			mousePoint.x > r_rect.left &&
@@ -257,7 +258,6 @@ void RecipeBookDlg::OnLButtonUp(UINT nFlags, CPoint mousePoint) {
 	// If the Recipe Book is in select mode,
 	//	set the selectedID and close window
 	if (isSelect) {
-		//selectedRecipeID = recipes[index].r_id;
 		selectedRecipe = index;
 		EndDialog(IDOK);
 		return;

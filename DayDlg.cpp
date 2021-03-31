@@ -6,7 +6,6 @@
 #include <vector>
 #include "MealPlanner.h"
 #include "DayDlg.h"
-#include "afxdialogex.h"
 #include "Day.h"
 #include "AddStringDlg.h"
 #include "RecipeBookDlg.h"
@@ -100,10 +99,10 @@ void DayDlg::OnPaint() {
 	CRect c_rect;
 	GetClientRect(c_rect);
 	CRect draw_rect(
-		c_rect.left + 10,
+		c_rect.left,
 		c_rect.top + 40,
-		c_rect.right - 10,
-		c_rect.bottom - 10);
+		c_rect.right,
+		c_rect.bottom);
 
 	// Init drawing
 	dc.SetBkMode(0xFF000000);
@@ -114,22 +113,27 @@ void DayDlg::OnPaint() {
 
 	// Build Recipes
 	int width = draw_rect.Width() / 2;
-	int topMargin = 50;
-	int height = 250;
+	int height = draw_rect.Height() / 2;
 	int padding = 10;
+	CString msg;
+	msg.Format(L"%d", height);
 	for (int i = 0; i < day.getDishCount() && i < 4; i++) {
-		CRect tmpRect(c_rect.left, c_rect.top, c_rect.left + width, c_rect.top + height);
+		CRect tmpRect(draw_rect.left, draw_rect.top, draw_rect.left + width, draw_rect.top + height);
 		int col = i % 2;
 		int row = i / 2;
-		int tmpLeft = draw_rect.left + (col * width);
-		int tmpTop = draw_rect.top + (row * height);
+		int l_offset = (col * width);
+		int t_offset = (row * height);
 		tmpRect.OffsetRect(
-			tmpLeft,
-			tmpTop);
-		CRect dishRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom);
-		CRect rmvBtn_Rect = day.getDishRecipe(i).buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
-		dishRects.push_back(dishRect);
-		rmDish_btns.push_back(rmvBtn_Rect);
+			l_offset,
+			t_offset);
+		CRect rmvDish_btn = day.dishRecipe(i).buildRect(tmpRect.left, tmpRect.top, tmpRect.right, tmpRect.bottom, padding);
+		dishRects.push_back(day.dishRecipe(i).getRect());
+		rmDish_btns.push_back(rmvDish_btn);
+	}
+
+	// Paint Recipes
+	for (int i = 0; i < day.getDishCount() && i < 4; i++) {
+		day.dishRecipe(i).paint(dc);
 	}
 	
 }
@@ -139,6 +143,11 @@ void DayDlg::OnPaint() {
 //	Adds a new meal to the day based on user input
 void DayDlg::OnBnClickedButtonNewmeal()
 {
+	if (day.getDishCount() >= 4) {
+		MessageBox(L"Sorry, currently only 4 recipes can be added per day.");
+		return;
+	}
+
 	// Create Dlg
 	RecipeBookDlg ad_dlg(TRUE);
 	INT_PTR nResponse = ad_dlg.DoModal();
@@ -170,7 +179,7 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 		// Clicked on a dish
 		else {
 			// Display the RecipeDlg for the dish's recipe
-			RecipeDlg r_dlg(day.getDishRecipe(index));
+			RecipeDlg r_dlg(day.dishRecipe(index));
 			r_dlg.DoModal();
 		}
 	}
@@ -183,6 +192,10 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 			s.Format(L"Bad index: %d", index);
 			MessageBox(s);
 		}
+		else {
+			dishRects.erase(dishRects.begin() + index);
+			rmDish_btns.erase(rmDish_btns.begin() + index);
+		}
 	}
 	// Redraw if anything should have changed
 	if (index > -1) {
@@ -192,11 +205,8 @@ void DayDlg::OnLButtonUp(UINT nFlags, CPoint point) {
 	}
 }
 
-//
-// Misc Methods
-//
-
 // Returns index in the given vector if the mousePoint is in a Rect within the searchList, -1 otherwise
+// Companion to OnLButtonUp()
 int DayDlg::clickOnBtnSearch(CPoint& mousePoint, std::vector<CRect>& searchList) {
 	for (int i = 0; i < searchList.size(); i++) {
 		if (mousePoint.x > searchList[i].left &&

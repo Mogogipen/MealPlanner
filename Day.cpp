@@ -72,7 +72,7 @@ CString Day::getDishName(int d_index) {
 }
 
 // Return the recipe of a dish at the given meal and dish indices
-Recipe Day::getDishRecipe(int d_index) {
+Recipe& Day::dishRecipe(int d_index) {
 	return dishes[d_index];
 }
 
@@ -133,12 +133,14 @@ void Day::loadFromString(CString& line) {
 // Adds a new dish with the given name to the meal at the given index
 void Day::addDish(Recipe newDish) {
 	dishes.push_back(newDish);
+	buildRects();
 }
 
 // Removes a dish at the given meal and dish vector indices
 bool Day::rmDish(int dishIndex) {
 	if (dishIndex > -1 && dishIndex < dishes.size()) {
 		dishes.erase(dishes.begin() + dishIndex);
+		dishRects.erase(dishRects.begin() + dishIndex);
 		return true;
 	}
 	return false;

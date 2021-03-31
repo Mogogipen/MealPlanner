@@ -7,6 +7,7 @@ class Recipe
 
 private:
 
+	CRect mainRect;
 	CRect titleRect;
 	CRect authorRect;
 	CRect rmvBtn_rect;
@@ -30,9 +31,9 @@ public:
 	CString getTitle();
 	CString getAuthor();
 	CString getInstructions();
+	CRect getRect();
+	CRect getRmvRect();
 
 	CRect buildRect(int, int, int, int, int);
 	void paint(CPaintDC&);
-
-	CRect mainRect;
 };

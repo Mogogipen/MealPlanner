@@ -70,6 +70,12 @@ CString Recipe::getAuthor() {
 CString Recipe::getInstructions() {
 	return instructions;
 }
+CRect Recipe::getRect() {
+	return mainRect;
+}
+CRect Recipe::getRmvRect() {
+	return rmvBtn_rect;
+}
 
 //
 // Painting
