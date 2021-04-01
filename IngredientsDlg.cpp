@@ -16,6 +16,8 @@ IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
 IngredientsDlg::IngredientsDlg(std::vector<std::pair<int, CString>>& onHandList, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
+	, dateStart(COleDateTime::GetCurrentTime())
+	, dateEnd(COleDateTime::GetCurrentTime())
 {
 	onHand = onHandList;
 }
@@ -27,14 +29,17 @@ IngredientsDlg::~IngredientsDlg()
 void IngredientsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_DateTimeCtrl(pDX, IDC_DATETIMEPICKER_START, dateStart);
+	DDX_DateTimeCtrl(pDX, IDC_DATETIMEPICKER_END, dateEnd);
 }
 
 
 BEGIN_MESSAGE_MAP(IngredientsDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONUP()
-	ON_BN_CLICKED(IDC_BUTTON_SHOP, &IngredientsDlg::OnBnClickedButtonShop)
+	ON_BN_CLICKED(IDC_BUTTON_SHOP, &IngredientsDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_HAND, &IngredientsDlg::OnBnClickedButtonHand)
+	ON_BN_CLICKED(IDC_BUTTON3, &IngredientsDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 BOOL IngredientsDlg::OnInitDialog() {
@@ -246,7 +251,7 @@ void IngredientsDlg::OnBnClickedButtonHand()
 }
 
 // Add an item to the shopping list button pushed
-void IngredientsDlg::OnBnClickedButtonShop()
+void IngredientsDlg::OnBnClickedButtonSave()
 {
 	//AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
 	//INT_PTR nResponse = as_dlg.DoModal();
@@ -259,4 +264,12 @@ void IngredientsDlg::OnBnClickedButtonShop()
 	//	Invalidate(TRUE);
 	//	UpdateWindow();
 	//}
+}
+
+
+void IngredientsDlg::OnBnClickedButton3()
+{
+	UpdateData(TRUE);
+
+	if (dateStart > dateEnd) return;
 }

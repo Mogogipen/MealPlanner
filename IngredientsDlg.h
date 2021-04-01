@@ -35,6 +35,11 @@ public:
 	std::vector<std::pair<int, CString>> onHand;
 
 	afx_msg void OnLButtonUp(UINT, CPoint);
-	afx_msg void OnBnClickedButtonShop();
+	afx_msg void OnBnClickedButtonSave();
 	afx_msg void OnBnClickedButtonHand();
+private:
+	COleDateTime dateStart;
+	COleDateTime dateEnd;
+public:
+	afx_msg void OnBnClickedButton3();
 };
