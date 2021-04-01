@@ -41,9 +41,10 @@ protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 public:
-	CString m_searchTerm;
+	CEdit searchBox;
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonUp();
 	afx_msg void OnBnClickedButtonDown();
+	afx_msg void OnBnClickedButtonSearch();
 };

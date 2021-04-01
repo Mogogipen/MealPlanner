@@ -24,7 +24,6 @@ RecipeBookDlg::RecipeBookDlg(CWnd* pParent /*=nullptr*/)
 RecipeBookDlg::RecipeBookDlg(BOOL select, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_BOOK, pParent)
 	, scrollPos{ 0 }
-	, m_searchTerm(_T(""))
 	, isSelect{ select }
 {
 
@@ -133,7 +132,7 @@ Recipe RecipeBookDlg::getRecipeClicked() {
 void RecipeBookDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_SEARCH, m_searchTerm);
+	DDX_Control(pDX, IDC_EDIT_SEARCH, searchBox);
 }
 
 
@@ -143,6 +142,7 @@ BEGIN_MESSAGE_MAP(RecipeBookDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &RecipeBookDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_UP, &RecipeBookDlg::OnBnClickedButtonUp)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN, &RecipeBookDlg::OnBnClickedButtonDown)
+	ON_BN_CLICKED(IDC_BUTTON_SEARCH, &RecipeBookDlg::OnBnClickedButtonSearch)
 END_MESSAGE_MAP()
 
 //
@@ -186,8 +186,9 @@ BOOL RecipeBookDlg::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS,
 		_T("Arial"));
 
-	// Init Month label
+	// Init Labels
 	UpdateData(FALSE);
+	searchBox.SetLimitText(32);
 
 	// Build recipe list from sql database
 	refreshList();
@@ -306,7 +307,7 @@ void RecipeBookDlg::OnBnClickedButtonUp()
 	}
 }
 
-
+// Navigate down button event handler
 void RecipeBookDlg::OnBnClickedButtonDown()
 {
 	int tmp = (scrollPos + 1) * 6 - 1;
@@ -316,4 +317,28 @@ void RecipeBookDlg::OnBnClickedButtonDown()
 		Invalidate(TRUE);
 		UpdateWindow();
 	}
+}
+
+// Search button event handler
+void RecipeBookDlg::OnBnClickedButtonSearch()
+{
+	CString s;
+	searchBox.GetWindowTextW(s);
+	searchBox.SetWindowTextW(L"");
+	
+	// Check for valid string (if empty refresh the recipe list)
+	if (s.GetLength() == 0) refreshList();
+	
+	// Build search results
+	std::vector<Recipe> searchResults;
+	for (int i = 0; i < recipes.size(); i++) {
+		if (recipes[i].getTitle().Find(s) > -1 ||
+			recipes[i].getAuthor().Find(s) > -1)
+			searchResults.push_back(recipes[i]);
+	}
+	recipes = searchResults;
+
+	// Repaint
+	Invalidate(TRUE);
+	UpdateWindow();
 }

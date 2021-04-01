@@ -14,7 +14,6 @@
 #define IDD_DIALOG_RECIPE               144
 #define IDD_DIALOG_ADD_ING              146
 #define IDD_ING_TO_RECIPE               148
-#define IDD_DIALOG2                     150
 #define IDD_CONFIRM                     150
 #define IDC_STATIC_TEXT                 1012
 #define IDC_STATIC_TEXT2                1013
