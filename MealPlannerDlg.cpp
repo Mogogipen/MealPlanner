@@ -365,7 +365,7 @@ void CMealPlannerDlg::OnBnClickedButtonRecipes()
 
 void CMealPlannerDlg::OnBnClickedButtonList()
 {
-	IngredientsDlg i_dlg(onHandList);
+	IngredientsDlg i_dlg(onHandList, calendar);
 	INT_PTR nResponse = i_dlg.DoModal();
 	onHandList = i_dlg.onHand;
 }

@@ -1,8 +1,7 @@
-﻿  Calendar.cpp
-  IngredientsDlg.cpp
-  MealPlanner.cpp
-  MealPlannerDlg.cpp
-C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\MealPlannerDlg.cpp(368,34): error C2664: 'IngredientsDlg::IngredientsDlg(const IngredientsDlg &)': cannot convert argument 1 from 'std::vector<std::pair<int,CString>,std::allocator<std::pair<int,CString>>>' to 'const IngredientsDlg &'
-C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\MealPlannerDlg.cpp(368,34): message : Reason: cannot convert from 'std::vector<std::pair<int,CString>,std::allocator<std::pair<int,CString>>>' to 'const IngredientsDlg'
-C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\MealPlannerDlg.cpp(368,23): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
-C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\IngredientsDlg.h(48,1): message : see declaration of 'IngredientsDlg::IngredientsDlg'
+﻿  IngredientsDlg.cpp
+  Generating code
+  3 of 1223 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    19 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  MealPlanner.vcxproj -> C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\x64\Release\MealPlanner.exe

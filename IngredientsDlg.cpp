@@ -86,10 +86,6 @@ BOOL IngredientsDlg::OnInitDialog() {
 	this->GetWindowRect(w_rect);
 	MoveWindow(w_rect.left, w_rect.top, 450, 450, FALSE);
 
-	// Test values
-	shoppingList.push_back(L"Green Beans");
-	shoppingList.push_back(L"Potatoes");
-	shoppingList.push_back(L"Tomato Soup");
 	return TRUE;
 }
 
@@ -323,4 +319,7 @@ void IngredientsDlg::OnBnClickedButtonGenerate()
 		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
 		MessageBox(errMsg);
 	}
+
+	Invalidate(TRUE);
+	UpdateWindow();
 }
