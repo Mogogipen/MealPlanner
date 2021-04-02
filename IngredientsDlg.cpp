@@ -241,6 +241,11 @@ void IngredientsDlg::OnBnClickedButtonHand()
 	if (nResponse == IDOK) {
 		// If OK, add an ingredient to the on-hand ingredients list
 		std::pair<int, CString> ingredient = ai_dlg.GetIngredient();
+		
+		// Skip if ingredient is already on-hand
+		for (int i = 0; i < onHand.size(); i++) {
+			if (onHand[i].first == ingredient.first) return;
+		}
 		onHand.push_back(ingredient);
 
 		UpdateData(FALSE);
@@ -326,6 +331,21 @@ void IngredientsDlg::OnBnClickedButtonGenerate()
 		CString SQLState(e.getSQLStateCStr());
 		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
 		MessageBox(errMsg);
+	}
+
+	// Remove anything already in the on-hand list.
+	//	This makes this method O(n*m)
+	std::vector<int> indicesToRmv;
+	for (int i = 0; i < shoppingList.size(); i++) {
+		for (int j = 0; j < onHand.size(); j++) {
+			if (shoppingList[i] == onHand[j].second) {
+				indicesToRmv.push_back(i);
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < indicesToRmv.size(); i++) {
+		shoppingList.erase(shoppingList.begin() + indicesToRmv[i]);
 	}
 
 	Invalidate(TRUE);
