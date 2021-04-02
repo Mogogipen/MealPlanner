@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(IngredientsDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SHOP, &IngredientsDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_HAND, &IngredientsDlg::OnBnClickedButtonHand)
 	ON_BN_CLICKED(IDC_BUTTON_GENERATE, &IngredientsDlg::OnBnClickedButtonGenerate)
+	ON_BN_CLICKED(IDC_BUTTON_COMPLETE, &IngredientsDlg::OnBnClickedButtonComplete)
 END_MESSAGE_MAP()
 
 BOOL IngredientsDlg::OnInitDialog() {
@@ -176,7 +177,7 @@ void IngredientsDlg::OnPaint() {
 		dc.DrawTextW(onHand[i].second, oh_rects[i], DT_LEFT);
 	}
 	for (int i = 0; i < sl_rects.size(); i++) {
-		dc.DrawTextW(shoppingList[i], sl_rects[i], DT_LEFT);
+		dc.DrawTextW(shoppingList[i].second, sl_rects[i], DT_LEFT);
 	}
 
 	// Draw remove buttons
@@ -257,6 +258,8 @@ void IngredientsDlg::OnBnClickedButtonHand()
 // Add an item to the shopping list button pushed
 void IngredientsDlg::OnBnClickedButtonSave()
 {
+	UpdateData(TRUE);
+
 	// Open explorer dialog for file name input
 	const TCHAR szFilter[] = L"Text Files (*.txt)|*.txt|All Files (*.*)|*.*||";
 	CFileDialog f_dlg(FALSE, L"txt", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
@@ -267,16 +270,28 @@ void IngredientsDlg::OnBnClickedButtonSave()
 		CStdioFile file;
 		file.Open(filePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
 
-		// Write to the file
+		// TODO: Write the date range to the file
+		CString dateStart_str;
+		CString dateEnd_str;
+		dateStart_str = dateStart.Format(_T("%D"));
+		dateEnd_str = dateStart.Format(_T("%D"));
+		CString date_str;
+		date_str.Format(L"%s - %s\n", dateStart_str, dateEnd_str);
+		file.WriteString(date_str);
+
+		// Write shopping list to the file
 		for (int i = 0; i < shoppingList.size(); i++) {
-			file.WriteString(shoppingList[i] + "\n");
+			file.WriteString(shoppingList[i].second + "\n");
 		}
 
 		file.Close();
 	}
 }
 
-
+// Generate button message handler
+//  Generates a shopping list between the dates selected (inclusive)
+//  Does not allow duplicates between itself and the on-hand ingredients list
+//	  This runs in O(m*n) time
 void IngredientsDlg::OnBnClickedButtonGenerate()
 {
 	UpdateData(TRUE);
@@ -315,13 +330,26 @@ void IngredientsDlg::OnBnClickedButtonGenerate()
 
 	// Execute query and build shopping list
 	try {
+		// SQL Query to get ingredients from recipe ids
 		CString query;
-		query.Format(L"SELECT name FROM ingredient, recipe_has_ingredient WHERE(recipe_idrecipe) IN (%s) AND ingredient_idingredient = idingredient GROUP BY idingredient;", list);
+		query.Format(L"SELECT idingredient, name FROM ingredient, recipe_has_ingredient WHERE(recipe_idrecipe) IN (%s) AND ingredient_idingredient = idingredient GROUP BY idingredient;", list);
 		stmt = con->createStatement();
 		res = stmt->executeQuery((const char*)(CStringA)query);
 		while (res->next()) {
 			CString ingredient(res->getString("name").c_str());
-			shoppingList.push_back(ingredient);
+			int i_id = res->getInt("idingredient");
+			
+			// Add items that are not in the on-hand list
+			//	This makes the method O(m*n)
+			bool inOnHand = false;
+			for (int i = 0; i < onHand.size(); i++) {
+				if (i_id == onHand[i].first) {
+					inOnHand = true;
+					break;
+				}
+			}
+			if (!inOnHand)
+				shoppingList.push_back(std::pair<int, CString>(i_id, ingredient));
 		}
 	}
 	catch (sql::SQLException& e) {
@@ -333,21 +361,19 @@ void IngredientsDlg::OnBnClickedButtonGenerate()
 		MessageBox(errMsg);
 	}
 
-	// Remove anything already in the on-hand list.
-	//	This makes this method O(n*m)
-	std::vector<int> indicesToRmv;
+	Invalidate(TRUE);
+	UpdateWindow();
+}
+
+// Complete button message handler
+//  Moves items from the shopping list to the on-hand ingredients list
+void IngredientsDlg::OnBnClickedButtonComplete()
+{
 	for (int i = 0; i < shoppingList.size(); i++) {
-		for (int j = 0; j < onHand.size(); j++) {
-			if (shoppingList[i] == onHand[j].second) {
-				indicesToRmv.push_back(i);
-				break;
-			}
-		}
-	}
-	for (int i = 0; i < indicesToRmv.size(); i++) {
-		shoppingList.erase(shoppingList.begin() + indicesToRmv[i]);
+		onHand.push_back(shoppingList[i]);
 	}
 
+	shoppingList.clear();
 	Invalidate(TRUE);
 	UpdateWindow();
 }

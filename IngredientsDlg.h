@@ -24,7 +24,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	std::vector<CString> shoppingList;
+	std::vector<std::pair<int, CString>> shoppingList;
 	std::vector<CRect> rmvOH_rects;
 	std::vector<CRect> rmvSL_rects;
 	CFont normFont;
@@ -45,4 +45,5 @@ public:
 	afx_msg void OnBnClickedButtonSave();
 	afx_msg void OnBnClickedButtonHand();
 	afx_msg void OnBnClickedButtonGenerate();
+	afx_msg void OnBnClickedButtonComplete();
 };

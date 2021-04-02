@@ -42,7 +42,8 @@
 #define IDC_DATETIMEPICKER2             1026
 #define IDC_BUTTON_SEARCH               1026
 #define IDC_DATETIMEPICKER_START        1026
-#define IDC_BUTTON_GENERATE                     1027
+#define IDC_BUTTON_GENERATE             1027
+#define IDC_BUTTON_COMPLETE             1028
 #define IDC_EDIT_AUTHOR                 1029
 #define IDC_EDIT_INSTR                  1030
 #define IDC_COMBO                       1031
