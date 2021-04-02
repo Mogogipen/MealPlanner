@@ -1,5 +1,6 @@
 #include <vector>
 #include "Day.h"
+#include "MealPlannerDlg.h"
 
 #ifndef CALENDAR_H
 #define CALENDAR_H
@@ -28,6 +29,7 @@ public:
 	void decrementMonth();
 	CString getMonthAsString();
 	int getYear();
+	std::vector<Recipe> getDayRecipes(int);
 
 	CString toString();
 
@@ -35,6 +37,7 @@ public:
 
 	std::pair<Day&, bool> getClickedDay(CPoint&);
 
+	int getDateAsInt(COleDateTime);
 };
 
 #endif

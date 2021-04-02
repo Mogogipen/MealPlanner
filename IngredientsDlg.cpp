@@ -7,17 +7,20 @@
 #include "MealPlanner.h"
 #include "afxdialogex.h"
 #include "AddIngDlg.h"
+#include "Calendar.h"
 #include "IngredientsDlg.h"
+#include <set>
 
 
 // IngredientsDlg dialog
 
 IMPLEMENT_DYNAMIC(IngredientsDlg, CDialogEx)
 
-IngredientsDlg::IngredientsDlg(std::vector<std::pair<int, CString>>& onHandList, CWnd* pParent /*=nullptr*/)
+IngredientsDlg::IngredientsDlg(std::vector<std::pair<int, CString>>& onHandList, Calendar& calendar, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_LIST, pParent)
 	, dateStart(COleDateTime::GetCurrentTime())
 	, dateEnd(COleDateTime::GetCurrentTime())
+	, c{ calendar }
 {
 	onHand = onHandList;
 }
@@ -39,7 +42,7 @@ BEGIN_MESSAGE_MAP(IngredientsDlg, CDialogEx)
 	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_BUTTON_SHOP, &IngredientsDlg::OnBnClickedButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_HAND, &IngredientsDlg::OnBnClickedButtonHand)
-	ON_BN_CLICKED(IDC_BUTTON3, &IngredientsDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON_GENERATE, &IngredientsDlg::OnBnClickedButtonGenerate)
 END_MESSAGE_MAP()
 
 BOOL IngredientsDlg::OnInitDialog() {
@@ -267,9 +270,57 @@ void IngredientsDlg::OnBnClickedButtonSave()
 }
 
 
-void IngredientsDlg::OnBnClickedButton3()
+void IngredientsDlg::OnBnClickedButtonGenerate()
 {
 	UpdateData(TRUE);
 
 	if (dateStart > dateEnd) return;
+
+	// Get all recipe IDs within selected date range
+	COleDateTimeSpan dayCount = dateEnd - dateStart;
+	COleDateTimeSpan day(1, 0, 0, 0);
+	int days = dayCount.GetDays();
+	std::set<int> recipeIDs;
+	for (int i = 0; i <= days; i++) {
+		std::vector<Recipe> recipes;
+		int dateHash = c.getDateAsInt(dateStart);
+		recipes = c.getDayRecipes(dateHash);
+		for (int i = 0; i < recipes.size(); i++) {
+			recipeIDs.insert(recipes[i].id);
+		}
+		dateStart += day;
+	}
+
+	// Copy from set to vector
+	std::vector<int> r_ids(recipeIDs.size());
+	std::copy(recipeIDs.begin(), recipeIDs.end(), std::back_inserter(r_ids));
+
+	// Get all ingredient names within selected date range
+	CString list;
+	if (r_ids.size() <= 0) return;
+	list.Format(L"%d", r_ids[0]);
+	for (int i = 1; i < r_ids.size(); i++) {
+		CString tmp;
+		tmp.Format(L", %d", r_ids[i]);
+		list += tmp;
+	}
+
+	try {
+		CString query;
+		query.Format(L"SELECT name FROM ingredient, recipe_has_ingredient WHERE(recipe_idrecipe) IN (%s) AND ingredient_idingredient = idingredient GROUP BY idingredient;", list);
+		stmt = con->createStatement();
+		res = stmt->executeQuery((const char*)(CStringA)query);
+		while (res->next()) {
+			CString ingredient(res->getString("name").c_str());
+			shoppingList.push_back(ingredient);
+		}
+	}
+	catch (sql::SQLException& e) {
+		CString errMsg;
+		CString what(e.what());
+		int errCode = e.getErrorCode();
+		CString SQLState(e.getSQLStateCStr());
+		errMsg.Format(L"Error: %s\nSQL Exception Code: %d, SQL State: %s", what, errCode, SQLState);
+		MessageBox(errMsg);
+	}
 }

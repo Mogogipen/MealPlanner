@@ -9,7 +9,7 @@ class IngredientsDlg : public CDialogEx
 	DECLARE_DYNAMIC(IngredientsDlg)
 
 public:
-	IngredientsDlg(std::vector<std::pair<int, CString>>& onHand, CWnd* pParent = nullptr);   // standard constructor
+	IngredientsDlg(std::vector<std::pair<int, CString>>& onHand, Calendar& calendar, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~IngredientsDlg();
 
 // Dialog Data
@@ -30,16 +30,19 @@ private:
 	CFont normFont;
 	CFont bigFont;
 
+	Calendar c;
+
+	COleDateTime dateStart;
+	COleDateTime dateEnd;
+
 	int clickOnBtnSearch(CPoint&, std::vector<CRect>&);
+
 public:
+
 	std::vector<std::pair<int, CString>> onHand;
 
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnBnClickedButtonSave();
 	afx_msg void OnBnClickedButtonHand();
-private:
-	COleDateTime dateStart;
-	COleDateTime dateEnd;
-public:
-	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButtonGenerate();
 };

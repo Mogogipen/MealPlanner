@@ -17,8 +17,14 @@ Calendar::Calendar(CString& fileName) : Calendar(COleDateTime::GetCurrentTime())
 
 // Returns the date as an int
 //	Format: YYYYMMDD
+int Calendar::getDateAsInt(COleDateTime date) {
+	return date.GetYear() * 10000 + date.GetMonth() * 100 + date.GetDay();
+}
+
+// Returns the date as an int
+//	Format: YYYYMMDD
 int Calendar::getSelectedDateAsInt() {
-	return selectedDate.GetYear() * 10000 + selectedDate.GetMonth() * 100 + selectedDate.GetDay();
+	return getDateAsInt(selectedDate);
 }
 
 // Creates day vector using the current date
@@ -203,6 +209,15 @@ CString Calendar::getMonthAsString() {
 // Return the year of the current DateTime
 int Calendar::getYear() {
 	return selectedDate.GetYear();
+}
+
+// Returns recipes of the day from the given date's hash
+std::vector<Recipe> Calendar::getDayRecipes(int dayHash) {
+	std::vector<Recipe> result;
+	for (int i = 0; i < days[dayHash].getDishCount(); i++) {
+		result.push_back(days[dayHash].dishRecipe(i));
+	}
+	return result;
 }
 
 //
