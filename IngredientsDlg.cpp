@@ -252,23 +252,30 @@ void IngredientsDlg::OnBnClickedButtonHand()
 // Add an item to the shopping list button pushed
 void IngredientsDlg::OnBnClickedButtonSave()
 {
-	//AddStringDlg as_dlg(L"Add to shopping list", L"Ingredient");
-	//INT_PTR nResponse = as_dlg.DoModal();
-	//if (nResponse == IDOK) {
-	//	// If OK, add an ingredient to the shopping list
-	//	CString ingredient = as_dlg.GetInput();
-	//	shoppingList.push_back(ingredient);
+	// Open explorer dialog for file name input
+	const TCHAR szFilter[] = L"Text Files (*.txt)|*.txt|All Files (*.*)|*.*||";
+	CFileDialog f_dlg(FALSE, L"txt", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	
+	// Init file
+	if (f_dlg.DoModal() == IDOK) {
+		CString filePath = f_dlg.GetPathName();
+		CStdioFile file;
+		file.Open(filePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
 
-	//	UpdateData(FALSE);
-	//	Invalidate(TRUE);
-	//	UpdateWindow();
-	//}
+		// Write to the file
+		for (int i = 0; i < shoppingList.size(); i++) {
+			file.WriteString(shoppingList[i] + "\n");
+		}
+
+		file.Close();
+	}
 }
 
 
 void IngredientsDlg::OnBnClickedButtonGenerate()
 {
 	UpdateData(TRUE);
+	shoppingList.clear();
 
 	if (dateStart > dateEnd) return;
 
@@ -301,6 +308,7 @@ void IngredientsDlg::OnBnClickedButtonGenerate()
 		list += tmp;
 	}
 
+	// Execute query and build shopping list
 	try {
 		CString query;
 		query.Format(L"SELECT name FROM ingredient, recipe_has_ingredient WHERE(recipe_idrecipe) IN (%s) AND ingredient_idingredient = idingredient GROUP BY idingredient;", list);
