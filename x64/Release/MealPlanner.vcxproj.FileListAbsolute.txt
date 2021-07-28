@@ -1,2 +1,3 @@
 C:\Users\rymin.KIRBY\Documents\School\CS 4800\MealPlanner\x64\Release\MealPlanner.exe
 C:\Users\Nick\Documents\School\Spring 2021\CS 4800\MealPlanner\x64\Release\MealPlanner.exe
+C:\Users\Nick\Documents\Projects\MealPlanner\MealPlanner\x64\Release\MealPlanner.exe

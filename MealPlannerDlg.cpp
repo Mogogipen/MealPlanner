@@ -163,7 +163,7 @@ BOOL CMealPlannerDlg::OnInitDialog()
 	try {
 
 		// Create a connection
-		char host[] = "34.106.20.72";
+		char host[] = "127.0.0.1";
 		char user[] = "root";
 		char pass[] = "glGrQlB4Ly";
 		driver = get_driver_instance();
