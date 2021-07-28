@@ -106,6 +106,13 @@ END_MESSAGE_MAP()
 void IngToRecDlg::OnCbnSelchangeCombo()
 {
 	selected = m_comboBox.GetCurSel();
+	CString itemText;
+	m_comboBox.GetLBText(selected, itemText);
+
+	for (int i = 0; i < names.size(); i++) {
+		if (itemText == names[i])
+			selected = i;
+	}
 }
 
 

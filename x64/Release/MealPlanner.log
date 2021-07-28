@@ -1,7 +1,6 @@
-﻿  MealPlannerDlg.cpp
+﻿  IngToRecDlg.cpp
   Generating code
-  1 of 1252 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 1252 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   MealPlanner.vcxproj -> C:\Users\Nick\Documents\Projects\MealPlanner\MealPlanner\x64\Release\MealPlanner.exe
